@@ -25,69 +25,102 @@ def login():
         return f'{form}'
 
 
+
 # 发送验证码
 @users.route('/EmailCaptcha',methods=['POST'])
 def email_captcha():
     # 验证码随机6位
     captcha = ''.join(random.sample(string.ascii_letters + string.digits, 6))
-    # 读取表单内的email值
-    recipients = request.form.get('email')
+    # 读取POST请求中的表单值
+    form_email = request.form.get('email')
+    form_username = request.form.get('username')
+    form_timestamp = int(request.form.get('timestamp'))
+    # 导入模型
+    email_captcha_model = XcOsEmailCaptcha.query.filter_by(email=form_email).first()
 
-    if not recipients:
-        return jsonify({
-            "code":400,
-            "message":"Miss Email"
-        })
-    else:
+    #如果第一行有结果，即该用户不是第一次发送
+    if email_captcha_model:
+        timestamp_gap = form_timestamp - email_captcha_model.send_time
+        # 判断和上次发送的时间是否超过了60秒
+        gap = 60
+        if timestamp_gap <= gap:
+            print(f'{form_timestamp}-{email_captcha_model.send_time} = {timestamp_gap} ')
+            return jsonify({
+                "code": 400,
+                "message": f"请等待{gap - timestamp_gap}秒再发送！Please wait {gap - timestamp_gap} seconds before sending!"
+            })
+        else:
+            try:
+                message_dict={
+                    "title":"小草Shopping-深耕电商服务20年 感谢您的注册！", # 邮件标题
+                    "username":form_username, # 接收者
+                    "service":"用户注册", # 发送的服务
+                    "code":captcha, # 验证码
+                }
+                message= Message(
+                    recipients=[form_email],# 收件人
+                    subject='【小草Shopping-深耕电商服务20年】 验证码',# 邮件主题
+                    html=render_template('email-base.html', **message_dict),  # 邮件内容
+                )
+                # 发送邮件
+                mail.send(message)
+                # 将验证码赋值模型
+                email_captcha_model.captcha = captcha
+                # 将验证码发送时间赋值模型
+                email_captcha_model.send_time = int(time.time())
+                # 设置超时时间
+                email_captcha_model.valid_time = int(time.time() + 300)
+                # 提交模型到数据库
+                db.session.commit()
+
+            except Exception as e:
+                print(e)
+                return jsonify({
+                    "code":500,
+                    "message":f"Service Error ! {e}"
+                })
+
+    else:#如果第一行没有结果，即该用户是第一次发送验证码
         try:
-            message_dict={
-                "title":"小草Shopping-深耕电商服务20年 感谢您的注册！", # 邮件标题
-                "username":recipients, # 接收者
-                "service":"用户注册", # 发送的服务
-                "code":captcha, # 验证码
+            message_dict = {
+                "title": "小草Shopping-深耕电商服务20年 感谢您的注册！",  # 邮件标题
+                "username": form_username,  # 接收者
+                "service": "用户注册",  # 发送的服务
+                "code": captcha,  # 验证码
             }
-            message= Message(
-                recipients=[recipients],# 收件人
-                subject='【小草Shopping-深耕电商服务20年】 验证码',# 邮件主题
+            message = Message(
+                recipients=[form_email],  # 收件人
+                subject='【小草Shopping-深耕电商服务20年】 验证码',  # 邮件主题
                 html=render_template('email-base.html', **message_dict),  # 邮件内容
             )
             # 发送邮件
             mail.send(message)
-        except Exception as e:
-            print(e)
-            return jsonify({
-                "code":"400",
-                "message":"ERROR"
-            })
-        # 导入模型
-        email_captcha_model = XcOsEmailCaptcha.query.filter_by(email=recipients).first()
-        # 如果邮箱存在
-        if email_captcha_model:
-            # 将验证码赋值模型
-            email_captcha_model.captcha = captcha
-            # 将验证码发送时间赋值模型
-            email_captcha_model.send_time = int(time.time())
-            # 设置超时时间
-            email_captcha_model.valid_time = int(time.time()+300)
-            # 提交模型到数据库
-            db.session.commit()
-        else:
-            # 创建模型 赋值
+            #
             email_captcha_model = XcOsEmailCaptcha()
-            email_captcha_model.email = recipients
+            email_captcha_model.email = form_email
             email_captcha_model.captcha = captcha
             # 设置发送时间
             email_captcha_model.send_time = int(time.time())
             # 设置超时时间
-            email_captcha_model.valid_time = int(time.time()+300)
+            email_captcha_model.valid_time = int(time.time() + 300)
             # 添加模型
             db.session.add(email_captcha_model)
             # 提交模型到数据库
             db.session.commit()
-        return jsonify({
-            "code":200,
-            "status":"Send captcha Scuccess"
-        })
+
+        except Exception as e:
+            print(e)
+            return jsonify({
+                "code": 500,
+                "message": f"Service Error ! {e}"
+            })
+            # 创建模型 赋值
+
+
+    return jsonify({
+        "code":200,
+        "message":"Send captcha Scuccess"
+    })
 
 
 

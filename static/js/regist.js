@@ -71,6 +71,7 @@ function checkInputFields() {
 
 
 function bindCaptchaBtnClick() {
+
     // 邮箱验证码验证
     $('#email-captcha-btn').on('click', function (event) {
         var $this = $(this);
@@ -101,14 +102,16 @@ function bindCaptchaBtnClick() {
             url: "/users/EmailCaptcha",
             method: "POST",
             data: {
-                "email": email,
+                "email": $('input[name="email"]').val(),
+                'username':$('input[name="username"]').val(),
+                'timestamp': Math.floor(Date.now() / 1000)
             },
             success: function (res) {
                 var code = res['code'];
-                if (code == 200) {
-                    toggleDiv('验证码发送成功！请打开邮箱查收！',1);
+                if (code === 200) {
+                    toggleDiv('验证码发送成功！ ' + res['message'],1);
                 } else {
-                     toggleDiv('验证码发送失败！请检查是否有效邮箱！',2);
+                     toggleDiv('验证码发送失败！status:'+ res['code'] + " | " + res['message'],2);
                 }
             }
         });
