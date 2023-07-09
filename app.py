@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template,request,redirect,url_for,g,session
 from flask_migrate import Migrate
-from project_extension import db,mail
+from extension import db,mail
 from blueprints import users_bp,admin_bp,home_bp
 from models import XcOSUser
 

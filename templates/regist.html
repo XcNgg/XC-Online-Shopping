@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 
-
 {% block title %}注册 - {{ super() }}{% endblock %}
 {% block script%}
     <script type="text/javascript"  src={{ url_for('static',filename='js/regist.js')}}></script>
@@ -54,17 +53,14 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="captcha">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="email-captcha-btn">获取验证码</button>
+                            <button class="btn btn-outline-secondary" type="button" id="email-captcha-btn" >获取验证码</button>
                         </div>
                     </div>
                      <small  class="form-text text-muted">点击获取邮箱验证码</small>
                 </div>
                 <div class="alert alert-success custom-alert" role="alert" style="display: none">
-                    验证码发送成功！请打开邮箱查收！
                 </div>
-
                 <div class="alert alert-danger" role="alert" style="display: none">
-                  验证码发送失败！请检查是否有效邮箱！
                 </div>
 
                 <div class="form-group mb-5"></div>

@@ -1,4 +1,10 @@
-from project_extension import db
+"""
+models.py 数据库模型文件
+flask db init
+flask db migrate
+flask db upgrade
+"""
+from extension import db
 
 class XcOSUser(db.Model):
     # 用户表 (User table)
@@ -100,3 +106,16 @@ class XcOsOrderDetail(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
+
+class XcOsEmailCaptcha(db.Model):
+    # emial验证码存储模型
+    __tablename__ = 'XcOS_email_captcha'
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    # 邮箱不为空，且唯一
+    email = db.Column(db.String(100),nullable=False,unique=True)
+    # 验证码不为空，且唯一
+    captcha = db.Column(db.String(10),nullable=False,unique=True)
+    # 验证码发送时间
+    send_time = db.Column(db.Integer,nullable=False)
+    # # 验证码有效时间
+    valid_time = db.Column(db.Integer,nullable=False)

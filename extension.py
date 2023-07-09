@@ -1,5 +1,5 @@
 """
-project_extension.py
+extension.py
     项目扩展文件
 """
 from flask_sqlalchemy import SQLAlchemy
