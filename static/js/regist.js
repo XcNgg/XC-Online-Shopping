@@ -109,9 +109,9 @@ function bindCaptchaBtnClick() {
             success: function (res) {
                 var code = res['code'];
                 if (code === 200) {
-                    toggleDiv('验证码发送成功！ ' + res['message'],1);
+                    toggleDiv('验证码发送成功！ | ' + res['message'],1);
                 } else {
-                     toggleDiv('验证码发送失败！status:'+ res['code'] + " | " + res['message'],2);
+                     toggleDiv('验证码发送失败！| ' + res['message'],2);
                 }
             }
         });
@@ -150,10 +150,10 @@ $(document).ready(function() {
     if (errors.length > 0) {
        var errorMessage = errors.join('<br>'); // Join error messages with <br> tags
       // Append error messages after the existing div element with id 'first_error'
-        $('.alert.alert-danger').html(errorMessage).show();
+        $("#error_alert").html(errorMessage).show();
         event.preventDefault(); // Prevent form submission
     }else{
-        $('.alert.alert-danger').hide();
+        $("#error_alert").hide();
     }
   });
 });

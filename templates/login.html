@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}登录 - {{ super() }}{% endblock %}
- {% block style %}
+
+{% block script %}
+    <script type="text/javascript"  src={{ url_for('static',filename='js/login.js')}}></script>
+{% endblock %}
+
+{% block style %}
     body {
         font-family: autostylus;
     }
-
 {% endblock %}
 
 
@@ -17,9 +21,9 @@
         <div class="col-sm mt-5">
             <div class="form-group" style="padding: 25px"></div>
 
-            {% if regist == 'success' %}
+            {% if success %}
                 <div class="alert alert-success custom-alert" role="alert" >
-                        注册成功！欢迎您的加入！
+                        {{ success }}
                 </div>
             {% endif  %}
 
@@ -34,22 +38,25 @@
                     <input name="password"  type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入您的密码">
                 </div>
 
+                <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
 
-                {%  for message in get_flashed_messages() %}
-                    <div class="form-group">
-                        <p class="text-danger"> {{ message }}</p>
+                {# 消息框#}
+{#               {% if success %}#}
+{#                <div class="alert alert-success custom-alert" role="alert" style=>登录成功！</div>#}
+{#               {% endif %} #}
+
+                {% if errors %}
+                    <div class="alert alert-danger" role="alert" >
+                    {% for error in errors %}
+                        {{ error }}
+                        <br>
+                    {% endfor %}
                     </div>
-                {% endfor %}
+                {% endif %}
 
-                <div class="form-group mb-4">
+
+                <div class="form-group mb-5">
                 </div>
-
-{#                <div class="form-group form-check">#}
-{#                    <input type="checkbox" class="form-check-input" id="exampleCheck1">#}
-{#                    <label class="form-check-label" for="exampleCheck1">Check me out</label>#}
-{#                </div>#}
-
-
 
                 <button type="submit" class="btn btn-block btn-primary">立即登录</button>
             </form>

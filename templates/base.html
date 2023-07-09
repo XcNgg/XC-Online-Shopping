@@ -35,12 +35,27 @@
                         <button style="font-family:splash ink;" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </li>
+
+          {%  if user %}
+                <ul class="navbar-nav ">
+                    <li class="nav-item  pr-3">
+                        <a class="nav-link " href="#" style="font-family: splash ink;font-size: 20px" >{{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{ url_for('users.logout') }}" style="font-family: splash ink;font-size: 20px">注销</a>
+                    </li>
+                </ul>
+          {%  else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.login') }}" style="font-family: splash ink;font-size: 20px">登录</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.regist') }}" style="font-family:splash ink;font-size: 20px">注册</a>
                 </li>
+          {%  endif %}
+
+
+
             </ul>
         </nav>
     </header>

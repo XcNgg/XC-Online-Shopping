@@ -58,10 +58,21 @@
                     </div>
                      <small  class="form-text text-muted">点击获取邮箱验证码</small>
                 </div>
-                <div class="alert alert-success custom-alert" role="alert" style="display: none">
-                </div>
-                <div class="alert alert-danger" role="alert" style="display: none">
-                </div>
+
+                {# 消息框#}
+                <div id="success_alert"class="alert alert-success custom-alert" role="alert" style="display: none"></div>
+                 <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
+
+
+                {% if errors %}
+                    <div class="alert alert-danger" role="alert" >
+                    {% for error in errors %}
+                        {{ error }}
+                        <br>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+
 
                 <div class="form-group mb-5"></div>
 

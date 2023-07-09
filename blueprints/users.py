@@ -4,7 +4,7 @@ from flask_mail import Message
 from extension import db
 import random
 import string
-from forms import RegistForm
+from forms import RegistForm,LoginForm
 import time
 from models import XcOsEmailCaptcha,XcOSUser
 from extension import mail
@@ -16,27 +16,64 @@ from werkzeug.security import check_password_hash
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
+
+
+# 登录
 @users.route('/login',methods=['GET',"POST"])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
-    else:
-        form =request.form
-        return f'{form}'
+    elif request.method == 'POST':
+        form = LoginForm(request.form)
+        if form.validate():
+            # 获取email
+            email = form.email.data
+            # 获取密码
+            password = form.password.data
+            user = XcOSUser.query.filter_by(email=email).first()
+            # 使用check_password_hash函数来验证密码 函数(hashpassowrd,password)
+            if user and check_password_hash(user.password,password):
+                print(user)
+                print(user.id)
+                print(user.username)
+                session['user_id']=user.id
+                return redirect('/')
+            else:
+                return render_template('login.html',errors=['邮箱或密码不匹配!'])
+        else:
+            errors_list = []
+            for field_name, field_errors in form.errors.items():
+                for error in field_errors:
+                    print(f"{field_name}: {error}")
+                    errors_list.append(f"{field_name}: {error}")
+            return render_template('login.html', errors=errors_list)
+
+
+
 
 
 
 # 发送验证码
 @users.route('/EmailCaptcha',methods=['POST'])
 def email_captcha():
-    # 验证码随机6位
-    captcha = ''.join(random.sample(string.ascii_letters + string.digits, 6))
+
     # 读取POST请求中的表单值
     form_email = request.form.get('email')
     form_username = request.form.get('username')
     form_timestamp = int(request.form.get('timestamp'))
+
+    user_model = XcOSUser.query.filter_by(email=form_email).first()
+    if user_model:
+        return jsonify({
+            "code": 400,
+            "message": f"当前邮箱已经存在！"
+        })
+
+
     # 导入模型
     email_captcha_model = XcOsEmailCaptcha.query.filter_by(email=form_email).first()
+    # 验证码随机6位
+    captcha = ''.join(random.sample(string.ascii_letters + string.digits, 6))
 
     #如果第一行有结果，即该用户不是第一次发送
     if email_captcha_model:
@@ -116,12 +153,10 @@ def email_captcha():
             })
             # 创建模型 赋值
 
-
     return jsonify({
         "code":200,
         "message":"Send captcha Scuccess"
     })
-
 
 
 @users.route('/regist',methods=['GET',"POST"])
@@ -131,10 +166,12 @@ def regist():
     # 如果是POST请求
     else:
         form = RegistForm(request.form)
+        # 表单验证
         if form.validate():
             username = form.username.data
             email = form.email.data
             password = form.password.data
+
             new_user = XcOSUser(
                 username=username,
                 # 密码哈希存储
@@ -143,16 +180,19 @@ def regist():
             )
             db.session.add(new_user)
             db.session.commit()
-            return render_template('login.html', regist='success')
+            return render_template('login.html',  success='注册成功！')
+        # 表单验证
         else:
-            # Form validation failed
+            errors_list = []
             for field_name, field_errors in form.errors.items():
                 for error in field_errors:
-                    print(f"Error in field '{field_name}': {error}")
+                    print(f"{field_name}: {error}")
+                    errors_list.append(f"{field_name}: {error}")
+            return render_template('regist.html', errors=errors_list)
 
 
 # 注销清除session
 @users.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for("users.login"))
+    return render_template('login.html',  success='您已注销！')
