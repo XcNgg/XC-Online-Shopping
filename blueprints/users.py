@@ -12,7 +12,7 @@ from extension import mail
 from werkzeug.security import generate_password_hash
 # flask 底层的解密函数
 from werkzeug.security import check_password_hash
-
+from decorators import login_required
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
@@ -47,7 +47,6 @@ def login():
                     print(f"{field_name}: {error}")
                     errors_list.append(f"{field_name}: {error}")
             return render_template('login.html', errors=errors_list)
-
 
 
 
@@ -191,8 +190,20 @@ def regist():
             return render_template('regist.html', errors=errors_list)
 
 
+
+@users.route('/information')
+@login_required
+def information():
+    return render_template('personal-information.html')
+
+
+
+
+
 # 注销清除session
 @users.route('/logout')
+@login_required
 def logout():
     session.clear()
     return render_template('login.html',  success='您已注销！')
+

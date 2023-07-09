@@ -15,5 +15,5 @@ def login_required(func):
         if hasattr(g,"user"):
             return func(*args,**kwargs)
         else:
-            return redirect(url_for('the_users.login'))
+            return redirect(url_for('users.login'))
     return wrapper

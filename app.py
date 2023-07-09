@@ -43,7 +43,6 @@ def context_processor():
         return {"user":g.user}
     else:
         return {}
-    #
 
 
 if __name__ == '__main__':
