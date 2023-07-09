@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+html, body {
+    height: 100%;
+}
+
+.page-container {
+    flex: 1;
+     margin-bottom: 70px; /* 添加底部间距 */
+}
+
+footer {
+    background-color: black;
+    color: white;
+    font-family: autostylus;
+    padding: 5px 0;
+    padding-top: 30px;
+}
+
+
+@font-face {
+  font-family: splash ink;  /* 这是您想要给字体的名称 */
+  src: url('../fonts/三极泼墨体.ttf');  /* 将 'path/to/font-file.ttf' 替换为实际字体文件的路径 */
+}
+@font-face {
+  font-family: autostylus;  /* 这是您想要给字体的名称 */
+  src: url('../fonts/宅在家自动笔.ttf');  /* 将 'path/to/font-file.ttf' 替换为实际字体文件的路径 */
+}
+
+
