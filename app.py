@@ -22,6 +22,8 @@ app.register_blueprint(home_bp)
 # ORM映射
 migrate = Migrate(app, db)
 
+
+from flask import render_template,request,redirect,url_for,g,session
 @app.before_request
 def before_requests():
     user_id = session.get('user_id')

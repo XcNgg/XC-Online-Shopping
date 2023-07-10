@@ -1,5 +1,5 @@
 """
-forms.users.py
+forms.users_form.py
     用户处理的 表单文件
 """
 import wtforms
@@ -61,3 +61,5 @@ class LoginForm(wtforms.Form):
         user_model = XcOSUser.query.filter_by(email=email).first()
         if not user_model:
             raise wtforms.ValidationError('邮箱不存在!')
+
+
