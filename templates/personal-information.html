@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}个人详细信息 - {{ super() }}{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static',filename='js/personal-information.js') }}"></script>
+{% endblock %}
+
+{% block style %}
+    body {
+    font-family: autostylus;
+    background-color: #f8f9fa;
+    }
+
+    .card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+    color: #007bff;
+    }
+
+    .address {
+    margin-bottom: 20px;
+    }
+
+    .address hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: #007bff;
+    }
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-lg-6 mx-auto">
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title">{{ user.username }}的个人信息</h2>
+                    <hr>
+                  <div class="row">
+                    <div class="col-4">
+                      <strong>用户名:</strong>
+                    </div>
+                    <div class="col-8">
+                      <span id="username">{{ user.username }}</span>
+                      <input type="text" id="editUsername" class="form-control" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <strong>Email:</strong>
+                    </div>
+                    <div class="col-8">
+                      <span id="email">{{ user.email }}</span>
+                      <input type="text" id="editEmail" class="form-control" style="display: none;">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <strong>余额:</strong>
+                    </div>
+                    <div class="col-8">
+                      <span id="balance">￥{{ user.balance }}</span>
+                    </div>
+                  </div>
+
+                    <div class="row">
+                    <div class="col-4">
+                      <strong>注册时间</strong>
+                    </div>
+                    <div class="col-8">
+                      <span id="balance">{{ user.created_at }}</span>
+                    </div>
+                  </div>
+
+
+                  <div class="row mt-4">
+                    <div class="col">
+                      <a id="editButton" class="btn btn-primary">编辑信息</a>
+                      <a href="#" id="commitButton" class="btn btn-success" style="display: none">确认提交</a>
+                      <a href="#" id="cancelButton" class="btn btn-danger" style="display: none">取消编辑</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+{##}
+{#        <div class="row mt-5">#}
+{#            <div class="col-lg-6 mx-auto">#}
+{#                <div class="card">#}
+{#                    <div class="card-body">#}
+{#                        <h2 class="card-title">收货地址</h2>#}
+{#                        {% if address %}#}
+{#                            {% for address in user.addresses %}#}
+{#                                <div class="address">#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-4">#}
+{#                                            <strong>地址ID:</strong>#}
+{#                                        </div>#}
+{#                                        <div class="col-8">#}
+{#                                            {{ address.id }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-4">#}
+{#                                            <strong>省/州:</strong>#}
+{#                                        </div>#}
+{#                                        <div class="col-8">#}
+{#                                            {{ address.state }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-4">#}
+{#                                            <strong>城市:</strong>#}
+{#                                        </div>#}
+{#                                        <div class="col-8">#}
+{#                                            {{ address.city }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-4">#}
+{#                                            <strong>详细地址:</strong>#}
+{#                                        </div>#}
+{#                                        <div class="col-8">#}
+{#                                            {{ address.detailed_address }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-4">#}
+{#                                            <strong>邮政编码:</strong>#}
+{#                                        </div>#}
+{#                                        <div class="col-8">#}
+{#                                            {{ address.postal_code }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                {% if not loop.last %}#}
+{#                                    <hr>#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
+{##}
+{#                        {% else %}#}
+{#                            <div class="col-12">#}
+{#                                <strong>当前账户没有收货地址，点击添加一个吧！</strong>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{##}
+{##}
+{#                        <div class="row mt-4">#}
+{#                            <div class="col">#}
+{#                                <a href="#" class="btn btn-primary">新增地址</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+
+{% endblock %}

@@ -152,6 +152,20 @@ class XcOSAdmin(db.Model):
 
 
 
+class XcOSSignIn(db.Model):
+    # 签到表 (Sign-in table)
+    __tablename__ = 'XcOS_sign_in'
+    # 设置表名为 'XcOS_sign_in' (Set table name as 'XcOS_sign_in')
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    # 签到记录ID (Sign-in record ID)
+    user_id = db.Column(db.Integer, db.ForeignKey('XcOS_user.id'), nullable=False)
+    # 用户ID，外键关联到'XcOS_user'表中的'id'字段 (User ID, foreign key reference to 'id' field in 'XcOS_user' table)
+    sign_in_time = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
+    # 签到时间 (Sign-in time)
+    amount = db.Column(db.DECIMAL(5, 2), nullable=False)
+    # 签到金额 (Sign-in amount)
+
+
 
 # class XcOSOrder(db.Model):
 #     # 订单表 (Order table)

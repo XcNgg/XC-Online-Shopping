@@ -9,77 +9,191 @@
     <link rel="icon" href="{{ url_for('static', filename='img/tb.png') }}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
     {% block css %}{% endblock %}
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/title.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+
     {% block script %}{% endblock %}
 </head>
 
 <style>
-     {% block style %}{% endblock %}
+    .dropdown .btn {
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: none;
+        color: #000; /* 修改按钮文字颜色 */
+    }
+
+    .dropdown .btn:hover,
+    .dropdown .btn:focus {
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: none;
+        color: #000; /* 修改按钮文字颜色 */
+    }
+
+    {% block style %}{% endblock %}
 </style>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <a class="navbar-brand" href="{{ url_for('home.index')}}" style="margin-right: auto;">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" width="50" height="50">
-            </a>
-                <h2 style="font-family: splash ink;font-size: 45px;margin-top: 15px;" >小草Shopping-深耕电商服务20年</h2>
-            <ul class="navbar-nav ml-auto" style="margin-left: auto;">
-                <li class="nav-item">
-                    <form class="form-inline">
-                        <input style="font-family:splash ink;width: 400px;" class="form-control mr-sm-2" type="search" placeholder="笔记本电脑" aria-label="Search">
-                        <button style="font-family:splash ink;" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                </li>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <a class="navbar-brand" href="{{ url_for('home.index') }}" style="margin-right: auto;">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" width="50" height="50">
+        </a>
+        <h2 style="font-family: splash ink;font-size: 45px;margin-top: 15px;">小草Shopping-深耕电商服务20年</h2>
+        <ul class="navbar-nav ml-auto" style="margin-left: auto;">
+            <li class="nav-item">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" style="width: 450px"
+                           placeholder="笔记本电脑" aria-label="Search">
+                    <button  class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" type="submit">
+                        Search
+                    </button>
+                </form>
+            </li>
 
-          {%  if user %}
-                <ul class="navbar-nav ">
-                    <li class="nav-item  pr-3">
-                        <a class="nav-link " href="{{ url_for('users.information') }}" style="font-family: splash ink;font-size: 20px" >{{ user.username }}</a>
+
+            {% if user %}
+                <ul class="navbar-nav">
+                    <li class="nav-item pr-3">
+                        <div class="btn-group">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="font-size: 20px; border: none; box-shadow: none;">
+                                    {{ user.username }}
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right w-auto" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" onclick="signin()">签 到</a>
+                                    <a class="dropdown-item" href="{{ url_for('users.information') }}">个人信息</a>
+                                    <a class="dropdown-item" href="#">我的订单</a>
+                                    <a class="dropdown-item" href="#">修改密码</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ url_for('users.logout') }}">注 销</a>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
-          {%  else %}
+            {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('users.login') }}" style="font-family: splash ink;font-size: 20px">登录</a>
+                    <a class="nav-link" href="{{ url_for('users.login') }}"
+                       style="font-size: 20px">登录</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('users.regist') }}" style="font-family:splash ink;font-size: 20px">注册</a>
+                    <a class="nav-link" href="{{ url_for('users.regist') }}"
+                       style="font-size: 20px">注册</a>
                 </li>
-          {%  endif %}
-
-
-
-            </ul>
-        </nav>
-    </header>
-    <div class="page-container">
-        <div class="container">
-            <!-- 主要内容区域 -->
-            {% block content %}{% endblock %}
-        </div>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+<div class="page-container">
+    <div class="container">
+        <!-- 主要内容区域 -->
+        {% block content %}{% endblock %}
     </div>
-    <footer style="background-color: black; color: white; font-family: autostylus;">
+</div>
+<footer>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h5>联系信息</h5>
                 电话&地址: 123 Street, City, Country
-                <p>Email: info@example.com</p>
+                <br>
+                Email: info@example.com
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h5>关于我们</h5>
-                深耕电商服务20年,提供各类商品的购买和在线交易服务。
-                <p>通过我们的平台，您可以方便地浏览和购买您感兴趣的产品。</p>
+                深耕电商服务20年
+                <br>
+                提供各类商品的购买和在线交易服务
+            </div>
+            <div class="col-md-4">
+                <h5>联系信息</h5>
+                电话&地址: 123 Street, City, Country
+                <br>
+                Email: info@example.com
             </div>
         </div>
-            <div class="col-md-12"  >
-                <p class="text-center">版权所有 &copy; 2023 小草Shopping @<a href='https://github.com/XcNgg/XC-Online-Shopping'> XCNGG</a></p>
+        <div class="row">
+            <div class="col-md-6 text-left" style="padding-top: 15px">
+                <div class="github-badge">
+                    <a href="https://github.com/XcNgg/XC-Online-Shopping" target="_blank" title="©XCNGG">
+                        <span class="badge-subject" id="current-year"></span><span class="badge-value bg-blue">XCNGG</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 text-right" style="padding-top: 15px">
+                <div class="github-badge">
+                    <a href="https://beian.miit.gov.cn/" target="_blank" title="浙ICP备1234567890号">
+                        <span class="badge-subject">浙ICP备</span><span class="badge-value bg-green">1234567890号</span>
+                    </a>
+                </div>
             </div>
         </div>
+    </div>
 </footer>
+
+{% if user %}
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signinModalLabel">Result</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="signinResult"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 版权固定最新年份
+    var currentYear = new Date().getFullYear();
+    document.getElementById("current-year").textContent = "Copyright©" + currentYear;
+
+    // 签到
+    function signin() {
+    const uid = '{{ user.id }}'; // 替换为实际的用户ID
+    $.ajax({
+    url: '/users/signin',
+    type: 'POST',
+    data: { uid: uid },
+    success: function(response) {
+        // 处理响应数据
+        console.log(response);
+        if (response.code === 200) {
+            // 显示签到成功结果
+            showSigninResult('签到成功', "今日随机签到金额:￥"+response.amount);
+        } else {
+            // 显示签到失败结果
+            showSigninResult('签到失败', response.message);
+        }
+    },
+    error: function(error) {
+        // 处理错误
+        console.error(error);
+        // 显示错误信息
+        showSigninResult('错误', '发生错误');
+    }
+    });
+}
+
+
+
+</script>
+{% endif %}
+
 </body>
 </html>

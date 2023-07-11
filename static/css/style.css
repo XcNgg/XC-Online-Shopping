@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: autostylus,Arial, sans-serif;
     background-color: #f2f2f2;
     margin: 0;
     padding: 0;
@@ -17,12 +17,7 @@ html, body {
      margin-bottom: 70px; /* 添加底部间距 */
 }
 
-footer {
-    background-color: black;
-    color: white;
-    font-family: autostylus;
-    padding-top: 20px;
-}
+
 
 
 @font-face {

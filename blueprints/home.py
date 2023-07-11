@@ -10,4 +10,4 @@ def index():
         'title':'小草Shopping-首页',
         'logo_title':'小草Shopping'
     }
-    return render_template('base.html',info=info)
+    return render_template('index.html',info=info)

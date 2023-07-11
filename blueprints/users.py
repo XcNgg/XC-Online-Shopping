@@ -6,13 +6,16 @@ import random
 import string
 from forms import RegistForm,LoginForm
 import time
-from models import XcOsEmailCaptcha,XcOSUser
+from models import XcOsEmailCaptcha,XcOSUser,XcOSSignIn
 from extension import mail
 # flask 底层的生成加密函数
 from werkzeug.security import generate_password_hash
 # flask 底层的解密函数
 from werkzeug.security import check_password_hash
 from decorators import login_required
+from decimal import Decimal
+from datetime import date,datetime
+from sqlalchemy import func
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
@@ -155,7 +158,7 @@ def email_captcha():
     return jsonify({
         "code":200,
         "message":"Send captcha Scuccess"
-    })
+    }),200
 
 
 @users.route('/regist',methods=['GET',"POST"])
@@ -197,6 +200,55 @@ def information():
     return render_template('personal-information.html')
 
 
+# 签到验证
+@users.route('/signin', methods=['POST'])
+@login_required
+def signin():
+    amount = random.choice([0.50, 1.00,1.50,2.00])
+    user_id = int(request.form.get('uid'))
+    print(user_id)
+    signin_model = XcOSSignIn.query.filter_by(user_id=user_id).first()
+    if not signin_model:
+        new_signin = XcOSSignIn(
+            user_id=user_id,
+            amount=amount,
+        )
+        db.session.add(new_signin)
+        db.session.commit()
+        user_model = XcOSUser.query.filter_by(id=user_id).first()
+        user_model.balance += Decimal(amount)  # 更新用户余额
+        db.session.commit()
+        return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'{amount}'}), 200
+    else:
+        #判断用户今天是否签到了，如果没签到，则更新数据库并成功签到，如果签到了则返今日已经签到了
+        today = date.today()
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # Check if the user has already signed in today
+        signin_model = XcOSSignIn.query.filter_by(user_id=user_id).filter(
+            func.DATE(XcOSSignIn.sign_in_time) == today).first()
+
+        if not signin_model:
+            new_signin = XcOSSignIn(
+                user_id=user_id,
+                sign_in_time=now,
+                amount=amount,
+            )
+            db.session.add(new_signin)
+            db.session.commit()
+
+            user_model = XcOSUser.query.filter_by(id=user_id).first()
+            user_model.balance += Decimal(amount)
+            db.session.commit()
+
+            return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'{amount}'}), 200
+        else:
+            return jsonify({'code': 400, 'message': "今日已经签到了！Already signed in today!"}), 200
+
+
+
+
+
+
 
 
 
@@ -205,5 +257,5 @@ def information():
 @login_required
 def logout():
     session.clear()
-    return render_template('login.html',  success='您已注销！')
+    return redirect('/')
 
