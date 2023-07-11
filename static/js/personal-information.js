@@ -4,7 +4,7 @@ $(document).ready(function() {
   const commitButton = $("#commitButton");
   const cancelButton = $("#cancelButton");
   const editUsernameInput = $("#editUsername");
-  const editEmailInput = $("#editEmail");
+  // const editEmailInput = $("#editEmail");
   const usernameSpan = $("#username");
   const emailSpan = $("#email");
 
@@ -12,13 +12,13 @@ $(document).ready(function() {
   editButton.click(function() {
     // 显示编辑输入框并隐藏文本
     editUsernameInput.show();
-    editEmailInput.show();
+    // editEmailInput.show();
     usernameSpan.hide();
-    emailSpan.hide();
+    // emailSpan.hide();
 
     // 将对应的值传递给编辑输入框
     editUsernameInput.val(usernameSpan.text());
-    editEmailInput.val(emailSpan.text());
+    // editEmailInput.val(emailSpan.text());
 
     // 切换按钮的显示状态
     editButton.hide();
@@ -32,7 +32,7 @@ $(document).ready(function() {
     usernameSpan.show();
     emailSpan.show();
     editUsernameInput.hide();
-    editEmailInput.hide();
+    // editEmailInput.hide();
 
     // 切换按钮的显示状态
     editButton.show();
@@ -44,17 +44,17 @@ $(document).ready(function() {
   commitButton.click(function() {
     // 获取编辑输入框的值
     const newUsername = editUsernameInput.val();
-    const newEmail = editEmailInput.val();
+    // const newEmail = editEmailInput.val();
 
     // 更新文本值
     usernameSpan.text(newUsername);
-    emailSpan.text(newEmail);
+    // emailSpan.text(newEmail);
 
     // 显示文本并隐藏编辑输入框
     usernameSpan.show();
     emailSpan.show();
     editUsernameInput.hide();
-    editEmailInput.hide();
+    // editEmailInput.hide();
 
     // 切换按钮的显示状态
     editButton.show();

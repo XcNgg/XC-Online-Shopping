@@ -14,7 +14,6 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/title.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
 
     {% block script %}{% endblock %}
@@ -49,8 +48,8 @@
         <ul class="navbar-nav ml-auto" style="margin-left: auto;">
             <li class="nav-item">
                 <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" style="width: 450px"
-                           placeholder="笔记本电脑" aria-label="Search">
+                    <input id="KeyWordSearch" class="form-control mr-sm-2" type="search" style="width: 450px;"
+                           placeholder="" aria-label="Search">
                     <button  class="btn btn-outline-primary my-2 my-sm-0 mr-sm-4" type="submit">
                         Search
                     </button>
@@ -146,8 +145,10 @@
     document.getElementById("current-year").textContent = "Copyright©" + currentYear;
 </script>
 
+
 {% if user %}
-<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel"
+{#如果用户登录了，才能解锁签到#}
+    <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

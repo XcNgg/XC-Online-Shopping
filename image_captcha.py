@@ -8,11 +8,11 @@ def generate_image():
     返回图片验证码信息
     :return:
     '''
-    width, height, font_size, font_num = 300, 100, 48, 5
+    width, height, font_size, font_num = 300, 100, 60, 5
     bg_color = (255, 255, 255)
     image = Image.new(mode='RGB', size=(width, height), color=bg_color)  # 画布
     draw = ImageDraw.Draw(image, mode='RGB')  # 绘图类
-    font = ImageFont.truetype("./static/fonts/宅在家自动笔.ttf", font_size)  # 字体
+    font = ImageFont.truetype("./static/fonts/AlimamaFangYuanTiVF-Thin.ttf", font_size)  # 字体
     verify = str()
     for i in range(font_num):
         x = random.randint(i * (width / font_num), (i + 1) * (width / font_num) - font_size)

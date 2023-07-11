@@ -3,7 +3,7 @@
 {% block title %}登录 - {{ super() }}{% endblock %}
 
 {% block script %}
-    <script type="text/javascript"  src={{ url_for('static',filename='js/login.js')}}></script>
+    <script type="text/javascript" src={{ url_for('static',filename='js/login.js') }}></script>
 {% endblock %}
 
 
@@ -17,33 +17,38 @@
             <div class="form-group" style="padding: 25px"></div>
 
             {% if success %}
-                <div class="alert alert-success custom-alert" role="alert" >
-                        {{ success }}
+                <div id='RegistSuccess' class="alert alert-success custom-alert" role="alert">
+                    {{ success }}
                 </div>
-            {% endif  %}
+            {% endif %}
 
-            <form action="{{ url_for("users.login") }} " method="POST">
+            <div id='success-alert' class="alert alert-success custom-alert" role="alert" style="display: none">
+                登录成功!1秒后跳转...
+            </div>
+
+            <form method="POST">
                 <div class="form-group">
                     <label for="exampleInputEmail1">邮 箱</label>
-                    <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="请输入您的邮箱" >
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                           aria-describedby="emailHelp" placeholder="请输入您的邮箱">
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputPassword1">密 码</label>
-                    <input name="password"  type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入您的密码">
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                           placeholder="请输入您的密码">
                 </div>
-
-
 
                 <div class="form-group">
-                <label for="exampleInputCaptcha">图像验证码</label>
-                <div class="input-group">
-                    <input name="captcha_code" type="text" class="form-control" id="InputImageCaptcha" placeholder="请输入图像验证码">
-                    <img id="captchaImage" src="data:image/png;base64,{{ captcha_image }}" alt="Captcha Image" style="cursor: pointer;" class="form-control">
+                    <label for="exampleInputCaptcha">图像验证码</label>
+                    <div class="input-group">
+                        <input name="captcha_code" type="text" class="form-control" id="InputImageCaptcha"
+                               placeholder="请输入图像验证码">
+                        <img id="captchaImage" src="data:image/png;base64,{{ captcha_image }}" alt="Captcha Image"
+                             style="cursor: pointer;" class="form-control">
+                    </div>
+                    <small class="form-text text-muted mt-2">点击图像可重置验证码</small>
                 </div>
-                <small class="form-text text-muted mt-2">点击图像可重置验证码</small>
-            </div>
-
 
 
                 <div class="form-group">
@@ -52,25 +57,10 @@
 
                 <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
 
-                {# 消息框#}
-{#               {% if success %}#}
-{#                <div class="alert alert-success custom-alert" role="alert" style=>登录成功！</div>#}
-{#               {% endif %} #}
+{#                <div class="form-group mb-5">#}
+{#                </div>#}
 
-{#                {% if errors %}#}
-{#                    <div class="alert alert-danger" role="alert" >#}
-{#                    {% for error in errors %}#}
-{#                        {{ error }}#}
-{#                        <br>#}
-{#                    {% endfor %}#}
-{#                    </div>#}
-{#                {% endif %}#}
-
-
-                <div class="form-group mb-5">
-                </div>
-
-                <button type="submit" class="btn btn-block btn-primary">立即登录</button>
+                <button id='LoginButton' type="button" class="btn btn-block btn-primary">立即登录</button>
             </form>
         </div>
 
@@ -78,4 +68,7 @@
             <!--美化占位-->
         </div>
     </div>
+
 {% endblock %}
+
+

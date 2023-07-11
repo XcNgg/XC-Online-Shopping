@@ -1,5 +1,5 @@
 body {
-    font-family: autostylus,Arial, sans-serif;
+    font-family:  AlimamaFangYuanTiVF,autostylus, Arial, sans-serif;
     background-color: #f2f2f2;
     margin: 0;
     padding: 0;
@@ -16,7 +16,9 @@ html, body {
     flex: 1;
      margin-bottom: 70px; /* 添加底部间距 */
 }
-
+input{
+    font-family:  AlimamaFangYuanTiVF,autostylus, Arial, sans-serif;
+}
 
 
 
@@ -27,6 +29,10 @@ html, body {
 @font-face {
   font-family: autostylus;  /* 这是您想要给字体的名称 */
   src: url('../fonts/宅在家自动笔.ttf');  /* 将 'path/to/font-file.ttf' 替换为实际字体文件的路径 */
+}
+@font-face {
+  font-family: AlimamaFangYuanTiVF;  /* 这是您想要给字体的名称 */
+  src: url('../fonts/AlimamaFangYuanTiVF-Thin.ttf');  /* 将 'path/to/font-file.ttf' 替换为实际字体文件的路径 */
 }
 
 

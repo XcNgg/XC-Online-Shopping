@@ -56,10 +56,10 @@ class LoginForm(wtforms.Form):
     password = wtforms.StringField(validators=[Length(min=8, max=20,message='密码格式错误！')])
 
     # 判断该邮箱是否存在
-    def validate_email(self, filed):
-        email = filed.data
-        user_model = XcOSUser.query.filter_by(email=email).first()
-        if not user_model:
-            raise wtforms.ValidationError('邮箱不存在!')
+    # def validate_email(self, filed):
+    #     email = filed.data
+    #     user_model = XcOSUser.query.filter_by(email=email).first()
+    #     if not user_model:
+    #         raise wtforms.ValidationError('邮箱不存在!')
 
 

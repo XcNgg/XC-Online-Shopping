@@ -29,16 +29,23 @@ users = Blueprint('users', __name__, url_prefix='/users')
 
 # todo login的界面 需要重构 js需要建立 参考 / EmailCaptcha
 # 登录界面
-@users.route('/login',methods=['GET',"POST"])
+@users.route('/login',methods=['GET'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
-    elif request.method == 'POST':
-        print(session['captcha_code'].upper())
-        print(request.form.get('captcha_code').upper())
+
+@users.route('/CheckLogin',methods=["POST"])
+def check_login():
+    if request.method == 'POST':
+        # print(session['captcha_code'].upper())
+        # print(request.form.get('captcha_code').upper())
         if session['captcha_code'].upper() != request.form.get('captcha_code').upper():
-            return  jsonify({'code':400,'message':'验证码错误'})
-                # render_template('login.html', errors=['验证码错误！'])
+            return jsonify({'code': 400, 'message': '验证码错误'})
+
+        user_model = XcOSUser.query.filter_by(email=request.form.get('email')).first()
+        if not user_model:
+            return jsonify({'code': 400, 'message': '邮箱不存在!'})
+
         else:
             form = LoginForm(request.form)
             if form.validate():
@@ -48,22 +55,20 @@ def login():
                 password = form.password.data
                 user = XcOSUser.query.filter_by(email=email).first()
                 # 使用check_password_hash函数来验证密码 函数(hashpassowrd,password)
-                if user and check_password_hash(user.password,password):
-                    session['user_id']=user.id
+                if user and check_password_hash(user.password, password):
+                    session['user_id'] = user.id
                     return jsonify({'code': 200, 'message': '登录成功!'})
                     # return redirect('/')
                 else:
                     return jsonify({'code': 400, 'message': '邮箱密码不匹配！'})
-                    return render_template('login.html', errors=['邮箱密码不匹配！'])
-
+                    # return render_template('login.html', errors=['邮箱密码不匹配！'])
             else:
-                errors_list = []
+                errors = 'ERROR: '
                 for field_name, field_errors in form.errors.items():
                     for error in field_errors:
                         print(f"{field_name}: {error}")
-                        errors_list.append(f"{field_name}: {error}")
-                return render_template('login.html', errors=errors_list)
-
+                        errors += f"{field_name}: {error};"
+                return jsonify({'code': 400, 'message': errors})
 
 # 忘记密码
 @users.route('/ForgotPassword',methods=['GET',"POST"])
@@ -77,10 +82,10 @@ def get_image_captcha():
     captcha_code,captcha_base64 = generate_image()  # Replace with your captcha image generation logic
     print(captcha_code)
     session['captcha_code'] = captcha_code
-    response = make_response(captcha_base64)
-    response.headers['Content-Type'] = 'text/plain'
+    # response = make_response(captcha_base64)
+    # response.headers['Content-Type'] = 'text/plain'
 
-    return response
+    return captcha_base64
 
 
 """
@@ -182,7 +187,7 @@ def email_captcha():
             except Exception as e:
                 print(e)
                 return jsonify({
-                    "code":500,
+                    "code":400,
                     "message":f"Service Error ! {e}"
                 })
 
@@ -217,7 +222,7 @@ def email_captcha():
         except Exception as e:
             print(e)
             return jsonify({
-                "code": 500,
+                "code": 400,
                 "message": f"Service Error ! {e}"
             })
             # 创建模型 赋值
