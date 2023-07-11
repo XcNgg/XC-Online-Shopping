@@ -19,7 +19,66 @@ from sqlalchemy import func
 from image_captcha import generate_image
 
 
+
 users = Blueprint('users', __name__, url_prefix='/users')
+
+"""
+----------------------------------------------------------------------------------------
+全局操作
+----------------------------------------------------------------------------------------
+"""
+# 签到验证
+@users.route('/SignIn', methods=['POST'])
+@login_required
+def signin():
+    amount = random.choice([0.50, 1.00,1.50,2.00])
+    user_id = int(request.form.get('uid'))
+    print(user_id)
+    signin_model = XcOSSignIn.query.filter_by(user_id=user_id).first()
+    if not signin_model:
+        new_signin = XcOSSignIn(
+            user_id=user_id,
+            amount=amount,
+        )
+        db.session.add(new_signin)
+        db.session.commit()
+        user_model = XcOSUser.query.filter_by(id=user_id).first()
+        user_model.balance += Decimal(amount)  # 更新用户余额
+        db.session.commit()
+        return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'今日随机签到金额：￥{amount}'}), 200
+    else:
+        #判断用户今天是否签到了，如果没签到，则更新数据库并成功签到，如果签到了则返今日已经签到了
+        today = date.today()
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # 判断用户今天是否已经完成签到
+        signin_model = XcOSSignIn.query.filter_by(user_id=user_id).filter(
+            func.DATE(XcOSSignIn.sign_in_time) == today).first()
+
+        if not signin_model:
+            new_signin = XcOSSignIn(
+                user_id=user_id,
+                sign_in_time=now,
+                amount=amount,
+            )
+            db.session.add(new_signin)
+            db.session.commit()
+
+            user_model = XcOSUser.query.filter_by(id=user_id).first()
+            user_model.balance += Decimal(amount)
+            db.session.commit()
+
+            return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'今日随机签到金额：￥{amount}'}), 200
+        else:
+            return jsonify({'code': 400, 'message': "今日已经签到了！Already signed in today!"}), 200
+
+
+# 注销清除session
+@users.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    return redirect('/')
 
 """
 ----------------------------------------------------------------------------------------
@@ -70,10 +129,6 @@ def check_login():
                         errors += f"{field_name}: {error};"
                 return jsonify({'code': 400, 'message': errors})
 
-# 忘记密码
-@users.route('/ForgotPassword',methods=['GET',"POST"])
-def forgot_password():
-    return ''
 
 # 图像验证码
 @users.route('/ImageCaptcha', methods=['GET'])
@@ -84,9 +139,53 @@ def get_image_captcha():
     session['captcha_code'] = captcha_code
     # response = make_response(captcha_base64)
     # response.headers['Content-Type'] = 'text/plain'
-
     return captcha_base64
 
+
+"""
+----------------------------------------------------------------------------------------
+忘记密码界面管理
+----------------------------------------------------------------------------------------
+"""
+# 忘记密码界面
+@users.route('/ForgotPassword',methods=['GET'])
+def forgot_password():
+    return render_template('forgot-password.html')
+
+
+# 忘记密码验证接口
+@users.route('/ResetPassword', methods=["POST"])
+def reset_password():
+    user_model = XcOSUser.query.filter_by(email=request.form.get('email')).first()
+    if not user_model:
+        return jsonify({'code': 400, 'message': '邮箱不存在!'})
+    else:
+        try:
+            # 随机生成 10位 包含大小写英文、特殊符号、数字的字符串
+            password_length = 10
+            characters = string.ascii_letters + string.digits + string.punctuation
+            random_password = ''.join(random.choice(characters) for _ in range(password_length))
+            print(random_password)
+            message_dict = {
+                "title": "小草Shopping-深耕电商服务20年 重置密码",  # 邮件标题
+                "username": user_model.username,  # 接收者
+                "service": "重置密码",  # 发送的服务
+                "code": random_password,  # 验证码
+            }
+            message = Message(
+                recipients=[ (request.form.get('email')),], # 收件人
+                subject='【小草Shopping-深耕电商服务20年】 重置密码',  # 邮件主题
+                html=render_template('email-base.html', **message_dict),  # 邮件内容
+            )
+            mail.send(message)
+            user_model.password =generate_password_hash(random_password),
+            db.session.commit()
+            print(user_model.password)
+
+            return jsonify({'code': 200, 'message': '重置密码发送成功！'})
+        except Exception as e:
+            print(e)
+            return jsonify({'code': 500, 'message': '系统错误！'}),500
 
 """
 ----------------------------------------------------------------------------------------
@@ -130,7 +229,6 @@ def regist():
 # 发送邮箱验证码
 @users.route('/EmailCaptcha',methods=['POST'])
 def email_captcha():
-
     # 读取POST请求中的表单值
     form_email = request.form.get('email')
     form_username = request.form.get('username')
@@ -234,68 +332,6 @@ def email_captcha():
 
 
 
-
-
-
-
-"""
-----------------------------------------------------------------------------------------
-全局操作
-----------------------------------------------------------------------------------------
-"""
-
-# 签到验证
-@users.route('/SignIn', methods=['POST'])
-@login_required
-def signin():
-    amount = random.choice([0.50, 1.00,1.50,2.00])
-    user_id = int(request.form.get('uid'))
-    print(user_id)
-    signin_model = XcOSSignIn.query.filter_by(user_id=user_id).first()
-    if not signin_model:
-        new_signin = XcOSSignIn(
-            user_id=user_id,
-            amount=amount,
-        )
-        db.session.add(new_signin)
-        db.session.commit()
-        user_model = XcOSUser.query.filter_by(id=user_id).first()
-        user_model.balance += Decimal(amount)  # 更新用户余额
-        db.session.commit()
-        return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'今日随机签到金额：￥{amount}'}), 200
-    else:
-        #判断用户今天是否签到了，如果没签到，则更新数据库并成功签到，如果签到了则返今日已经签到了
-        today = date.today()
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-        # 判断用户今天是否已经完成签到
-        signin_model = XcOSSignIn.query.filter_by(user_id=user_id).filter(
-            func.DATE(XcOSSignIn.sign_in_time) == today).first()
-
-        if not signin_model:
-            new_signin = XcOSSignIn(
-                user_id=user_id,
-                sign_in_time=now,
-                amount=amount,
-            )
-            db.session.add(new_signin)
-            db.session.commit()
-
-            user_model = XcOSUser.query.filter_by(id=user_id).first()
-            user_model.balance += Decimal(amount)
-            db.session.commit()
-
-            return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'今日随机签到金额：￥{amount}'}), 200
-        else:
-            return jsonify({'code': 400, 'message': "今日已经签到了！Already signed in today!"}), 200
-
-
-# 注销清除session
-@users.route('/logout')
-@login_required
-def logout():
-    session.clear()
-    return redirect('/')
 
 
 """
