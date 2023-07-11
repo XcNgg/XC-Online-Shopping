@@ -1,5 +1,5 @@
 import flask
-from flask import Blueprint,request,render_template,redirect,g,jsonify,url_for,session
+from flask import Blueprint,request,render_template,redirect,g,jsonify,url_for,session,make_response
 from flask_mail import Message
 from extension import db
 import random
@@ -16,46 +16,109 @@ from decorators import login_required
 from decimal import Decimal
 from datetime import date,datetime
 from sqlalchemy import func
+from image_captcha import generate_image
+
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
+"""
+----------------------------------------------------------------------------------------
+登录管理
+----------------------------------------------------------------------------------------
+"""
 
-
-# 登录
+# todo login的界面 需要重构 js需要建立 参考 / EmailCaptcha
+# 登录界面
 @users.route('/login',methods=['GET',"POST"])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
     elif request.method == 'POST':
-        form = LoginForm(request.form)
-        if form.validate():
-            # 获取email
-            email = form.email.data
-            # 获取密码
-            password = form.password.data
-            user = XcOSUser.query.filter_by(email=email).first()
-            # 使用check_password_hash函数来验证密码 函数(hashpassowrd,password)
-            if user and check_password_hash(user.password,password):
-                print(user)
-                print(user.id)
-                print(user.username)
-                session['user_id']=user.id
-                return redirect('/')
+        print(session['captcha_code'].upper())
+        print(request.form.get('captcha_code').upper())
+        if session['captcha_code'].upper() != request.form.get('captcha_code').upper():
+            return render_template('login.html', errors=['验证码错误！'])
+        else:
+            form = LoginForm(request.form)
+            if form.validate():
+                # 获取email
+                email = form.email.data
+                # 获取密码
+                password = form.password.data
+                user = XcOSUser.query.filter_by(email=email).first()
+                # 使用check_password_hash函数来验证密码 函数(hashpassowrd,password)
+                if user and check_password_hash(user.password,password):
+                    session['user_id']=user.id
+                    return redirect('/')
+                else:
+                    return render_template('login.html',errors=['邮箱或密码不匹配!'])
             else:
-                return render_template('login.html',errors=['邮箱或密码不匹配!'])
+                errors_list = []
+                for field_name, field_errors in form.errors.items():
+                    for error in field_errors:
+                        print(f"{field_name}: {error}")
+                        errors_list.append(f"{field_name}: {error}")
+                return render_template('login.html', errors=errors_list)
+
+
+# 忘记密码
+@users.route('/ForgotPassword',methods=['GET',"POST"])
+def forgot_password():
+    return ''
+
+# 图像验证码
+@users.route('/ImageCaptcha', methods=['GET'])
+def get_image_captcha():
+    # Generate or fetch the captcha image and convert it to base64
+    captcha_code,captcha_base64 = generate_image()  # Replace with your captcha image generation logic
+    print(captcha_code)
+    session['captcha_code'] = captcha_code
+    response = make_response(captcha_base64)
+    response.headers['Content-Type'] = 'text/plain'
+
+    return response
+
+
+"""
+----------------------------------------------------------------------------------------
+注册管理
+----------------------------------------------------------------------------------------
+"""
+
+#注册接口
+@users.route('/regist',methods=['GET',"POST"])
+def regist():
+    if request.method == 'GET':
+        return render_template('regist.html')
+    # 如果是POST请求
+    else:
+        form = RegistForm(request.form)
+        # 表单验证
+        if form.validate():
+            username = form.username.data
+            email = form.email.data
+            password = form.password.data
+
+            new_user = XcOSUser(
+                username=username,
+                # 密码哈希存储
+                password=generate_password_hash(password),
+                email=email,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            return render_template('login.html',  success='注册成功！')
+        # 表单验证
         else:
             errors_list = []
             for field_name, field_errors in form.errors.items():
                 for error in field_errors:
                     print(f"{field_name}: {error}")
                     errors_list.append(f"{field_name}: {error}")
-            return render_template('login.html', errors=errors_list)
+            return render_template('regist.html', errors=errors_list)
 
 
-
-
-
-# 发送验证码
+# 发送邮箱验证码
 @users.route('/EmailCaptcha',methods=['POST'])
 def email_captcha():
 
@@ -161,47 +224,19 @@ def email_captcha():
     }),200
 
 
-@users.route('/regist',methods=['GET',"POST"])
-def regist():
-    if request.method == 'GET':
-        return render_template('regist.html')
-    # 如果是POST请求
-    else:
-        form = RegistForm(request.form)
-        # 表单验证
-        if form.validate():
-            username = form.username.data
-            email = form.email.data
-            password = form.password.data
-
-            new_user = XcOSUser(
-                username=username,
-                # 密码哈希存储
-                password=generate_password_hash(password),
-                email=email,
-            )
-            db.session.add(new_user)
-            db.session.commit()
-            return render_template('login.html',  success='注册成功！')
-        # 表单验证
-        else:
-            errors_list = []
-            for field_name, field_errors in form.errors.items():
-                for error in field_errors:
-                    print(f"{field_name}: {error}")
-                    errors_list.append(f"{field_name}: {error}")
-            return render_template('regist.html', errors=errors_list)
 
 
 
-@users.route('/information')
-@login_required
-def information():
-    return render_template('personal-information.html')
 
+
+"""
+----------------------------------------------------------------------------------------
+全局操作
+----------------------------------------------------------------------------------------
+"""
 
 # 签到验证
-@users.route('/signin', methods=['POST'])
+@users.route('/SignIn', methods=['POST'])
 @login_required
 def signin():
     amount = random.choice([0.50, 1.00,1.50,2.00])
@@ -218,12 +253,13 @@ def signin():
         user_model = XcOSUser.query.filter_by(id=user_id).first()
         user_model.balance += Decimal(amount)  # 更新用户余额
         db.session.commit()
-        return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'{amount}'}), 200
+        return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'今日随机签到金额：￥{amount}'}), 200
     else:
         #判断用户今天是否签到了，如果没签到，则更新数据库并成功签到，如果签到了则返今日已经签到了
         today = date.today()
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # Check if the user has already signed in today
+
+        # 判断用户今天是否已经完成签到
         signin_model = XcOSSignIn.query.filter_by(user_id=user_id).filter(
             func.DATE(XcOSSignIn.sign_in_time) == today).first()
 
@@ -240,16 +276,9 @@ def signin():
             user_model.balance += Decimal(amount)
             db.session.commit()
 
-            return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'{amount}'}), 200
+            return jsonify({'code': 200, 'message': "签到成功！Sign in Success!",'amount':f'今日随机签到金额：￥{amount}'}), 200
         else:
             return jsonify({'code': 400, 'message': "今日已经签到了！Already signed in today!"}), 200
-
-
-
-
-
-
-
 
 
 # 注销清除session
@@ -259,3 +288,14 @@ def logout():
     session.clear()
     return redirect('/')
 
+
+"""
+----------------------------------------------------------------------------------------
+个人信息界面
+----------------------------------------------------------------------------------------
+"""
+# 个人信息界面
+@users.route('/information')
+@login_required
+def information():
+    return render_template('personal-information.html')

@@ -140,6 +140,12 @@
     </div>
 </footer>
 
+<script>
+        // 版权固定最新年份
+    var currentYear = new Date().getFullYear();
+    document.getElementById("current-year").textContent = "Copyright©" + currentYear;
+</script>
+
 {% if user %}
 <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel"
      aria-hidden="true">
@@ -159,15 +165,11 @@
 </div>
 
 <script>
-    // 版权固定最新年份
-    var currentYear = new Date().getFullYear();
-    document.getElementById("current-year").textContent = "Copyright©" + currentYear;
-
     // 签到
     function signin() {
     const uid = '{{ user.id }}'; // 替换为实际的用户ID
     $.ajax({
-    url: '/users/signin',
+    url: '{{ url_for('users.signin') }}',
     type: 'POST',
     data: { uid: uid },
     success: function(response) {
@@ -175,7 +177,7 @@
         console.log(response);
         if (response.code === 200) {
             // 显示签到成功结果
-            showSigninResult('签到成功', "今日随机签到金额:￥"+response.amount);
+            showSigninResult('签到成功', response.amount);
         } else {
             // 显示签到失败结果
             showSigninResult('签到失败', response.message);
@@ -189,8 +191,6 @@
     }
     });
 }
-
-
 
 </script>
 {% endif %}

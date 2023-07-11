@@ -11,13 +11,11 @@ function checkEmail() {
 }
 
 
+// 登录表单验证
 $(document).ready(function() {
   $('form').submit(function(event) {
     var password = $('input[name="password"]').val();
-
-
     var errors = [];
-
     if (!checkEmail()) {
       errors.push('邮箱格式不正确');
     }
@@ -34,4 +32,27 @@ $(document).ready(function() {
         $("#error_alert").hide();
     }
   });
+});
+
+
+// 重置验证码
+function GetCaptchaImage() {
+    $.ajax({
+        url: '/users/ImageCaptcha',
+        type: 'GET',
+        success: function(response) {
+            $('#captchaImage').attr('src', 'data:image/png;base64,' + response);
+        },
+        error: function(error) {
+            console.log('Error:', error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    // Execute GetCaptchaImage() on initial website request
+    GetCaptchaImage();
+    $('#captchaImage').click(function() {
+        GetCaptchaImage();
+    });
 });
