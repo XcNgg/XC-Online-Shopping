@@ -11,6 +11,9 @@ function checkEmail() {
 }
 
 
+
+
+
 // 登录表单验证
 $(document).ready(function() {
   $('form').submit(function(event) {

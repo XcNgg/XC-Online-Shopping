@@ -37,7 +37,8 @@ def login():
         print(session['captcha_code'].upper())
         print(request.form.get('captcha_code').upper())
         if session['captcha_code'].upper() != request.form.get('captcha_code').upper():
-            return render_template('login.html', errors=['验证码错误！'])
+            return  jsonify({'code':400,'message':'验证码错误'})
+                # render_template('login.html', errors=['验证码错误！'])
         else:
             form = LoginForm(request.form)
             if form.validate():
@@ -49,9 +50,12 @@ def login():
                 # 使用check_password_hash函数来验证密码 函数(hashpassowrd,password)
                 if user and check_password_hash(user.password,password):
                     session['user_id']=user.id
-                    return redirect('/')
+                    return jsonify({'code': 200, 'message': '登录成功!'})
+                    # return redirect('/')
                 else:
-                    return render_template('login.html',errors=['邮箱或密码不匹配!'])
+                    return jsonify({'code': 400, 'message': '邮箱密码不匹配！'})
+                    return render_template('login.html', errors=['邮箱密码不匹配！'])
+
             else:
                 errors_list = []
                 for field_name, field_errors in form.errors.items():
@@ -107,7 +111,7 @@ def regist():
             )
             db.session.add(new_user)
             db.session.commit()
-            return render_template('login.html',  success='注册成功！')
+            return render_template('login.html', success='注册成功！')
         # 表单验证
         else:
             errors_list = []
