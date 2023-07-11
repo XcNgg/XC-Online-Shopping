@@ -58,10 +58,10 @@ MAIL_USE_SSL = True
 # 如果后续部署,需要更改为False
 MAIL_DEBUG = True
 #邮箱账号 STMP密钥
-MAIL_USERNAME = "1355523280@qq.com"
-MAIL_PASSWORD = "pusrsojkqugsjiej"
+MAIL_USERNAME = "xcuptop@qq.com"
+MAIL_PASSWORD = "necizvuaiohddjgg"
 #默认发件人
-MAIL_DEFAULT_SENDER ="1355523280@qq.com"
+MAIL_DEFAULT_SENDER ="xcuptop@qq.com"
 #
 # MAIL_MAX_EMAILS =
 #
