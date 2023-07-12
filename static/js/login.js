@@ -13,7 +13,6 @@ function checkEmail() {
 
 // 登录验证接口
 function checkLogin() {
-
     var formData = {
         email: $('input[name=email]').val(),
         password: $('input[name=password]').val(),
@@ -29,7 +28,7 @@ function checkLogin() {
             if (response.code === 200) {
                 // 登录成功
                 $("#error_alert").hide();
-                $('#success-alert').show(); // 显示成功提示框
+                $('#success-alert').text('登录成功!即将跳转到首页...').show(); // 显示成功提示框
                 setTimeout(function () {
                     window.location.href = '/'; // 登录成功后跳转到首页
                 }, 500); // 0.5秒后跳转
@@ -96,7 +95,6 @@ $(document).ready(function () {
         // 监听表单提交事件
         if ($('#RegistSuccess').length) {
           $('#RegistSuccess').hide();
-
         }
         checkLogin();
         // 获取表单数据

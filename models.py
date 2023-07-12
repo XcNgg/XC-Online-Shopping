@@ -27,7 +27,8 @@ class XcOSUser(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
-
+    # def __repr__(self):
+    #     return f"<XcOSUser  {self.username } {self.email} {self.balance}>"
 
 
 class XcOSAddress(db.Model):
@@ -51,7 +52,8 @@ class XcOSAddress(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
-
+    # def __repr__(self):
+    #     return f"<XcOSAddress {self.id } {self.user_id } {self.state } {self.city} {self.detailed_address} {self.postal_code}>"
 
 class XcOsEmailCaptcha(db.Model):
     # emial验证码存储模型
@@ -65,7 +67,8 @@ class XcOsEmailCaptcha(db.Model):
     # 验证码发送时间
     valid_time = db.Column(db.Integer,nullable=False)
     # # 验证码有效时间
-
+    # def __repr__(self):
+    #     return f"<XcOSAddress {self.email} {self.captcha} {self.send_time} {self.valid_time}>"
 
 class XcOSProduct(db.Model):
     # 产品表 (Product table)
@@ -88,6 +91,8 @@ class XcOSProduct(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
+    # def __repr__(self):
+    #     return f"<XcOSProduct {self.name} {self.description} {self.product_type} {self.image} {self.product_type} >"
 
 class XcOSCart(db.Model):
     # 购物车表 (Cart table)
@@ -106,7 +111,8 @@ class XcOSCart(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
-
+    # def __repr__(self):
+    #     return f"<XcOSCart {self.id} {self.user_id} {self.product_id} {self.quantity} >"
 
 class XcOsOrderDetail(db.Model):
     # 订单详情表 (Order detail table)
@@ -131,7 +137,8 @@ class XcOsOrderDetail(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
-
+    # def __repr__(self):
+    #     return f"<XcOSOrderDetail {self.id} {self.product_id} {self.quantity} {self.total_amount} {self.address_id} {self.status} >"
 
 class XcOSAdmin(db.Model):
     # 管理员表 (Admin table)
@@ -149,7 +156,8 @@ class XcOSAdmin(db.Model):
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
     # 更新时间 (Update timestamp)
-
+    # def __repr__(self):
+    #     return f"<XcOSAdmin {self.username}>"
 
 
 class XcOSSignIn(db.Model):
@@ -164,7 +172,8 @@ class XcOSSignIn(db.Model):
     # 签到时间 (Sign-in time)
     amount = db.Column(db.DECIMAL(5, 2), nullable=False)
     # 签到金额 (Sign-in amount)
-
+    # def __repr__(self):
+    #    return f"<XcOSSignIn {self.id}>"
 
 
 # class XcOSOrder(db.Model):

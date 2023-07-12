@@ -78,7 +78,7 @@ def signin():
 @login_required
 def logout():
     session.clear()
-    return redirect('/')
+    return jsonify({'code':200,'message':'注销成功！'})
 
 """
 ----------------------------------------------------------------------------------------
@@ -178,10 +178,9 @@ def reset_password():
                 html=render_template('email-base.html', **message_dict),  # 邮件内容
             )
             mail.send(message)
-            user_model.password =generate_password_hash(random_password),
+            user_model.password =generate_password_hash(random_password)
             db.session.commit()
             print(user_model.password)
-
             return jsonify({'code': 200, 'message': '重置密码发送成功！'})
         except Exception as e:
             print(e)
@@ -331,7 +330,30 @@ def email_captcha():
     }),200
 
 
+"""
+----------------------------------------------------------------------------------------
+修改密码界面
+----------------------------------------------------------------------------------------
+"""
+@users.route('/EditPassword',methods=['GET'])
+def edit_password():
+    return render_template('edit-password.html')
 
+
+# 忘记密码验证接口
+@users.route('/CheckEditPassword', methods=["POST"])
+def check_edit_password():
+    user_id = session['user_id']
+    old_password = request.form.get('oldPassword')
+    user_model = XcOSUser.query.filter_by(id=user_id).first()
+    print(user_model.password)
+    if check_password_hash(user_model.password,old_password):
+        user_model.password=generate_password_hash(password=request.form.get('newPassword'))
+        db.session.commit()
+        session.clear()
+        return jsonify({'code':200,'message':'密码修改成功！请重新登录！'})
+    else:
+        return jsonify({'code':400,"message":"原密码错误！"})
 
 
 """
