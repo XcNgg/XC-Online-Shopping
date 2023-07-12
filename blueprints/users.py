@@ -17,7 +17,7 @@ from decimal import Decimal
 from datetime import date,datetime
 from sqlalchemy import func
 from image_captcha import generate_image
-
+import os
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
@@ -91,7 +91,7 @@ def logout():
 @users.route('/login',methods=['GET'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('users/login.html')
 
 @users.route('/CheckLogin',methods=["POST"])
 def check_login():
@@ -117,10 +117,8 @@ def check_login():
                 if user and check_password_hash(user.password, password):
                     session['user_id'] = user.id
                     return jsonify({'code': 200, 'message': '登录成功!'})
-                    # return redirect('/')
                 else:
                     return jsonify({'code': 400, 'message': '邮箱密码不匹配！'})
-                    # return render_template('login.html', errors=['邮箱密码不匹配！'])
             else:
                 errors = 'ERROR: '
                 for field_name, field_errors in form.errors.items():
@@ -133,9 +131,8 @@ def check_login():
 # 图像验证码
 @users.route('/ImageCaptcha', methods=['GET'])
 def get_image_captcha():
-    # Generate or fetch the captcha image and convert it to base64
-    captcha_code,captcha_base64 = generate_image()  # Replace with your captcha image generation logic
-    print(captcha_code)
+    # 生成或获取验证码图像并将其转换为base64
+    captcha_code,captcha_base64 = generate_image()
     session['captcha_code'] = captcha_code
     # response = make_response(captcha_base64)
     # response.headers['Content-Type'] = 'text/plain'
@@ -150,7 +147,7 @@ def get_image_captcha():
 # 忘记密码界面
 @users.route('/ForgotPassword',methods=['GET'])
 def forgot_password():
-    return render_template('forgot-password.html')
+    return render_template('users/forgotPassword.html')
 
 
 # 忘记密码验证接口
@@ -165,7 +162,7 @@ def reset_password():
             password_length = 10
             characters = string.ascii_letters + string.digits + string.punctuation
             random_password = ''.join(random.choice(characters) for _ in range(password_length))
-            print(random_password)
+            # print(random_password)
             message_dict = {
                 "title": "小草Shopping-深耕电商服务20年 重置密码",  # 邮件标题
                 "username": user_model.username,  # 接收者
@@ -175,12 +172,12 @@ def reset_password():
             message = Message(
                 recipients=[ (request.form.get('email')),], # 收件人
                 subject='【小草Shopping-深耕电商服务20年】 重置密码',  # 邮件主题
-                html=render_template('email-base.html', **message_dict),  # 邮件内容
+                html=render_template('emailBase.html', **message_dict),  # 邮件内容
             )
             mail.send(message)
             user_model.password =generate_password_hash(random_password)
             db.session.commit()
-            print(user_model.password)
+            # print(user_model.password)
             return jsonify({'code': 200, 'message': '重置密码发送成功！'})
         except Exception as e:
             print(e)
@@ -196,7 +193,7 @@ def reset_password():
 @users.route('/regist',methods=['GET',"POST"])
 def regist():
     if request.method == 'GET':
-        return render_template('regist.html')
+        return render_template('users/regist.html')
     # 如果是POST请求
     else:
         form = RegistForm(request.form)
@@ -214,15 +211,15 @@ def regist():
             )
             db.session.add(new_user)
             db.session.commit()
-            return render_template('login.html', success='注册成功！')
+            return render_template('users/login.html', success='注册成功！')
         # 表单验证
         else:
             errors_list = []
             for field_name, field_errors in form.errors.items():
                 for error in field_errors:
-                    print(f"{field_name}: {error}")
+                    # print(f"{field_name}: {error}")
                     errors_list.append(f"{field_name}: {error}")
-            return render_template('regist.html', errors=errors_list)
+            return render_template('users/regist.html', errors=errors_list)
 
 
 # 发送邮箱验证码
@@ -252,7 +249,7 @@ def email_captcha():
         # 判断和上次发送的时间是否超过了60秒
         gap = 60
         if timestamp_gap <= gap:
-            print(f'{form_timestamp}-{email_captcha_model.send_time} = {timestamp_gap} ')
+            # print(f'{form_timestamp}-{email_captcha_model.send_time} = {timestamp_gap} ')
             return jsonify({
                 "code": 400,
                 "message": f"请等待{gap - timestamp_gap}秒再发送！Please wait {gap - timestamp_gap} seconds before sending!"
@@ -268,7 +265,7 @@ def email_captcha():
                 message= Message(
                     recipients=[form_email],# 收件人
                     subject='【小草Shopping-深耕电商服务20年】 验证码',# 邮件主题
-                    html=render_template('email-base.html', **message_dict),  # 邮件内容
+                    html=render_template('emailBase.html', **message_dict),  # 邮件内容
                 )
                 # 发送邮件
                 mail.send(message)
@@ -299,7 +296,7 @@ def email_captcha():
             message = Message(
                 recipients=[form_email],  # 收件人
                 subject='【小草Shopping-深耕电商服务20年】 验证码',  # 邮件主题
-                html=render_template('email-base.html', **message_dict),  # 邮件内容
+                html=render_template('emailBase.html', **message_dict),  # 邮件内容
             )
             # 发送邮件
             mail.send(message)
@@ -337,7 +334,7 @@ def email_captcha():
 """
 @users.route('/EditPassword',methods=['GET'])
 def edit_password():
-    return render_template('edit-password.html')
+    return render_template('users/editPassword.html')
 
 
 # 忘记密码验证接口
@@ -346,7 +343,7 @@ def check_edit_password():
     user_id = session['user_id']
     old_password = request.form.get('oldPassword')
     user_model = XcOSUser.query.filter_by(id=user_id).first()
-    print(user_model.password)
+    # print(user_model.password)
     if check_password_hash(user_model.password,old_password):
         user_model.password=generate_password_hash(password=request.form.get('newPassword'))
         db.session.commit()
@@ -365,4 +362,4 @@ def check_edit_password():
 @users.route('/information')
 @login_required
 def information():
-    return render_template('personal-information.html')
+    return render_template('users/personalInformation.html')
