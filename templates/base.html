@@ -6,7 +6,7 @@
 
     <title>{% block title %}小草Shopping{% endblock %}</title>
 
-    <link rel="icon" href="{{ url_for('static', filename='img/tb.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
@@ -62,20 +62,38 @@
                     <li class="nav-item pr-3">
                         <div class="btn-group">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown"
+                                <button class="btn btn-secondary dropdown-toggle"  id="userDropdown"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                         style="font-size: 20px; border: none; box-shadow: none;">
+                                     <img src="{{ url_for('static', filename='img/users.png') }}" alt="" width="20" height="20">
                                     {{ user.username }}
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right w-auto" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" onclick="signin()">签 到</a>
 
-                                    <a class="dropdown-item" href="{{ url_for('users.information') }}">个人信息</a>
-                                    <a class="dropdown-item" href="#">我的订单</a>
-                                    <a class="dropdown-item" href="{{ url_for('users.edit_password') }}">修改密码</a>
+                                    <a class="dropdown-item" onclick="signin()">
+                                     <img src="{{ url_for('static', filename='img/signIn.png') }}" alt="" width="15" height="15">
+                                        签 到
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ url_for('users.information') }}">
+                                     <img src="{{ url_for('static', filename='img/userInfo.png') }}" alt="" width="15" height="15">
+                                        个人信息
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                     <img src="{{ url_for('static', filename='img/orders.png') }}" alt="" width="15" height="15">
+                                        我的订单
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ url_for('users.edit_password') }}">
+                                        <img src="{{ url_for('static', filename='img/editPasswd.png') }}" alt="" width="15" height="15">
+                                        修改密码
+                                    </a>
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" onclick="logout()">注 销</a>
+                                    <a class="dropdown-item" onclick="logout()">
+                                        <img src="{{ url_for('static', filename='img/logout.png') }}" alt="" width="15" height="15">
+                                        注 销
+                                    </a>
 
                                 </div>
                             </div>
@@ -85,11 +103,17 @@
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.login') }}"
-                       style="font-size: 20px">登录</a>
+                       style="font-size: 20px">
+                        <img src="{{ url_for('static', filename='img/login.png') }}" alt="" width="15" height="15">
+                        登录
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.regist') }}"
-                       style="font-size: 20px">注册</a>
+                       style="font-size: 20px">
+                        <img src="{{ url_for('static', filename='img/regist.png') }}" alt="" width="20 " height="20">
+                        注册
+                    </a>
                 </li>
             {% endif %}
         </ul>

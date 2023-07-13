@@ -140,9 +140,9 @@ $(document).ready(function () {
             errors.push('两次密码不一致!');
         }
         if (!captcha) {
-            errors.push('验证码未输入！请检查！');
+            errors.push('验证码为空');
         } else if (captcha.length !== 6) {
-            errors.push('验证码输入有误！请检查！');
+            errors.push('验证码输入有误');
         }
 
 

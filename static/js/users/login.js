@@ -63,8 +63,9 @@ function GetCaptchaImage() {
 
 $(document).ready(function () {
     // 登录表单验证
-    $('form').submit(function (event) {
+    $('#LoginButton').click(function (event) {
         var password = $('input[name="password"]').val();
+        var captcha_code = $('input[name=captcha_code]').val();
         var errors = [];
         if (!checkEmail()) {
             errors.push('邮箱格式不正确');
@@ -72,13 +73,25 @@ $(document).ready(function () {
         if (password.length < 8 || password.length > 20) {
             errors.push('密码长度须在8-20之间');
         }
+
+        if (!captcha_code) {
+            errors.push('验证码为空');
+        } else if (captcha_code.length !== 6) {
+            errors.push('验证码输入有误');
+        }
+
         if (errors.length > 0) {
             var errorMessage = errors.join('<br>'); // Join error messages with <br> tags
             // Append error messages after the existing div element with id 'first_error'
             $("#error_alert").html(errorMessage).show();
-            event.preventDefault(); // Prevent form submission
+
+
         } else {
             $("#error_alert").hide();
+            if ($('#RegistSuccess').length) {
+                $('#RegistSuccess').hide();
+            }
+            checkLogin();
         }
     });
 
@@ -90,14 +103,6 @@ $(document).ready(function () {
         GetCaptchaImage();
     });
 
-    // 传参登录
-    $('#LoginButton').click(function () {
-        // 监听表单提交事件
-        if ($('#RegistSuccess').length) {
-          $('#RegistSuccess').hide();
-        }
-        checkLogin();
-        // 获取表单数据
-    });
+
 
 });
