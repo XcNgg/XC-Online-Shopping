@@ -18,6 +18,7 @@ from datetime import date,datetime
 from sqlalchemy import func
 from image_captcha import generate_image
 import os
+import re
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
@@ -196,6 +197,8 @@ def regist():
         return render_template('users/regist.html')
     # 如果是POST请求
     else:
+    # todo 邮箱 用户名 是否注册验证
+
         form = RegistForm(request.form)
         # 表单验证
         if form.validate():
@@ -333,12 +336,14 @@ def email_captcha():
 ----------------------------------------------------------------------------------------
 """
 @users.route('/EditPassword',methods=['GET'])
+@login_required
 def edit_password():
     return render_template('users/editPassword.html')
 
 
 # 忘记密码验证接口
 @users.route('/CheckEditPassword', methods=["POST"])
+@login_required
 def check_edit_password():
     user_id = session['user_id']
     old_password = request.form.get('oldPassword')
@@ -363,3 +368,37 @@ def check_edit_password():
 @login_required
 def information():
     return render_template('users/personalInformation.html')
+
+@users.route('/checkEditInfo',methods=["POST"])
+@login_required
+def check_edit_info():
+    old_username = request.form.get('oldUsername')
+    edit_username = request.form.get('editUsername')
+    old_email = request.form.get('oldEmail')
+    email = request.form.get('email')
+
+    pattern = re.compile(r'^[\u4e00-\u9fa5a-zA-Z0-9_]+$')
+    if not pattern.match(edit_username):
+        jsonify({'code': 400, 'message': f"用户名只能包含中文、大小写英文字母、下划线和数字"})
+
+    has_user = XcOSUser.query.filter_by(username=edit_username).first()
+
+    if has_user:
+        length = random.randint(3, 8)  # 生成随机长度
+        characters = string.ascii_letters + string.digits  # 包含大小写英文字母和数字的字符集
+        random_name = ''.join(random.choice(characters) for _ in range(length))
+        return jsonify({'code':400,'message':f"当前角色名已存在，试试 {edit_username}{random_name} 吧"})
+    else:
+        has_email = XcOSUser.query.filter_by(email=email).first()
+        # 如果是邮箱持有者去修改邮箱
+        if old_username == has_email.username:
+            has_email.username = edit_username
+            has_email.email = email
+            db.session.commit()
+        # 如果不是邮箱持有者
+        else:
+            return jsonify({'code':400,'message':f"该邮箱已被使用!"})
+
+
+    return jsonify({'code':200,'message':'修改个人信息成功!'})
+

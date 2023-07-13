@@ -4,7 +4,7 @@
     {% block meta %}{% endblock %}
     <meta charset="utf-8">
 
-    <title>{% block title %}小草Shopping{% endblock %}</title>
+    <title>{% block title %}小草在线{% endblock %}</title>
 
     <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
     {% block css %}{% endblock %}
 
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
 
@@ -44,7 +44,9 @@
         <a class="navbar-brand" href="{{ url_for('home.index') }}" style="margin-right: auto;">
             <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" width="50" height="50">
         </a>
-        <h2 style="font-family: splash ink;font-size: 45px;margin-top: 15px;">小草Shopping-深耕电商服务20年</h2>
+        <a style="font-family: splash ink;font-size: 45px;margin-top: 15px; color: black;text-decoration: none;"  href="/">
+            小草在线-Online Shopping
+        </a>
         <ul class="navbar-nav ml-auto" style="margin-left: auto;">
             <li class="nav-item">
                 <form class="form-inline">

@@ -11,6 +11,8 @@ function checkEmail() {
     }
 }
 
+
+
 // 登录验证接口
 function checkLogin() {
     var formData = {
@@ -28,7 +30,7 @@ function checkLogin() {
             if (response.code === 200) {
                 // 登录成功
                 $("#error_alert").hide();
-                $('#success-alert').text('登录成功!即将跳转到首页...').show(); // 显示成功提示框
+                $('#success_alert').text('登录成功!即将跳转到首页...').show(); // 显示成功提示框
                 setTimeout(function () {
                     window.location.href = '/'; // 登录成功后跳转到首页
                 }, 500); // 0.5秒后跳转
@@ -76,13 +78,12 @@ $(document).ready(function () {
 
         if (!captcha_code) {
             errors.push('验证码为空');
-        } else if (captcha_code.length !== 6) {
+        } else if (captcha_code.length !== 5) {
             errors.push('验证码输入有误');
         }
 
         if (errors.length > 0) {
-            var errorMessage = errors.join('<br>'); // Join error messages with <br> tags
-            // Append error messages after the existing div element with id 'first_error'
+            var errorMessage = errors.join('<br>');
             $("#error_alert").html(errorMessage).show();
 
 

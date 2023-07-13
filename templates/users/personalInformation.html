@@ -35,7 +35,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-4">
-                                <strong>用户名:</strong>
+                                <label>用户名:</label>
                             </div>
                             <div class="col-8">
                                 <span id="username">{{ user.username }}</span>
@@ -44,16 +44,16 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <strong>Email:</strong>
+                                <label>Email:</label>
                             </div>
                             <div class="col-8">
                                 <span id="email">{{ user.email }}</span>
-                                {#                      <input type="text" id="editEmail" class="form-control" style="display: none;">#}
+                                <input type="text" id="editEmail" class="form-control" style="display: none;">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <strong>账户余额:</strong>
+                                <label>账户余额:</label>
                             </div>
                             <div class="col-8">
                                 <span id="balance">￥{{ user.balance }}</span>
@@ -62,7 +62,7 @@
 
                         <div class="row">
                             <div class="col-4">
-                                <strong>注册时间:</strong>
+                                <label>注册时间:</label>
                             </div>
                             <div class="col-8">
                                 <span id="balance">{{ user.created_at }}</span>
@@ -80,11 +80,15 @@
 
                         <div class="row mt-4">
                             <div class="col">
-                                <a id="editButton" class="btn btn-primary btn-block">编辑信息</a>
-                                <a href="#" id="commitButton" class="btn btn-success btn-block" style="display: none">确认提交</a>
-                                <a id="cancelButton" class="btn btn-danger btn-block" style="display: none">取消编辑</a>
+                                <button id="editButton" class="btn btn-primary btn-block">编辑信息</button>
+                                <button id="commitButton" class="btn btn-success btn-block" style="display: none">确认提交</button>
+                                <button id="cancelButton" class="btn btn-danger btn-block" style="display: none">取消编辑</button>
                             </div>
                         </div>
+
+                    <div class="form-group mb-3"></div> <!-- 美化占位 -->
+                    <div id="success_alert" class="alert alert-success custom-alert" role="alert" style="display: none" >ok</div>
+                    <div id="error_alert" class="alert alert-danger" role="alert" style="display: none">error</div>
                     </div>
                 </div>
             </div>

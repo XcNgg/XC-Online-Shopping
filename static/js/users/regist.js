@@ -15,6 +15,19 @@ function toggleDiv(divValue, divType) {
 }
 
 
+// 用户名只包含中文、大小写英文字母、下划线和数字
+function checkUsername(username) {
+  // 使用正则表达式定义允许的字符规则
+  var pattern = /^[\u4e00-\u9fa5a-zA-Z0-9_]+$/;
+  // 检查用户名是否符合规则
+  if (pattern.test(username)) {
+    return true;  // 符合规则
+  } else {
+    return false;  // 不符合规则
+  }
+}
+
+
 // 邮箱格式验证
 function checkEmail() {
     // 邮箱正则表达式
@@ -39,6 +52,13 @@ function checkInputFields() {
         toggleDiv('用户名未输入，请检查!', 2);
         return false;
     }
+
+    if (!checkUsername(username)){
+        toggleDiv('用户名只能包含中文、大小写英文字母、下划线和数字!', 2);
+        return false;
+    }
+
+
 
     if (!email) {
         toggleDiv('邮箱未输入，请检查!', 2);
@@ -130,6 +150,10 @@ $(document).ready(function () {
         if (username.length < 3 || username.length > 10) {
             errors.push('用户名长度须3-10字符');
         }
+        if (!checkUsername(username)){
+            errors.push('用户名只能包含中文、大小写英文字母、下划线和数字!');
+        }
+
         if (!checkEmail()) {
             errors.push('邮箱格式不正确');
         }
