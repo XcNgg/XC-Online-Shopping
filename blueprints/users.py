@@ -197,7 +197,6 @@ def regist():
 # 验证注册信息
 @users.route('/CheckRegist', methods=["POST"])
 def check_regist():
-    # todo 邮箱 用户名 是否注册验证
     username = request.form.get('username')
 
     # 如果存在同名用户
