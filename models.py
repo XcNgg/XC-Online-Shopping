@@ -23,6 +23,8 @@ class XcOSUser(db.Model):
     # 用户余额 (User balance)
     addresses = db.relationship('XcOSAddress', backref='user', lazy=True)
     # 用户与收货地址的关联关系 (User-address relationship)
+    products = db.relationship('XcOSProduct', backref='seller', lazy=True)
+    # 添加与产品的关联关系
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
@@ -79,20 +81,30 @@ class XcOSProduct(db.Model):
     # 设置表名为 'XcOS_product' (Set table name as 'XcOS_product')
     id = db.Column(db.Integer, primary_key=True)
     # 产品ID (Product ID)
+    seller_id = db.Column(db.Integer, db.ForeignKey('XcOS_user.id'), nullable=False)
+    # 添加外键关联卖家的id
     name = db.Column(db.String(255), nullable=False)
     # 产品名称 (Product name)
+    simple_description = db.Column(db.Text(25))
+    # 产品简述 25字以内 (Product simple description)
     description = db.Column(db.Text)
     # 产品描述 (Product description)
     price = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 产品价格 (Product price)
-    image = db.Column(db.String(255))
+    image = db.Column(db.String(255),default='/static/img/logo.png')
     # 产品图片 (Product image)
-    product_type = db.Column(db.String(50), nullable=False)
-    # 产品类型 (Product type)
+    sales = db.Column(db.Integer, default=0)
+    # 产品销量，默认为0
+    stock = db.Column(db.Integer, default=0)
+    # 添加库存字段，默认为0
+
+    # product_type = db.Column(db.String(50), nullable=False)
+    # # 产品类型 (Product type)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
                            onupdate=db.func.current_timestamp())
+
     # 更新时间 (Update timestamp)
     # def __repr__(self):
     #     return f"<XcOSProduct {self.name} {self.description} {self.product_type} {self.image} {self.product_type} >"
@@ -186,10 +198,14 @@ class XcOSNotice(db.Model):
     __tablename__ = 'XcOS_notice'
     id = db.Column(db.Integer, primary_key=True)
     # 公告ID (Notice ID)
+    admin_id = db.Column(db.Integer, nullable=False)
+    # 管理员ID (Admin ID)
     title = db.Column(db.String(255), nullable=False)
     # 公告标题 (Notice title)
     content = db.Column(db.Text, nullable=False)
     # 公告内容 (Notice content)
+    show_on_homepage = db.Column(db.Boolean, default=False)
+    # 是否在首页显示 (Show on homepage)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),

@@ -18,21 +18,26 @@ $(document).ready(function () {
     var source = $('#daily-golden-sentence-source');
 
     function requestAndDisplaySentence() {
-        $.ajax({
-            url: apiUrl,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
+    $.ajax({
+        url: apiUrl,
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.data.content.length > 45) {
+                setTimeout(function() {
+                    requestAndDisplaySentence(); // 递归调用函数，直到长度小于等于45个字为止
+                }, 1000); // 等待1秒
+            } else {
                 content.text(response.data.content);
-                source.text("——" + response.data.name + "·" + response.data.origin)
-            },
-            error: function () {
-                content.text('Failed to fetch the daily sentence.');
+                source.text("——" + response.data.name + "·" + response.data.origin);
             }
+        },
+        error: function () {
+            content.text('Failed to fetch the daily sentence.');
+        }
         });
     }
-
-    requestAndDisplaySentence();
+    // requestAndDisplaySentence();
     $(window).on('load', requestAndDisplaySentence);
 
 });
