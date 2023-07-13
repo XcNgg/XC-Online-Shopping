@@ -3,7 +3,6 @@ config.py
     配置文件,配置app信息
 """
 
-
 """
     MySQL配置
     HOSTNAME="192.168.200.140"
@@ -57,11 +56,11 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 # 如果后续部署,需要更改为False
 MAIL_DEBUG = True
-#邮箱账号 STMP密钥
+# 邮箱账号 STMP密钥
 MAIL_USERNAME = "xcuptop@qq.com"
 MAIL_PASSWORD = "necizvuaiohddjgg"
-#默认发件人
-MAIL_DEFAULT_SENDER ="xcuptop@qq.com"
+# 默认发件人
+MAIL_DEFAULT_SENDER = "xcuptop@qq.com"
 #
 # MAIL_MAX_EMAILS =
 #

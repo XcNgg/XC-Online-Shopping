@@ -48,9 +48,10 @@
                             </div>
                             <div class="col-8">
                                 <span id="email">{{ user.email }}</span>
-                                <input type="text" id="editEmail" class="form-control" style="display: none;">
+                                <input type="text" id="editEmail" class="form-control " style="display: none;">
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-4">
                                 <label>账户余额:</label>
@@ -69,26 +70,24 @@
                             </div>
                         </div>
 
-{#                        <div class="row">#}
-{#                            <div class="col-4">#}
-{#                                <strong>address</strong>#}
-{#                            </div>#}
-{#                            <div class="col-8">#}
-{#                                <span id="balance">{{ address }}</span>#}
-{#                            </div>#}
-{#                        </div>#}
-
                         <div class="row mt-4">
                             <div class="col">
                                 <button id="editButton" class="btn btn-primary btn-block">编辑信息</button>
-                                <button id="commitButton" class="btn btn-success btn-block" style="display: none">确认提交</button>
-                                <button id="cancelButton" class="btn btn-danger btn-block" style="display: none">取消编辑</button>
+                                <button id="commitButton" class="btn btn-success btn-block" style="display: none">
+                                    确认提交
+                                </button>
+                                <button id="cancelButton" class="btn btn-danger btn-block" style="display: none">
+                                    取消编辑
+                                </button>
                             </div>
                         </div>
 
-                    <div class="form-group mb-3"></div> <!-- 美化占位 -->
-                    <div id="success_alert" class="alert alert-success custom-alert" role="alert" style="display: none" >ok</div>
-                    <div id="error_alert" class="alert alert-danger" role="alert" style="display: none">error</div>
+
+                        <div class="form-group mb-3"></div> <!-- 美化占位 -->
+                        <div id="success_alert" class="alert alert-success custom-alert" role="alert"
+                             style="display: none">ok
+                        </div>
+                        <div id="error_alert" class="alert alert-danger" role="alert" style="display: none">error</div>
                     </div>
                 </div>
             </div>

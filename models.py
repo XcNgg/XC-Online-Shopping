@@ -6,6 +6,7 @@ flask db upgrade
 """
 from extension import db
 
+
 class XcOSUser(db.Model):
     # 用户表 (User table)
     __tablename__ = 'XcOS_user'
@@ -55,20 +56,22 @@ class XcOSAddress(db.Model):
     # def __repr__(self):
     #     return f"<XcOSAddress {self.id } {self.user_id } {self.state } {self.city} {self.detailed_address} {self.postal_code}>"
 
+
 class XcOsEmailCaptcha(db.Model):
     # emial验证码存储模型
     __tablename__ = 'XcOS_email_captcha'
-    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
-    email = db.Column(db.String(100),nullable=False,unique=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     # 邮箱不为空，且唯一
-    captcha = db.Column(db.String(10),nullable=False,unique=True)
+    captcha = db.Column(db.String(10), nullable=False, unique=True)
     # 验证码不为空，且唯一
-    send_time = db.Column(db.Integer,nullable=False)
+    send_time = db.Column(db.Integer, nullable=False)
     # 验证码发送时间
-    valid_time = db.Column(db.Integer,nullable=False)
+    valid_time = db.Column(db.Integer, nullable=False)
     # # 验证码有效时间
     # def __repr__(self):
     #     return f"<XcOSAddress {self.email} {self.captcha} {self.send_time} {self.valid_time}>"
+
 
 class XcOSProduct(db.Model):
     # 产品表 (Product table)
@@ -94,6 +97,7 @@ class XcOSProduct(db.Model):
     # def __repr__(self):
     #     return f"<XcOSProduct {self.name} {self.description} {self.product_type} {self.image} {self.product_type} >"
 
+
 class XcOSCart(db.Model):
     # 购物车表 (Cart table)
     __tablename__ = 'XcOS_cart'
@@ -113,6 +117,7 @@ class XcOSCart(db.Model):
     # 更新时间 (Update timestamp)
     # def __repr__(self):
     #     return f"<XcOSCart {self.id} {self.user_id} {self.product_id} {self.quantity} >"
+
 
 class XcOsOrderDetail(db.Model):
     # 订单详情表 (Order detail table)
@@ -140,6 +145,7 @@ class XcOsOrderDetail(db.Model):
     # def __repr__(self):
     #     return f"<XcOSOrderDetail {self.id} {self.product_id} {self.quantity} {self.total_amount} {self.address_id} {self.status} >"
 
+
 class XcOSAdmin(db.Model):
     # 管理员表 (Admin table)
     __tablename__ = 'XcOS_admin'
@@ -164,7 +170,7 @@ class XcOSSignIn(db.Model):
     # 签到表 (Sign-in table)
     __tablename__ = 'XcOS_sign_in'
     # 设置表名为 'XcOS_sign_in' (Set table name as 'XcOS_sign_in')
-    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # 签到记录ID (Sign-in record ID)
     user_id = db.Column(db.Integer, db.ForeignKey('XcOS_user.id'), nullable=False)
     # 用户ID，外键关联到'XcOS_user'表中的'id'字段 (User ID, foreign key reference to 'id' field in 'XcOS_user' table)
@@ -175,6 +181,23 @@ class XcOSSignIn(db.Model):
     # def __repr__(self):
     #    return f"<XcOSSignIn {self.id}>"
 
+
+class XcOSNotice(db.Model):
+    __tablename__ = 'XcOS_notice'
+    id = db.Column(db.Integer, primary_key=True)
+    # 公告ID (Notice ID)
+    title = db.Column(db.String(255), nullable=False)
+    # 公告标题 (Notice title)
+    content = db.Column(db.Text, nullable=False)
+    # 公告内容 (Notice content)
+    created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
+    # 创建时间 (Creation timestamp)
+    updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
+                           onupdate=db.func.current_timestamp())
+    # 更新时间 (Update timestamp)
+
+    # def __repr__(self):
+    #     return f"<XcOS_notice (id={self.id}, title='{self.title}')"
 
 # class XcOSOrder(db.Model):
 #     # 订单表 (Order table)

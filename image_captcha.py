@@ -3,6 +3,7 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 import base64
 
+
 def generate_image():
     '''
     返回图片验证码信息

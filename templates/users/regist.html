@@ -2,42 +2,44 @@
 
 
 {% block title %}注册 - {{ super() }}{% endblock %}
-{% block script%}
-    <script type="text/javascript"  src={{ url_for('static',filename='js/users/regist.js')}}></script>
+{% block script %}
+    <script type="text/javascript" src={{ url_for('static',filename='js/users/regist.js') }}></script>
 {% endblock %}
 
 
 
 
 {% block content %}
-<div class="row">
+    <div class="row">
         <div class="col-sm">
             <!--美化占位-->
         </div>
 
         <div class="col-sm mt-5">
-            <form  method="POST" action="{{ url_for('users.regist') }}"> <!-- 更改表单 -->
-                 <div class="form-group">
+            <form> <!-- 更改表单 -->
+                <div class="form-group">
                     <label for="exampleInputEmail1">用 户 名 / 昵 称</label>
                     <input type="text" class="form-control" name="username"> <!-- name='username'-->
-                     <small id="emailHelp" class="form-text text-muted">想个有趣的用户名吧！</small>
+                    <small id="emailHelp" class="form-text text-muted">想个有趣的用户名吧！</small>
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputEmail1">邮 箱</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email"> <!-- name='email'-->
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                           name="email"> <!-- name='email'-->
                     <small id="emailHelp" class="form-text text-muted">为了保护您的隐私,您的邮箱仅供本站登录使用</small>
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputPassword1">密 码</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="password"><!-- name='password'-->
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                    <!-- name='password'-->
                     <small class="form-text text-muted">请输入您的密码</small>
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputPassword1">确认密码 </label>
-                    <input type="password" class="form-control" name="password_confirm" ><!-- name="password_confirm"-->
+                    <input type="password" class="form-control" name="password_confirm"><!-- name="password_confirm"-->
                     <small class="form-text text-muted">请再次输入您的密码</small>
                 </div>
 
@@ -47,33 +49,23 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="captcha">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="email-captcha-btn" >获取验证码</button>
+                            <button class="btn btn-outline-secondary" type="button" id="email-captcha-btn">获取验证码
+                            </button>
                         </div>
                     </div>
-                     <small  class="form-text text-muted">点击获取邮箱验证码</small>
+                    <small class="form-text text-muted">点击获取邮箱验证码</small>
                 </div>
 
                 {# 消息框#}
-                <div id="success_alert"class="alert alert-success custom-alert" role="alert" style="display: none"></div>
-                 <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
-
-
-                {% if errors %}
-                    <div class="alert alert-danger" role="alert" >
-                    {% for error in errors %}
-                        {{ error }}
-                        <br>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-
+                <div id="success_alert" class="alert alert-success custom-alert" role="alert"
+                     style="display: none"></div>
+                <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
 
                 <div class="form-group mb-5"></div>
 
-                <button type="submit" class="btn btn-primary btn-block">确 认 注 册</button>
+                <button id='checkRegist' type="button" class="btn btn-primary btn-block">确 认 注 册</button>
             </form>
         </div>
-
 
 
         <div class="col-sm">

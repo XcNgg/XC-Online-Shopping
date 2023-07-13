@@ -19,25 +19,6 @@
     {% block script %}{% endblock %}
 </head>
 
-<style>
-    .dropdown .btn {
-        background-color: transparent;
-        border-color: transparent;
-        box-shadow: none;
-        color: #000; /* 修改按钮文字颜色 */
-    }
-
-    .dropdown .btn:hover,
-    .dropdown .btn:focus {
-        background-color: transparent;
-        border-color: transparent;
-        box-shadow: none;
-        color: #000; /* 修改按钮文字颜色 */
-    }
-
-    {% block style %}{% endblock %}
-</style>
-
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -64,12 +45,12 @@
                     <li class="nav-item pr-3">
                         <div class="btn-group">
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle"  id="userDropdown"
+                                <span class="dropdown-toggle"  id="userDropdown"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        style="font-size: 20px; border: none; box-shadow: none;">
+                                        style="font-size: 20px; cursor: pointer;">
                                      <img src="{{ url_for('static', filename='img/users.png') }}" alt="" width="20" height="20">
                                     {{ user.username }}
-                                </button>
+                                </span>
                                 <div class="dropdown-menu dropdown-menu-right w-auto" aria-labelledby="userDropdown">
 
                                     <a class="dropdown-item" onclick="signin()">

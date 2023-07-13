@@ -17,14 +17,14 @@ function toggleDiv(divValue, divType) {
 
 // 用户名只包含中文、大小写英文字母、下划线和数字
 function checkUsername(username) {
-  // 使用正则表达式定义允许的字符规则
-  var pattern = /^[\u4e00-\u9fa5a-zA-Z0-9_]+$/;
-  // 检查用户名是否符合规则
-  if (pattern.test(username)) {
-    return true;  // 符合规则
-  } else {
-    return false;  // 不符合规则
-  }
+    // 使用正则表达式定义允许的字符规则
+    var pattern = /^[\u4e00-\u9fa5a-zA-Z0-9_]+$/;
+    // 检查用户名是否符合规则
+    if (pattern.test(username)) {
+        return true;  // 符合规则
+    } else {
+        return false;  // 不符合规则
+    }
 }
 
 
@@ -53,31 +53,29 @@ function checkInputFields() {
         return false;
     }
 
-    if (!checkUsername(username)){
+    if (!checkUsername(username)) {
         toggleDiv('用户名只能包含中文、大小写英文字母、下划线和数字!', 2);
         return false;
     }
 
-
+    if (username.length < 3 || username.length > 10) {
+        toggleDiv('用户名长度须3-10字符', 2);
+        return;
+    }
 
     if (!email) {
         toggleDiv('邮箱未输入，请检查!', 2);
         return false;
     }
 
-    if (!password) {
-        toggleDiv('密码未输入，请检查!', 2);
-        return false;
-    }
-
-    if (!passwordConfirm) {
-        toggleDiv('确认密码未输入，请检查!', 2);
-        return false;
-    }
-
     if (!checkEmail()) {
-        toggleDiv('邮箱格式不规范,请检查！', 2);
-        return false;
+        toggleDiv('邮箱格式不正确', 2);
+        return;
+    }
+
+    if (password.length < 8 || password.length > 20) {
+        toggleDiv('密码长度须在8-20之间', 2);
+        return;
     }
 
     if (password !== passwordConfirm) {
@@ -90,7 +88,6 @@ function checkInputFields() {
 
 // 邮箱验证码发送
 function bindCaptchaBtnClick() {
-
     // 邮箱验证码验证
     $('#email-captcha-btn').on('click', function (event) {
         var $this = $(this);
@@ -128,9 +125,9 @@ function bindCaptchaBtnClick() {
             success: function (res) {
                 var code = res['code'];
                 if (code === 200) {
-                    toggleDiv('验证码发送成功！ | ' + res['message'], 1);
+                    toggleDiv('验证码发送成功', 1);
                 } else {
-                    toggleDiv('验证码发送失败！| ' + res['message'], 2);
+                    toggleDiv('验证码发送失败,' + res['message'], 2);
                 }
             }
         });
@@ -139,46 +136,50 @@ function bindCaptchaBtnClick() {
 
 
 $(document).ready(function () {
-    // 注册按钮 验证表单是否合格
-    $('form').submit(function (event) {
-        var username = $('input[name="username"]').val();
-        var password = $('input[name="password"]').val();
-        var passwordConfirm = $('input[name="password_confirm"]').val();
+
+    $('#checkRegist').click(function (event) {
         var captcha = $('input[name="captcha"]').val();
-
-        var errors = [];
-        if (username.length < 3 || username.length > 10) {
-            errors.push('用户名长度须3-10字符');
-        }
-        if (!checkUsername(username)){
-            errors.push('用户名只能包含中文、大小写英文字母、下划线和数字!');
+        if (!checkInputFields()) {
+            return;
         }
 
-        if (!checkEmail()) {
-            errors.push('邮箱格式不正确');
-        }
-        if (password.length < 8 || password.length > 20) {
-            errors.push('密码长度须在8-20之间');
-        }
-        if (password !== passwordConfirm) {
-            errors.push('两次密码不一致!');
-        }
         if (!captcha) {
-            errors.push('验证码为空');
+            toggleDiv('验证码为空', 2);
+            return;
         } else if (captcha.length !== 6) {
-            errors.push('验证码输入有误');
+            toggleDiv('验证码长度有误', 2);
+            return;
         }
 
+        $.ajax({
+            url: "/users/CheckRegist",
+            method: "POST",
+            data: {
+                "email": $('input[name="email"]').val(),
+                'username': $('input[name="username"]').val(),
+                'password': $('input[name="password"]').val(),
+                'captcha': captcha,
+            },
+            success: function (res) {
+                var code = res['code'];
+                if (code === 200) {
+                    toggleDiv('注册成功！即将跳转登录界面... ', 1);
+                    setTimeout(function () {
+                        window.location.href = '/users/login'; // 登录成功后跳转到首页
+                    }, 500); // 0.5秒后跳转
+                } else {
+                    toggleDiv('注册失败,' + res['message'], 2);
+                }
+            }
+        });
+    });
 
-        if (errors.length > 0) {
-            var errorMessage = errors.join('<br>'); // Join error messages with <br> tags
-            // Append error messages after the existing div element with id 'first_error'
-            $("#error_alert").html(errorMessage).show();
-            event.preventDefault(); // Prevent form submission
-        } else {
-            $("#error_alert").hide();
+    $(document).keypress(function (event) {
+        if (event.which === 13) {  // 检测按下的键是否是回车键
+            $('#checkRegist').click();  // 触发按钮的点击事件
         }
     });
+
 });
 
 
