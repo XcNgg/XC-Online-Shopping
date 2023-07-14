@@ -2,7 +2,7 @@ from flask import Flask
 from flask import render_template, request, redirect, url_for, g, session
 from flask_migrate import Migrate
 from extension import db, mail
-from blueprints import users_bp, admin_bp, home_bp
+from blueprints import users_bp, admin_bp, home_bp,products_bp
 from models import XcOSUser
 
 app = Flask(__name__)
@@ -18,6 +18,7 @@ mail.init_app(app)
 app.register_blueprint(users_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(home_bp)
+app.register_blueprint(products_bp)
 
 # ORM映射
 migrate = Migrate(app, db)

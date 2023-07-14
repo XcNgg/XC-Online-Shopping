@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+
+{% block title %}我要卖出 - {{ super() }}{% endblock %}
+{% block script %}
+    <script type="text/javascript" src={{ url_for('static',filename='js/users/addSaleProducts.js') }}></script>
+{% endblock %}

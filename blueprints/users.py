@@ -435,3 +435,14 @@ def check_edit_info():
 
     db.session.commit()
     return jsonify({'code': 200, 'message': '修改个人信息成功'})
+
+
+"""
+----------------------------------------------------------------------------------------
+卖出产品
+----------------------------------------------------------------------------------------
+"""
+@users.route('/AddSaleProducts')
+@login_required
+def add_sale_products():
+    return render_template('users/personalInformation.html')

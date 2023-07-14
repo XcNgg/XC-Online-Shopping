@@ -67,11 +67,16 @@ function rotatePlaceholder() {
 
     startTimer();
 
-
 }
+
+
 
 $(document).ready(function () {
     rotatePlaceholder();
+
+
+
+
 });
 
 
