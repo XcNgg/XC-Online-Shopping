@@ -14,9 +14,6 @@
 //      }
 //  });
 
-// 版权固定最新年份
-var currentYear = new Date().getFullYear();
-document.getElementById("current-year").textContent = "Copyright©" + currentYear;
 
 // 签到显示
 function showSigninResult(title, message) {

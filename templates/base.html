@@ -173,7 +173,9 @@
 </footer>
 
 <script>
-
+    // 版权固定最新年份
+    var currentYear = new Date().getFullYear();
+    document.getElementById("current-year").textContent = "Copyright©" + currentYear;
 </script>
 
 
@@ -197,6 +199,7 @@
 </div>
 
 <script>
+
     // 签到
     function signin() {
     const uid = '{{ user.id }}'; // 替换为实际的用户ID
