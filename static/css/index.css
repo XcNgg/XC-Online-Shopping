@@ -72,3 +72,8 @@
 .shadow {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
+.sell-well {
+    width:255px;
+    height:270px;
+}

@@ -23,7 +23,6 @@ app.register_blueprint(products_bp)
 # ORM映射
 migrate = Migrate(app, db)
 
-from flask import render_template, request, redirect, url_for, g, session
 
 
 @app.before_request

@@ -89,6 +89,12 @@
                                      <img src="{{ url_for('static', filename='img/base/userInfo.png') }}" alt="" width="15" height="15">
                                         个人信息
                                     </a>
+
+                                    <a class="dropdown-item" href="{{ url_for('users.sale_products') }}">
+                                     <img src="{{ url_for('static', filename='img/base/sale.png') }}" alt="" width="15" height="15">
+                                        我要出售
+                                    </a>
+
                                     <a class="dropdown-item" href="#">
                                      <img src="{{ url_for('static', filename='img/base/orders.png') }}" alt="" width="15" height="15">
                                         我的订单
@@ -218,14 +224,21 @@
     data: { uid: uid },
     success: function(response) {
         // 处理响应数据
+        var now_url = window.location.href;
         console.log(response);
         if (response.code === 200) {
             // 显示签到成功结果
+
             showSigninResult('签到成功!', response.amount);
+
         } else {
             // 显示签到失败结果
             showSigninResult('签到失败', response.message);
+
         }
+        setTimeout(function () {
+            window.location.href = now_url; // 自动跳转到当前页
+        }, 700); // 0.5秒后跳转
     },
     error: function(error) {
         // 处理错误
@@ -243,9 +256,9 @@ function logout() {
         success: function(response) {
             if (response.code === 200){
             showSigninResult('注销','注销成功！');
-            $("#ModalClose").click(function () {
-                    window.location.href = '/';
-                });
+            setTimeout(function () {
+            window.location.href = '/'; // 自动跳转到首页
+        }, 700); // 0.5秒后跳转
             }
         },
         error: function() {

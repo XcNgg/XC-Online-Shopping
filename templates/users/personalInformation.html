@@ -54,10 +54,28 @@
 
                         <div class="row">
                             <div class="col-4">
-                                <label>账户余额:</label>
+                                <label>用户身份:</label>
+                            </div>
+                            <div class="col-8">
+                                <span id="balance">{{ user.identity }}</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label>余额:</label>
                             </div>
                             <div class="col-8">
                                 <span id="balance">￥{{ user.balance }}</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label>当前积分:</label>
+                            </div>
+                            <div class="col-8">
+                                <span id="balance">{{ user.integral }}</span>
                             </div>
                         </div>
 
@@ -71,14 +89,24 @@
                         </div>
 
                         <div class="row mt-4">
-                            <div class="col">
-                                <button id="editButton" class="btn btn-primary btn-block">编辑信息</button>
-                                <button id="commitButton" class="btn btn-success btn-block" style="display: none">
-                                    确认提交
-                                </button>
-                                <button id="cancelButton" class="btn btn-danger btn-block" style="display: none">
-                                    取消编辑
-                                </button>
+                            <div class="col-8">
+                                <button id="editButton" class="btn btn-outline-primary btn-block">编辑信息</button>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button id="commitButton" class="btn btn-outline-success btn-block"
+                                                style="display: none">
+                                            确认提交
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button id="cancelButton" class="btn btn-outline-secondary btn-block"
+                                                style="display: none">
+                                            取消编辑
+                                        </button>
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
 

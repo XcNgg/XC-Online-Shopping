@@ -32,22 +32,22 @@ users = Blueprint('users', __name__, url_prefix='/users')
 @users.route('/SignIn', methods=['POST'])
 @login_required
 def signin():
-    amount = random.choice([0.50, 1.00, 1.50, 2.00])
+    integral = random.choice([1, 3, 5, 7])
     user_id = int(request.form.get('uid'))
     print(user_id)
     signin_model = XcOSSignIn.query.filter_by(user_id=user_id).first()
     if not signin_model:
         new_signin = XcOSSignIn(
             user_id=user_id,
-            amount=amount,
+            integral=integral,
         )
         db.session.add(new_signin)
         db.session.commit()
         user_model = XcOSUser.query.filter_by(id=user_id).first()
-        user_model.balance += Decimal(amount)  # 更新用户余额
+        user_model.integral += integral  # 更新用户积分
         db.session.commit()
         return jsonify(
-            {'code': 200, 'message': "签到成功！Sign in Success!", 'amount': f'今日随机签到金额：￥{amount}'}), 200
+            {'code': 200, 'message': "签到成功！", 'amount': f'今日随机签到积分：{integral}'}), 200
     else:
         # 判断用户今天是否签到了，如果没签到，则更新数据库并成功签到，如果签到了则返今日已经签到了
         today = date.today()
@@ -61,19 +61,20 @@ def signin():
             new_signin = XcOSSignIn(
                 user_id=user_id,
                 sign_in_time=now,
-                amount=amount,
+                integral=integral,
             )
             db.session.add(new_signin)
             db.session.commit()
 
             user_model = XcOSUser.query.filter_by(id=user_id).first()
-            user_model.balance += Decimal(amount)
+            user_model.integral += integral
             db.session.commit()
 
             return jsonify(
-                {'code': 200, 'message': "签到成功！Sign in Success!", 'amount': f'今日随机签到金额：￥{amount}'}), 200
+                {'code': 200, 'message': "签到成功！", 'amount': f'今日随机签到积分：{integral}'}), 200
+
         else:
-            return jsonify({'code': 400, 'message': "今日已经签到了！Already signed in today!"}), 200
+            return jsonify({'code': 400, 'message': "今天已经签到了！"}), 200
 
 
 # 注销清除session
@@ -442,7 +443,9 @@ def check_edit_info():
 卖出产品
 ----------------------------------------------------------------------------------------
 """
-@users.route('/AddSaleProducts')
+
+
+@users.route('/SaleProducts')
 @login_required
-def add_sale_products():
-    return render_template('users/personalInformation.html')
+def sale_products():
+    return render_template('users/saleProducts.html')

@@ -21,6 +21,11 @@ class XcOSUser(db.Model):
     # 邮箱 (Email)
     balance = db.Column(db.DECIMAL(10, 2), nullable=False, default=0.00)
     # 用户余额 (User balance)
+    identity = db.Column(db.String(255), nullable=False, default='普通用户')
+    # 角色身份权限 (Role identity and permissions)
+    # 0 管理员 1普通用户 2 VIP
+    integral = db.Column(db.Integer, nullable=False, default=10)
+    # 角色积分 (Role integral)
     addresses = db.relationship('XcOSAddress', backref='user', lazy=True)
     # 用户与收货地址的关联关系 (User-address relationship)
     products = db.relationship('XcOSProduct', backref='seller', lazy=True)
@@ -188,8 +193,8 @@ class XcOSSignIn(db.Model):
     # 用户ID，外键关联到'XcOS_user'表中的'id'字段 (User ID, foreign key reference to 'id' field in 'XcOS_user' table)
     sign_in_time = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 签到时间 (Sign-in time)
-    amount = db.Column(db.DECIMAL(5, 2), nullable=False)
-    # 签到金额 (Sign-in amount)
+    integral = db.Column(db.Integer, nullable=False)
+    # 签到积分 (Sign-in amount)
     # def __repr__(self):
     #    return f"<XcOSSignIn {self.id}>"
 
