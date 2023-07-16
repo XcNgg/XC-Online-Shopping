@@ -3,7 +3,7 @@
 {% block title %}我要出售 - {{ super() }}{% endblock %}
 
 {% block script %}
-    <script type="text/javascript" src={{ url_for('static',filename='js/products/saleProducts.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static',filename='js/users/saleProducts.js') }}></script>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col">序号</th>
-                                    <th scope="col">id</th>
                                     <th scope="col">产品名称</th>
                                     <th scope="col">logo</th>
                                     <th scope="col">价格</th>
@@ -34,12 +33,14 @@
                             </thead>
                             <tbody id="tbody">
                             <tr>
-
                             </tr>
                             </tbody>
                         </table>
-
+                                            <div id='success_alert' class="alert alert-success custom-alert" role="alert" style="display: none"></div>
+                    <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
                     </div>
+
+
                 </div>
             </div>
         </div>

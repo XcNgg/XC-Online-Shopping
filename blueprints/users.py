@@ -456,7 +456,7 @@ def get_my_sale():
     for product in products_result:
         product_dict = {
             'id': product.id,
-            'seller_id': product.seller_id,
+            # 'seller_id': product.seller_id,
             'name': product.name,
             # 'simple_description': product.simple_description,
             # 'description': product.description,
@@ -469,8 +469,27 @@ def get_my_sale():
             'updated_at': str(product.updated_at)
         }
         products_list.append(product_dict)
-        print(product_dict)
+        # print(product_dict)
     if not products_list:
         return jsonify({'code':200,'message':"您还没有出售中的产品哦",'products':[]})
     else:
         return jsonify({'code':200,'message':f'当前在售【{len(products_list)}】件商品','products':products_list})
+
+@users.route('/DeleteMySale',methods=['POST'])
+@login_required
+def delete_my_sale():
+    try:
+        user_id = session['user_id']
+        id = request.form.get('id')
+        name = request.form.get('name')
+        delete_product = XcOSProduct.query.filter_by(id=id,name=name, seller_id=user_id).first()
+        if delete_product:
+            print(delete_product.name)
+            db.session.delete(delete_product)
+            db.session.commit()
+            return jsonify({'code': 200, 'message': '删除成功！'})
+        else:
+            return jsonify({'code': 400, 'message': '未找到要删除的数据！'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'code':500,'message':e.__str__()})
