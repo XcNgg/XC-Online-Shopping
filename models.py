@@ -96,13 +96,12 @@ class XcOSProduct(db.Model):
     # 产品描述 (Product description)
     price = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 产品价格 (Product price)
-    image = db.Column(db.String(255),default='/static/img/product.png')
-    # 产品图片 (Product image)
+    logo_img = db.Column(db.String(255),default='/static/img/product.png')
+    # 产品Logo图片 (Product image)
     sales = db.Column(db.Integer, default=0)
     # 产品销量，默认为0
     stock = db.Column(db.Integer, default=0)
     # 添加库存字段，默认为0
-
     # product_type = db.Column(db.String(50), nullable=False)
     # # 产品类型 (Product type)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())

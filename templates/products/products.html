@@ -10,38 +10,40 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row mb-3"></div>
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <h4>
-                    <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类" width="20">
-                    产品分类
-                </h4>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-secondary active">
-                        <input type="radio" name="options" id="option1" checked> Active
-                    </label>
-                    <label class="btn btn-outline-secondary">
-                        <input type="radio" name="options" id="option2"> Radio
-                    </label>
-                    <label class="btn btn-outline-secondary">
-                        <input type="radio" name="options" id="option3"> Radio
-                    </label>
+    <div class="row mb-3"></div> <!--占位美化-->
+    <div class="row">
+        <div class="container">
+            <div class="card" style="width: 100%">
+                <div class="card-body">
+                    <div class="row mb-1">
+                        <div class="col-md-12">
+                            <h4 class="card-title">
+                                <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
+                                     width="20">
+                                产品分类
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline-secondary active">
+                                    <input type="radio" name="options" id="option1" checked> Active
+                                </label>
+                                <label class="btn btn-outline-secondary">
+                                    <input type="radio" name="options" id="option2"> Radio
+                                </label>
+                                <label class="btn btn-outline-secondary">
+                                    <input type="radio" name="options" id="option3"> Radio
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr>
+            <hr>
 
-        <div class="row">
             <div class="col-md-12">
-                <!-- 产品详细列表 -->
-                <h4>产品详细列表</h4>
                 <!-- 产品详细 第一栏 -->
                 <div class="row mb-1">
                     <div class="col-md-3 mb-2">
@@ -51,23 +53,27 @@
                                     <div class="col-3">
                                         <img src="{{ url_for('static', filename='img/products/product.png') }}"
                                              class="card-img-top"
-                                             alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
                                     </div>
 
                                     <div class="col-9">
                                         <h5 class="card-title">产品名称</h5>
-                                        <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-RMB">19.99</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-type">AI工具</span>
@@ -75,13 +81,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-sales-volume">100</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-inventory">100</span>
@@ -90,8 +98,10 @@
                                 <a href="#"
                                    style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
                                     more
-                                    <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                                         style="display: inline-block; vertical-align: middle;" width="18" height="15">
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
                                 </a>
                             </div>
                         </div>
@@ -103,23 +113,27 @@
                                     <div class="col-3">
                                         <img src="{{ url_for('static', filename='img/products/product.png') }}"
                                              class="card-img-top"
-                                             alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
                                     </div>
 
                                     <div class="col-9">
                                         <h5 class="card-title">产品名称</h5>
-                                        <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-RMB">19.99</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-type">AI工具</span>
@@ -127,13 +141,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-sales-volume">100</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-inventory">100</span>
@@ -142,112 +158,10 @@
                                 <a href="#"
                                    style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
                                     more
-                                    <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                                         style="display: inline-block; vertical-align: middle;" width="18" height="15">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-2">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <img src="{{ url_for('static', filename='img/products/product.png') }}"
-                         class="card-img-top"
-                         alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
-                </div>
-
-                <div class="col-9">
-                    <h5 class="card-title">产品名称</h5>
-                    <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-RMB">19.99</span>
-                </div>
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-type">AI工具</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-sales-volume">100</span>
-                </div>
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-inventory">100</span>
-                </div>
-            </div>
-            <a href="#"
-               style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
-                more
-                <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                     style="display: inline-block; vertical-align: middle;" width="18" height="15">
-            </a>
-        </div>
-    </div>
-</div>
-                    <div class="col-md-3 mb-2">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-3">
-                                        <img src="{{ url_for('static', filename='img/products/product.png') }}"
-                                             class="card-img-top"
-                                             alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
-                                    </div>
-
-                                    <div class="col-9">
-                                        <h5 class="card-title">产品名称</h5>
-                                        <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
-                                             style="display: inline-block; vertical-align: middle;" width="18"
-                                             height="15">
-                                        <span id="product-RMB">19.99</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
-                                             style="display: inline-block; vertical-align: middle;" width="18"
-                                             height="15">
-                                        <span id="product-type">AI工具</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
-                                             style="display: inline-block; vertical-align: middle;" width="18"
-                                             height="15">
-                                        <span id="product-sales-volume">100</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
-                                             style="display: inline-block; vertical-align: middle;" width="18"
-                                             height="15">
-                                        <span id="product-inventory">100</span>
-                                    </div>
-                                </div>
-                                <a href="#"
-                                   style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
-                                    more
-                                    <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                                         style="display: inline-block; vertical-align: middle;" width="18" height="15">
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
                                 </a>
                             </div>
                         </div>
@@ -259,23 +173,27 @@
                                     <div class="col-3">
                                         <img src="{{ url_for('static', filename='img/products/product.png') }}"
                                              class="card-img-top"
-                                             alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
                                     </div>
 
                                     <div class="col-9">
                                         <h5 class="card-title">产品名称</h5>
-                                        <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-RMB">19.99</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-type">AI工具</span>
@@ -283,13 +201,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-sales-volume">100</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-inventory">100</span>
@@ -298,8 +218,10 @@
                                 <a href="#"
                                    style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
                                     more
-                                    <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                                         style="display: inline-block; vertical-align: middle;" width="18" height="15">
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
                                 </a>
                             </div>
                         </div>
@@ -311,23 +233,27 @@
                                     <div class="col-3">
                                         <img src="{{ url_for('static', filename='img/products/product.png') }}"
                                              class="card-img-top"
-                                             alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
                                     </div>
 
                                     <div class="col-9">
                                         <h5 class="card-title">产品名称</h5>
-                                        <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-RMB">19.99</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-type">AI工具</span>
@@ -335,13 +261,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-sales-volume">100</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-inventory">100</span>
@@ -350,64 +278,14 @@
                                 <a href="#"
                                    style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
                                     more
-                                    <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                                         style="display: inline-block; vertical-align: middle;" width="18" height="15">
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-2">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <img src="{{ url_for('static', filename='img/products/product.png') }}"
-                         class="card-img-top"
-                         alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
-                </div>
-
-                <div class="col-9">
-                    <h5 class="card-title">产品名称</h5>
-                    <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-RMB">19.99</span>
-                </div>
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-type">AI工具</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-sales-volume">100</span>
-                </div>
-                <div class="col-6">
-                    <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
-                         style="display: inline-block; vertical-align: middle;" width="18"
-                         height="15">
-                    <span id="product-inventory">100</span>
-                </div>
-            </div>
-            <a href="#"
-               style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
-                more
-                <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                     style="display: inline-block; vertical-align: middle;" width="18" height="15">
-            </a>
-        </div>
-    </div>
-</div>
                     <div class="col-md-3 mb-2">
                         <div class="card">
                             <div class="card-body">
@@ -415,23 +293,27 @@
                                     <div class="col-3">
                                         <img src="{{ url_for('static', filename='img/products/product.png') }}"
                                              class="card-img-top"
-                                             alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
                                     </div>
 
                                     <div class="col-9">
                                         <h5 class="card-title">产品名称</h5>
-                                        <p>这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-RMB">19.99</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-type">AI工具</span>
@@ -439,13 +321,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-sales-volume">100</span>
                                     </div>
                                     <div class="col-6">
-                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
                                              style="display: inline-block; vertical-align: middle;" width="18"
                                              height="15">
                                         <span id="product-inventory">100</span>
@@ -454,8 +338,190 @@
                                 <a href="#"
                                    style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
                                     more
-                                    <img src="{{ url_for('static', filename='img/products/more.png') }}" alt="了解更多"
-                                         style="display: inline-block; vertical-align: middle;" width="18" height="15">
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img src="{{ url_for('static', filename='img/products/product.png') }}"
+                                             class="card-img-top"
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
+                                    </div>
+
+                                    <div class="col-9">
+                                        <h5 class="card-title">产品名称</h5>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-RMB">19.99</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-type">AI工具</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-sales-volume">100</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-inventory">100</span>
+                                    </div>
+                                </div>
+                                <a href="#"
+                                   style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
+                                    more
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img src="{{ url_for('static', filename='img/products/product.png') }}"
+                                             class="card-img-top"
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
+                                    </div>
+
+                                    <div class="col-9">
+                                        <h5 class="card-title">产品名称</h5>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-RMB">19.99</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-type">AI工具</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-sales-volume">100</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-inventory">100</span>
+                                    </div>
+                                </div>
+                                <a href="#"
+                                   style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
+                                    more
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img src="{{ url_for('static', filename='img/products/product.png') }}"
+                                             class="card-img-top"
+                                             alt="Product 1"
+                                             style="max-width: 100%; display: block; margin: 0 auto;">
+                                    </div>
+
+                                    <div class="col-9">
+                                        <h5 class="card-title">产品名称</h5>
+                                        <p>
+                                            这里是产品描述这里是产品描述这里是产品描述这里是产品描述这里是产品描述</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/RMB.png') }}"
+                                             alt="RMB"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-RMB">19.99</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/type.png') }}"
+                                             alt="分类"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-type">AI工具</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}"
+                                             alt="销量"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-sales-volume">100</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <img src="{{ url_for('static', filename='img/products/inventory.png') }}"
+                                             alt="库存"
+                                             style="display: inline-block; vertical-align: middle;" width="18"
+                                             height="15">
+                                        <span id="product-inventory">100</span>
+                                    </div>
+                                </div>
+                                <a href="#"
+                                   style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
+                                    more
+                                    <img src="{{ url_for('static', filename='img/products/more.png') }}"
+                                         alt="了解更多"
+                                         style="display: inline-block; vertical-align: middle;" width="18"
+                                         height="15">
                                 </a>
                             </div>
                         </div>

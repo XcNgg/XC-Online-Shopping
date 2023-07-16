@@ -5,7 +5,7 @@ from extension import db
 import random
 import string
 import time
-from models import XcOsEmailCaptcha, XcOSUser, XcOSSignIn
+from models import *
 from extension import mail
 # flask 底层的生成加密函数
 from werkzeug.security import generate_password_hash
@@ -440,12 +440,22 @@ def check_edit_info():
 
 """
 ----------------------------------------------------------------------------------------
-卖出产品
+出售产品
 ----------------------------------------------------------------------------------------
 """
-
-
 @users.route('/SaleProducts')
 @login_required
 def sale_products():
     return render_template('users/saleProducts.html')
+
+
+# 获取当前商品数量 GET请求
+@users.route('/GetMySale',methods=['GET'])
+@login_required
+def get_my_sale():
+    user_id = session['user_id']
+    product_data = XcOSProduct.query.filter_by(seller_id=user_id).all()
+    if not product_data:
+        return jsonify({'code':200,'message':"您还没有出售中的产品哦",'products':[]})
+    else:
+        return jsonify({'code':200,'message':f'当前在售{len(product_data)}件商品','products':product_data})
