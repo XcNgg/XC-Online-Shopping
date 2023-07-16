@@ -1,4 +1,3 @@
-import flask
 from flask import Blueprint, request, render_template, redirect, g, jsonify, url_for, session, make_response
 from flask_mail import Message
 from extension import db
@@ -379,8 +378,6 @@ def check_edit_password():
 个人信息界面
 ----------------------------------------------------------------------------------------
 """
-
-
 # 个人信息界面
 @users.route('/information')
 @login_required
@@ -453,9 +450,27 @@ def sale_products():
 @users.route('/GetMySale',methods=['GET'])
 @login_required
 def get_my_sale():
+    products_list = []
     user_id = session['user_id']
-    product_data = XcOSProduct.query.filter_by(seller_id=user_id).all()
-    if not product_data:
+    products_result = XcOSProduct.query.filter_by(seller_id=user_id).all()
+    for product in products_result:
+        product_dict = {
+            'id': product.id,
+            'seller_id': product.seller_id,
+            'name': product.name,
+            # 'simple_description': product.simple_description,
+            # 'description': product.description,
+            'price': str(product.price),
+            'logo_img': product.logo_img,
+            'sales': product.sales,
+            'stock': product.stock,
+            'product_type': product.product_type,
+            'created_at': str(product.created_at),
+            'updated_at': str(product.updated_at)
+        }
+        products_list.append(product_dict)
+        print(product_dict)
+    if not products_list:
         return jsonify({'code':200,'message':"您还没有出售中的产品哦",'products':[]})
     else:
-        return jsonify({'code':200,'message':f'当前在售{len(product_data)}件商品','products':product_data})
+        return jsonify({'code':200,'message':f'当前在售【{len(products_list)}】件商品','products':products_list})

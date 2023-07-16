@@ -16,11 +16,6 @@
         <div class="col-sm mt-5">
             <div class="form-group" style="padding: 25px"></div>
 
-            {#            {% if success %}#}
-            {#                <div id='RegistSuccess' class="alert alert-success custom-alert" role="alert">#}
-            {#                    {{ success }}#}
-            {#                </div>#}
-            {#            {% endif %}#}
 
             <div id='success_alert' class="alert alert-success custom-alert" role="alert" style="display: none">
 
@@ -55,10 +50,12 @@
                     <a href="{{ url_for("users.forgot_password") }}">忘记密码？</a>
                 </div>
 
-                <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
-
-                {#                <div class="form-group mb-5">#}
-                {#                </div>#}
+                <!--todo 用户重定向-->
+                {% if redirect %}
+                    <div id="error_alert" class="alert alert-danger" role="alert" >请先登录,<a href="{{ url_for('users.regist') }}">没有账号?</a></div>
+                {% else %}
+                    <div id="error_alert" class="alert alert-danger" role="alert" style="display: none;" ></div>
+                {% endif %}
 
                 <button id='LoginButton' type="button" class="btn btn-block btn-primary">立即登录</button>
             </form>

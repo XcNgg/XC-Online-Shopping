@@ -23,7 +23,7 @@ class XcOSUser(db.Model):
     # 用户余额 (User balance)
     identity = db.Column(db.String(255), nullable=False, default='普通用户')
     # 角色身份权限 (Role identity and permissions)
-    # 0 管理员 1普通用户 2 VIP
+    # 普通用户 / VIP
     integral = db.Column(db.Integer, nullable=False, default=10)
     # 角色积分 (Role integral)
     addresses = db.relationship('XcOSAddress', backref='user', lazy=True)
@@ -96,13 +96,13 @@ class XcOSProduct(db.Model):
     # 产品描述 (Product description)
     price = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 产品价格 (Product price)
-    logo_img = db.Column(db.String(255),default='/static/img/product.png')
+    logo_img = db.Column(db.String(255),default='/static/img/products/product.png')
     # 产品Logo图片 (Product image)
     sales = db.Column(db.Integer, default=0)
     # 产品销量，默认为0
     stock = db.Column(db.Integer, default=0)
     # 添加库存字段，默认为0
-    # product_type = db.Column(db.String(50), nullable=False)
+    product_type = db.Column(db.String(50), nullable=False)
     # # 产品类型 (Product type)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)

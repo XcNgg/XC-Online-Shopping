@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 749e9077d76f
+Revision ID: d09aef52a32d
 Revises: 
-Create Date: 2023-07-15 12:48:58.154489
+Create Date: 2023-07-16 22:04:07.091138
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '749e9077d76f'
+revision = 'd09aef52a32d'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -77,9 +77,10 @@ def upgrade():
     sa.Column('simple_description', sa.Text(length=25), nullable=True),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('price', sa.DECIMAL(precision=10, scale=2), nullable=False),
-    sa.Column('image', sa.String(length=255), nullable=True),
+    sa.Column('logo_img', sa.String(length=255), nullable=True),
     sa.Column('sales', sa.Integer(), nullable=True),
     sa.Column('stock', sa.Integer(), nullable=True),
+    sa.Column('product_type', sa.String(length=50), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.ForeignKeyConstraint(['seller_id'], ['XcOS_user.id'], ),
@@ -89,7 +90,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('sign_in_time', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
-    sa.Column('amount', sa.DECIMAL(precision=5, scale=2), nullable=False),
+    sa.Column('integral', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['XcOS_user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

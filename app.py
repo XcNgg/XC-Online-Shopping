@@ -43,12 +43,9 @@ def before_requests():
 # 当渲染的所有网站都会执行以下的代码
 def context_processor():
     if hasattr(g, "user"):
-        # return {"user":g.user,"address":"test"}
-        return {"user": g.user, "address": "test"}
-
+        return {"user": g.user}
     else:
         return {}
-
 
 if __name__ == '__main__':
     app.run()

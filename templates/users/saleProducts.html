@@ -7,24 +7,41 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="container mt-5">
         <div class="row">
-            <div class="col-lg-6 mx-auto">
+            <div class="col-lg-12 mx-auto">
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">我出售的</h3>
                         <hr>
-                        <p id="sale-numbers" class="card-text"></p>
-                        <hr>
+                        <p id="sale-numbers" class="card-text">加载中...</p>
+                        <table id="product-tables" class="table table-hover" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">序号</th>
+                                    <th scope="col">id</th>
+                                    <th scope="col">产品名称</th>
+                                    <th scope="col">logo</th>
+                                    <th scope="col">价格</th>
+                                    <th scope="col">销量</th>
+                                    <th scope="col">库存</th>
+                                    <th scope="col">类型</th>
+                                    <th scope="col">创建时间</th>
+                                    <th scope="col">最近更新</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            <tr>
 
+                            </tr>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 {% endblock %}
