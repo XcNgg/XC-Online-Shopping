@@ -43,7 +43,7 @@ function getMySale() {
     method: "GET",
     success: function(response) {
       $('#sale-numbers').text(response.message);
-      var products = response.products;
+      var products = response.data;
       var productsLength = products.length;
       if (productsLength > 0) {
         $('#product-tables').show();

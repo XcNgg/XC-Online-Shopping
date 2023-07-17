@@ -87,7 +87,7 @@ class XcOSProduct(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # 产品ID (Product ID)
     seller_id = db.Column(db.Integer, db.ForeignKey('XcOS_user.id'), nullable=False)
-    # 添加外键关联卖家的id
+    # 添加外键关联卖家的用户(User ID)
     name = db.Column(db.String(255), nullable=False)
     # 产品名称 (Product name)
     simple_description = db.Column(db.Text(25))

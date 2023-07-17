@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}我出售的 - {{ super() }}{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src={{ url_for('static',filename='js/users/mySale.js') }}></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">我出售的</h3>
+                        <hr>
+                        <p id="sale-numbers" class="card-text">加载中...</p>
+                        <table id="product-tables" class="table table-hover" style="display: none;">
+                            <thead>
+                            <tr>
+                                <th scope="col">序号</th>
+                                <th scope="col">产品名称</th>
+                                <th scope="col">logo</th>
+                                <th scope="col">价格</th>
+                                <th scope="col">销量</th>
+                                <th scope="col">库存</th>
+                                <th scope="col">类型</th>
+                                <th scope="col">创建时间</th>
+                                <th scope="col">最近更新</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            <tr>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pl-4">
+                            <!-- todo 新增商品 -->
+                            <button id="add_sale" class="btn btn-outline-success" >添加商品</button>
+
+                        </div>
+
+                        <div id='success_alert' class="alert alert-success custom-alert mt-3" role="alert"
+                             style="display: none"></div>
+
+                        <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // url
+    var url = '{{ url_for('users.sale_info') }}';
+    console.log(url);
+
+</script>
+
+{% endblock %}
+

@@ -95,6 +95,7 @@ def logout():
 # 登录界面
 @users.route('/login', methods=['GET'])
 def login():
+    session.clear()
     if request.method == 'GET':
         return render_template('users/login.html')
 
@@ -437,14 +438,13 @@ def check_edit_info():
 
 """
 ----------------------------------------------------------------------------------------
-出售产品
+我的出售界面
 ----------------------------------------------------------------------------------------
 """
-@users.route('/SaleProducts')
+@users.route('/mySale')
 @login_required
-def sale_products():
-    return render_template('users/saleProducts.html')
-
+def my_sale():
+    return render_template('users/mySale.html')
 
 # 获取当前商品数量 GET请求
 @users.route('/GetMySale',methods=['GET'])
@@ -471,9 +471,9 @@ def get_my_sale():
         products_list.append(product_dict)
         # print(product_dict)
     if not products_list:
-        return jsonify({'code':200,'message':"您还没有出售中的产品哦",'products':[]})
+        return jsonify({'code':200,'message':"您还没有出售中的产品哦",'data':[]})
     else:
-        return jsonify({'code':200,'message':f'当前在售【{len(products_list)}】件商品','products':products_list})
+        return jsonify({'code':200,'message':f'当前在售【{len(products_list)}】件商品','data':products_list})
 
 @users.route('/DeleteMySale',methods=['POST'])
 @login_required
@@ -493,3 +493,15 @@ def delete_my_sale():
     except Exception as e:
         db.session.rollback()
         return jsonify({'code':500,'message':e.__str__()})
+
+"""
+----------------------------------------------------------------------------------------
+编辑、新增出售界面
+----------------------------------------------------------------------------------------
+"""
+# todo 编辑、新增出售界面
+@users.route('/saleInfo')
+@login_required
+def sale_info():
+    args = request.args
+    return render_template('users/saleInfo.html', **args)

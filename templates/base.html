@@ -90,9 +90,9 @@
                                         个人信息
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ url_for('users.sale_products') }}">
+                                    <a class="dropdown-item" href="{{ url_for('users.my_sale') }}">
                                      <img src="{{ url_for('static', filename='img/base/sale.png') }}" alt="" width="15" height="15">
-                                        我要出售
+                                        我出售的
                                     </a>
 
                                     <a class="dropdown-item" href="#">
@@ -143,7 +143,8 @@
 <div class="page-container">
     <div class="container">
         <!-- 主要内容区域 -->
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
 </div>
 <footer>
@@ -186,6 +187,8 @@
         </div>
     </div>
 </footer>
+
+
 
 <script>
     // 版权固定最新年份

@@ -104,6 +104,13 @@ $(document).ready(function () {
         GetCaptchaImage();
     });
 
+    //
+    $(document).keypress(function (event) {
+        if (event.which === 13) {  // 检测按下的键是否是回车键
+            $('#LoginButton').click();  // 触发按钮的点击事件
+        }
+    });
+
 
 
 });
