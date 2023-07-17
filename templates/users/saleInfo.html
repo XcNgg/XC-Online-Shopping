@@ -1,9 +1,70 @@
 {% extends 'base.html' %}
 
 {% block title %}添加出售 - {{ super() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/saleInfo.css') }}">
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src={{ url_for('static',filename='js/products/saleInfo.js') }}></script>
+{% endblock %}
+
 {% block content %}
-    <div class="container mt-5">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">我要出售商品</h4>
+                    <hr>
+                    <div class="form-group">
+                        <label for="name">产品名称</label>
+                        <input type="text" class="form-control" id="name" placeholder="输入产品名称">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="simple_description">产品简述</label>
+                        <textarea class="form-control" id="simple_description" rows="3" placeholder="输入产品简述(25字以内)" maxlength="25"></textarea>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="description">产品描述</label>
+                        <textarea class="form-control" id="description" rows="5" placeholder="输入产品描述"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">产品价格</label>
+                        <input type="number" class="form-control" id="price" placeholder="输入产品价格" value="10.00" min="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logo_img">产品Logo图片</label>
+                        <div class="square-image-container">
+                            <img id="preview_image" class="square-image" src="{{ url_for('static',filename='img/products/product.png') }}" alt="预览图像">
+                        </div>
+                        <input type="file" class="form-control-file" id="logo_img" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock">库存</label>
+                        <input type="number" class="form-control" id="stock" placeholder="输入产品库存(大于等于0)" value="0" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_type">产品类型</label>
+                        <select class="form-control" id="product_type">
+                            <option value="虚拟产品">虚拟产品</option>
+                        </select>
+                    </div>
+
+                    <button id='AddSaleBtn' type="button"  class="btn btn-primary">添加产品</button>
+                      <div id="success_alert" class="alert alert-success custom-alert  mt-3" role="alert" style="display: none">success</div>
+                        <div id="error_alert" class="alert alert-danger  mt-3" role="alert" style="display: none">error</div>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 {% endblock %}

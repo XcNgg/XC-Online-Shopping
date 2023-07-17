@@ -56,7 +56,7 @@ function getMySale() {
           var row = $('<tr>');
           row.append('<th scope="row">' + (i + 1) + '</th>');
           row.append('<td>' + product.name + '</td>');
-          row.append('<td><img src="' + product.logo_img + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
+          row.append('<td><img src="' + product.img_path + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
           row.append('<td>' + product.price + '</td>');
           row.append('<td>' + product.sales + '</td>');
           row.append('<td>' + product.stock + '</td>');

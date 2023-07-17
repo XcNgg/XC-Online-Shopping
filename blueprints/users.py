@@ -17,6 +17,8 @@ from sqlalchemy import func
 from image_captcha import generate_image
 import os
 import re
+from baiduImgCensor import get_img_result,convert_to_jpg
+from extension import move_file
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
@@ -461,7 +463,7 @@ def get_my_sale():
             # 'simple_description': product.simple_description,
             # 'description': product.description,
             'price': str(product.price),
-            'logo_img': product.logo_img,
+            'img_path': product.img_path,
             'sales': product.sales,
             'stock': product.stock,
             'product_type': product.product_type,
@@ -503,5 +505,78 @@ def delete_my_sale():
 @users.route('/saleInfo')
 @login_required
 def sale_info():
-    args = request.args
-    return render_template('users/saleInfo.html', **args)
+    return render_template('users/saleInfo.html')
+
+
+@users.route('/CheckSaleImg',methods=['POST'])
+@login_required
+def check_sale_img():
+    logo_img = request.files['logo_img']
+
+    logo_img.save('./static/upload/censor/' + logo_img.filename)
+
+    img_path = './static/upload/censor/' + logo_img.filename
+
+    # 判断图像是否不是jpg格式
+    if os.path.splitext(logo_img.filename)[-1] != '.jpg':
+        # 如果非jpg格式，将图像转为Jpg格式
+        img_path = convert_to_jpg(logo_img.filename)
+
+    img_result = get_img_result(img_path=img_path)
+
+    if 'conclusion' not in img_result:
+        return jsonify({'code':500,'message':'API错误！'})
+
+    else:
+
+        conclusion = img_result['conclusion']
+
+        if conclusion == '不合规' or conclusion == '疑似':
+            os.remove(img_path)
+            return jsonify({'code': 400, 'message': F"{img_result['data'][0]['msg']}"})
+
+        else:
+            timestamp_file_name =str(time.time())+'.jpg'
+            os.rename(img_path,'./static/upload/censor/'+timestamp_file_name)
+            move_file('static/upload/censor/'+timestamp_file_name,'static/upload/products/')
+            return jsonify({'code':200,'message':img_result,'filename':'/static/upload/products/'+timestamp_file_name})
+
+
+
+@users.route('/CheckSaleInfo',methods=['POST'])
+@login_required
+def check_sale_info():
+    data = request.form
+
+    product_type_list = ['虚拟产品']
+    if data.get('product_type') not in product_type_list:
+        return jsonify({'code':400,'message':'添加的数据类型不被允许'})
+
+    if len(data.get('simple_description')) > 25:
+        return jsonify({'code': 400, 'message': '产品简介过长(25个字以内)'})
+
+    if int(data.get('stock')) < 0:
+        return jsonify({'code': 400, 'message': '库存有误！'})
+
+    if float(data.get('price')) < 1.0:
+        return jsonify({'code': 400, 'message': '价格有误！'})
+
+    seller_id = session['user_id']
+    name = request.form.get('name')
+    simple_description = request.form.get('simple_description')
+    description = request.form.get('description')
+    price = request.form.get('price')
+    stock = request.form.get('stock')
+    product_type = request.form.get('product_type')
+    img_path = request.form.get('img_path')
+    # 创建 XcOSProduct 实例
+    product = XcOSProduct(name=name,seller_id=seller_id, simple_description=simple_description, description=description,
+                          price=price, stock=stock, product_type=product_type, img_path=img_path)
+
+    # 将实例添加到数据库
+    db.session.add(product)
+    db.session.commit()
+
+
+
+    return jsonify({'code':200,'message':'over','data':data})

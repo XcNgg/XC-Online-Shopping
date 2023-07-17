@@ -1,0 +1,13 @@
+.square-image-container {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.square-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

@@ -96,7 +96,7 @@ class XcOSProduct(db.Model):
     # 产品描述 (Product description)
     price = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 产品价格 (Product price)
-    logo_img = db.Column(db.String(255),default='/static/img/products/product.png')
+    img_path = db.Column(db.String(255),default='/static/img/products/product.png')
     # 产品Logo图片 (Product image)
     sales = db.Column(db.Integer, default=0)
     # 产品销量，默认为0
@@ -104,6 +104,12 @@ class XcOSProduct(db.Model):
     # 添加库存字段，默认为0
     product_type = db.Column(db.String(50), nullable=False)
     # # 产品类型 (Product type)
+    status = db.Column(db.Integer, default=0)
+    # 为上架状态，1为上架，0为备货中
+    approval_status = db.Column(db.Integer, default=0)
+    # 为审核状态，0为正在审核中，1为通过，2为审核失败
+    approval_info = db.Column(db.String(255), nullable=True)
+    # 审核信息
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),
