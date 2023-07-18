@@ -456,12 +456,13 @@ def get_my_sale():
     user_id = session['user_id']
     products_result = XcOSProduct.query.filter_by(seller_id=user_id).all()
     for product in products_result:
+        # product 所有返回值
         product_dict = {
-            'id': product.id,
+            # 'id': product.id,
             'seller_id': product.seller_id,
             'name': product.name,
-            'simple_description': product.simple_description,
-            'description': product.description,
+            # 'simple_description': product.simple_description,
+            # 'description': product.description,
             'price': str(product.price),
             'img_src': product.img_src,
             'sales': product.sales,
@@ -470,7 +471,7 @@ def get_my_sale():
             'status': product.status,
             'approval_status': product.approval_status,
             'approval_info': product.approval_info,
-            'created_at': str(product.created_at),
+            # 'created_at': str(product.created_at),
             'updated_at': str(product.updated_at)
         }
 
