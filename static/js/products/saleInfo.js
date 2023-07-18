@@ -90,6 +90,7 @@ function submitForm() {
 
     successAlert.hide();
     errorAlert.hide();
+    // 判断图像如果不是默认的图像则进行审核
     if ($('#preview_image').attr('src') !== '/static/img/products/product.png') {
         var file = $('#logo_img')[0].files[0];
         var imgData = new FormData();
@@ -102,13 +103,11 @@ function submitForm() {
             contentType: false,
             success: function (response) {
                 if (response.code !== 200) {
-                    showError(response.message);
+                    showError("图像不合规:"+response.message);
                     return false;
                 } else {
                     showSuccess('图像审核通过！');
-
                     var img_src = response.filename;
-
                     var formData = new FormData();
                     formData.append('name', name);
                     formData.append('simple_description', simpleDescription);
