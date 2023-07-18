@@ -96,7 +96,7 @@ class XcOSProduct(db.Model):
     # 产品描述 (Product description)
     price = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 产品价格 (Product price)
-    img_path = db.Column(db.String(255),default='/static/img/products/product.png')
+    img_src = db.Column(db.String(255),default='/static/img/products/product.png')
     # 产品Logo图片 (Product image)
     sales = db.Column(db.Integer, default=0)
     # 产品销量，默认为0

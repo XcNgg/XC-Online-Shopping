@@ -397,12 +397,12 @@ def check_edit_info():
 
     pattern = re.compile(r'^[\u4e00-\u9fa5a-zA-Z0-9_]+$')
     if not pattern.match(edit_username):
-        return jsonify({'code': 400, 'message': '用户名只能包含中文、大小写英文字母、下划线和数字'})
+        return jsonify({'code': 403, 'message': '用户名只能包含中文、大小写英文字母、下划线和数字'})
 
     now_user = XcOSUser.query.filter_by(id=user_id).first()
 
     if not now_user:
-        return jsonify({'code': 404, 'message': '找不到用户'})
+        return jsonify({'code': 403, 'message': '找不到用户'})
 
     has_user = XcOSUser.query.filter_by(username=edit_username).first()
 
@@ -458,18 +458,22 @@ def get_my_sale():
     for product in products_result:
         product_dict = {
             'id': product.id,
-            # 'seller_id': product.seller_id,
+            'seller_id': product.seller_id,
             'name': product.name,
-            # 'simple_description': product.simple_description,
-            # 'description': product.description,
+            'simple_description': product.simple_description,
+            'description': product.description,
             'price': str(product.price),
-            'img_path': product.img_path,
+            'img_src': product.img_src,
             'sales': product.sales,
             'stock': product.stock,
             'product_type': product.product_type,
+            'status': product.status,
+            'approval_status': product.approval_status,
+            'approval_info': product.approval_info,
             'created_at': str(product.created_at),
             'updated_at': str(product.updated_at)
         }
+
         products_list.append(product_dict)
         # print(product_dict)
     if not products_list:
@@ -482,8 +486,15 @@ def get_my_sale():
 def delete_my_sale():
     try:
         user_id = session['user_id']
+
+        if not user_id:
+            return jsonify({'code': 403, 'message': '请先登录！'})
+
         id = request.form.get('id')
         name = request.form.get('name')
+        if not id or not name:
+            return jsonify({'code': 403, 'message': '参数有误！'})
+
         delete_product = XcOSProduct.query.filter_by(id=id,name=name, seller_id=user_id).first()
         if delete_product:
             print(delete_product.name)
@@ -491,92 +502,92 @@ def delete_my_sale():
             db.session.commit()
             return jsonify({'code': 200, 'message': '删除成功！'})
         else:
-            return jsonify({'code': 400, 'message': '未找到要删除的数据！'})
+            return jsonify({'code': 403, 'message': '未找到要删除的数据！'})
     except Exception as e:
         db.session.rollback()
         return jsonify({'code':500,'message':e.__str__()})
 
 """
 ----------------------------------------------------------------------------------------
-编辑、新增出售界面
+新增出售界面
 ----------------------------------------------------------------------------------------
 """
-# todo 编辑、新增出售界面
 @users.route('/saleInfo')
 @login_required
 def sale_info():
     return render_template('users/saleInfo.html')
 
-
 @users.route('/CheckSaleImg',methods=['POST'])
 @login_required
 def check_sale_img():
     logo_img = request.files['logo_img']
+    ts = str(time.time())
+    ts_filename = ts+logo_img.filename
 
-    logo_img.save('./static/upload/censor/' + logo_img.filename)
-
-    img_path = './static/upload/censor/' + logo_img.filename
-
+    logo_img.save('./static/upload/censor/' + ts_filename)
+    img_path = './static/upload/censor/' +  ts_filename
     # 判断图像是否不是jpg格式
-    if os.path.splitext(logo_img.filename)[-1] != '.jpg':
+    if os.path.splitext(ts_filename)[-1] != '.jpg':
         # 如果非jpg格式，将图像转为Jpg格式
-        img_path = convert_to_jpg(logo_img.filename)
+        img_path = convert_to_jpg(img_path)
 
     img_result = get_img_result(img_path=img_path)
 
     if 'conclusion' not in img_result:
         return jsonify({'code':500,'message':'API错误！'})
-
     else:
-
         conclusion = img_result['conclusion']
-
         if conclusion == '不合规' or conclusion == '疑似':
             os.remove(img_path)
             return jsonify({'code': 400, 'message': F"{img_result['data'][0]['msg']}"})
 
         else:
-            timestamp_file_name =str(time.time())+'.jpg'
-            os.rename(img_path,'./static/upload/censor/'+timestamp_file_name)
-            move_file('static/upload/censor/'+timestamp_file_name,'static/upload/products/')
-            return jsonify({'code':200,'message':img_result,'filename':'/static/upload/products/'+timestamp_file_name})
+            move_file(img_path,'static/upload/products/')
+            return jsonify({'code':200,'message':img_result,'filename':'/static/upload/products/'+ts_filename.replace('png','jpg')})
 
 
-
-@users.route('/CheckSaleInfo',methods=['POST'])
+# 添加
+@users.route('/AddMySale',methods=['POST'])
 @login_required
-def check_sale_info():
-    data = request.form
+def add_my_sale():
 
-    product_type_list = ['虚拟产品']
-    if data.get('product_type') not in product_type_list:
-        return jsonify({'code':400,'message':'添加的数据类型不被允许'})
-
-    if len(data.get('simple_description')) > 25:
-        return jsonify({'code': 400, 'message': '产品简介过长(25个字以内)'})
-
-    if int(data.get('stock')) < 0:
-        return jsonify({'code': 400, 'message': '库存有误！'})
-
-    if float(data.get('price')) < 1.0:
-        return jsonify({'code': 400, 'message': '价格有误！'})
 
     seller_id = session['user_id']
-    name = request.form.get('name')
-    simple_description = request.form.get('simple_description')
-    description = request.form.get('description')
-    price = request.form.get('price')
-    stock = request.form.get('stock')
-    product_type = request.form.get('product_type')
-    img_path = request.form.get('img_path')
+    if not seller_id:
+        return jsonify({'code': 403, 'message': '请先登录！'})
+
+    data = request.form
+    name = data.get('name')
+    simple_description = data.get('simple_description')
+    description = data.get('description')
+    price = data.get('price')
+    stock = data.get('stock')
+    product_type = data.get('product_type')
+    product_status =data.get('product_status')
+    img_src = data.get('img_src')
+
+
+    # 产品列表，修改后前端也要修改
+    product_type_list = ['虚拟产品']
+    if product_type not in product_type_list:
+        return jsonify({'code':403,'message':'添加的数据类型不被允许'})
+
+    if len(simple_description) > 25:
+        return jsonify({'code': 403, 'message': '产品简介过长(25个字以内)'})
+
+    if int(stock) < 0:
+        return jsonify({'code': 403, 'message': '库存有误！'})
+
+    if float(price) < 1.0:
+        return jsonify({'code': 403, 'message': '价格有误！'})
+
+
     # 创建 XcOSProduct 实例
     product = XcOSProduct(name=name,seller_id=seller_id, simple_description=simple_description, description=description,
-                          price=price, stock=stock, product_type=product_type, img_path=img_path)
+                          price=price, stock=stock, product_type=product_type, status=product_status,img_src=img_src)
 
     # 将实例添加到数据库
     db.session.add(product)
     db.session.commit()
-
-
 
     return jsonify({'code':200,'message':'over','data':data})

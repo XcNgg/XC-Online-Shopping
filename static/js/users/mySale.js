@@ -53,15 +53,27 @@ function getMySale() {
         // 遍历产品列表，生成表格行
         for (var i = 0; i < productsLength; i++) {
           var product = products[i];
-          var row = $('<tr>');
+          var row = $('<tr class="text-center">');
           row.append('<th scope="row">' + (i + 1) + '</th>');
           row.append('<td>' + product.name + '</td>');
-          row.append('<td><img src="' + product.img_path + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
+          row.append('<td><img src="' + product.img_src + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
           row.append('<td>' + product.price + '</td>');
           row.append('<td>' + product.sales + '</td>');
           row.append('<td>' + product.stock + '</td>');
           row.append('<td>' + product.product_type + '</td>');
-          row.append('<td>' + product.created_at + '</td>');
+
+          if(product.approval_status === 1 ){
+              if (product.status === 1){
+                row.append('<td><a class="btn btn-success" title="上架成功" href="#">上架成功</a></td>');
+              }else {
+                  row.append('<td><a class="btn btn-secondary" title="努力备货中，赶紧上架吧！" href="#">努力备货</a></td>');
+              }
+          }else if(product.approval_status === 2){
+              row.append('<td><a class="btn btn-danger" href="#" title="'+product.approval_info+'">审核失败</a></td>');
+          }else{
+                row.append('<td><a class="btn btn-warning" href="#" title="正在审核,请耐心等待">正在审核</a></td>');
+          }
+
           row.append('<td>' + product.updated_at + '</td>');
           row.append('<td><a href="#">编辑</a></td>');
           row.append('<td><a href="#" class="delete-button" data-name="' + product.name + '" data-id = "'+ product.id +'">删除</a></td>');

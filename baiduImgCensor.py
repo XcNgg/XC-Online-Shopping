@@ -32,6 +32,7 @@ def convert_to_jpg(image_path):
     rgb_image.save(output_path, "JPEG")
     # 删除源文件
     os.remove(image_path)
+    print(image_path+"--->"+output_path)
     return output_path
 
 
