@@ -25,6 +25,12 @@ function validateInputs() {
         return false;
     }
 
+    // 检查产品名称
+    if (nameInput.val().length > 15) {
+        showError('产品名称长度不能大于15');
+        return false;
+    }
+
     // 检查产品简述
     var simpleDescriptionInput = $('#simple_description');
     if (simpleDescriptionInput.val().trim() === '') {
@@ -127,6 +133,11 @@ function submitForm() {
                         success: function (response) {
                             if (response.code === 200) {
                                 showSuccess('添加产品成功');
+                                $('#AddSaleBtn').prop("disabled", true);
+                                var now_url = window.location.href;
+                                setTimeout(function () {
+                                    window.location.replace(now_url);
+                                }, 800); // 0.8秒后跳转
                                 // 添加产品成功后的操作
                             } else {
                                 showError(response.message);
@@ -162,8 +173,13 @@ function submitForm() {
             contentType: false,
             success: function (response) {
                 if (response.code === 200) {
-                    showSuccess('添加产品成功');
-                    // 添加产品成功后的操作
+                     showSuccess('添加产品成功');
+                                $('#AddSaleBtn').prop("disabled", true);
+                                var now_url = window.location.href;
+                                setTimeout(function () {
+                                    window.location.replace(now_url);
+                                }, 800); // 0.8秒后跳转
+                                // 添加产品成功后的操作
                 } else {
                     showError(response.message);
                 }

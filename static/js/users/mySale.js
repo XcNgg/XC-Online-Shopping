@@ -62,34 +62,70 @@ function getMySale() {
           row.append('<td>' + product.stock + '</td>');
           row.append('<td>' + product.product_type + '</td>');
 
-          if(product.approval_status === 1 ){
-              if (product.status === 1){
-                row.append('<td><a class="btn btn-success" title="上架成功" href="#">上架成功</a></td>');
-              }else {
-                  row.append('<td><a class="btn btn-secondary" title="努力备货中，赶紧上架吧！" href="#">努力备货</a></td>');
-              }
-          }else if(product.approval_status === 2){
-              row.append('<td><a class="btn btn-danger" href="#" title="'+product.approval_info+'">审核失败</a></td>');
-          }else{
-                row.append('<td><a class="btn btn-warning" href="#" title="正在审核,请耐心等待">正在审核</a></td>');
+          if (product.approval_status === 1) {
+            if (product.status === 1) {
+              row.append('<td><a class="btn btn-success" title="上架成功" href="#">上架成功</a></td>');
+            } else {
+              row.append('<td><a class="btn btn-secondary" title="努力备货中，赶紧上架吧！" href="#">努力备货</a></td>');
+            }
+          } else if (product.approval_status === 2) {
+            row.append('<td><a class="btn btn-danger" href="#" title="' + product.approval_info + '">审核失败</a></td>');
+          } else {
+            row.append('<td><a class="btn btn-warning" href="#" title="正在审核,请耐心等待">正在审核</a></td>');
           }
 
           row.append('<td>' + product.updated_at + '</td>');
           row.append('<td><a href="#">编辑</a></td>');
-          row.append('<td><a href="#" class="delete-button" data-name="' + product.name + '" data-id = "'+ product.id +'">删除</a></td>');
+          row.append('<td><a href="#" class="delete-button" data-name="' + product.name + '" data-id="' + product.id + '">删除</a></td>');
           tableBody.append(row);
         }
+
+        // 添加分页导航
+        addPagination(productsLength);
       } else {
-
+        // 如果没有产品，显示相应提示
+        $('#product-tables').hide();
+        $('#pagination').empty(); // 清空分页导航
       }
-
-      // console.log("产品数量：" + productsLength);
-      // 在这里进行其他逻辑操作，根据需要进行判断或处理
     },
     error: function(xhr, status, error) {
-      // console.error("请求出错：" + error);
+      console.error("请求出错：" + error);
     }
   });
+}
+
+function addPagination(totalItems) {
+  var itemsPerPage = 15; // 每页显示的项数
+  var totalPages = Math.ceil(totalItems / itemsPerPage); // 总页数
+
+  // 生成分页导航的 HTML
+  var paginationHtml = '';
+  for (var i = 1; i <= totalPages; i++) {
+    paginationHtml += '<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>';
+  }
+
+  // 显示分页导航
+  $('#pagination').html(paginationHtml);
+
+  // 添加分页导航的点击事件处理程序
+  $('#pagination').on('click', 'li.page-item', function() {
+    var page = $(this).index() + 1;
+    var start = (page - 1) * itemsPerPage;
+    var end = start + itemsPerPage;
+
+    // 显示当前页的数据
+    $('#product-tables tbody tr').hide();
+    $('#product-tables tbody tr').slice(start, end).show();
+
+    // 设置当前页的分页导航样式
+    $('#pagination li.page-item').removeClass('active');
+    $(this).addClass('active');
+  });
+
+  // 默认显示第一页的数据和样式
+  $('#product-tables tbody tr').hide();
+  $('#product-tables tbody tr').slice(0, itemsPerPage).show();
+  $('#pagination li.page-item:first-child').addClass('active');
 }
 
 $(document).ready(function() {

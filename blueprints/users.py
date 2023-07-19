@@ -17,8 +17,10 @@ from sqlalchemy import func
 from image_captcha import generate_image
 import os
 import re
-from baiduImgCensor import get_img_result,convert_to_jpg
+from baiduImgCensor import get_img_result, convert_to_jpg
 from extension import move_file
+from math import ceil
+
 
 users = Blueprint('users', __name__, url_prefix='/users')
 
@@ -381,6 +383,8 @@ def check_edit_password():
 个人信息界面
 ----------------------------------------------------------------------------------------
 """
+
+
 # 个人信息界面
 @users.route('/information')
 @login_required
@@ -443,13 +447,16 @@ def check_edit_info():
 我的出售界面
 ----------------------------------------------------------------------------------------
 """
+
+
 @users.route('/mySale')
 @login_required
 def my_sale():
     return render_template('users/mySale.html')
 
+
 # 获取当前商品数量 GET请求
-@users.route('/GetMySale',methods=['GET'])
+@users.route('/GetMySale', methods=['GET'])
 @login_required
 def get_my_sale():
     products_list = []
@@ -458,7 +465,7 @@ def get_my_sale():
     for product in products_result:
         # product 所有返回值
         product_dict = {
-            # 'id': product.id,
+            'id': product.id,
             'seller_id': product.seller_id,
             'name': product.name,
             # 'simple_description': product.simple_description,
@@ -478,11 +485,12 @@ def get_my_sale():
         products_list.append(product_dict)
         # print(product_dict)
     if not products_list:
-        return jsonify({'code':200,'message':"您还没有出售中的产品哦",'data':[]})
+        return jsonify({'code': 200, 'message': "您还没有出售中的产品哦", 'data': []})
     else:
-        return jsonify({'code':200,'message':f'当前在售【{len(products_list)}】件商品','data':products_list})
+        return jsonify({'code': 200, 'message': f'当前在售【{len(products_list)}】件商品', 'data': products_list})
 
-@users.route('/DeleteMySale',methods=['POST'])
+
+@users.route('/DeleteMySale', methods=['POST'])
 @login_required
 def delete_my_sale():
     try:
@@ -496,7 +504,7 @@ def delete_my_sale():
         if not id or not name:
             return jsonify({'code': 403, 'message': '参数有误！'})
 
-        delete_product = XcOSProduct.query.filter_by(id=id,name=name, seller_id=user_id).first()
+        delete_product = XcOSProduct.query.filter_by(id=id, name=name, seller_id=user_id).first()
         if delete_product:
             print(delete_product.name)
             db.session.delete(delete_product)
@@ -506,27 +514,31 @@ def delete_my_sale():
             return jsonify({'code': 403, 'message': '未找到要删除的数据！'})
     except Exception as e:
         db.session.rollback()
-        return jsonify({'code':500,'message':e.__str__()})
+        return jsonify({'code': 500, 'message': e.__str__()})
+
 
 """
 ----------------------------------------------------------------------------------------
 新增出售界面
 ----------------------------------------------------------------------------------------
 """
+
+
 @users.route('/saleInfo')
 @login_required
 def sale_info():
     return render_template('users/saleInfo.html')
 
-@users.route('/CheckSaleImg',methods=['POST'])
+
+@users.route('/CheckSaleImg', methods=['POST'])
 @login_required
 def check_sale_img():
     logo_img = request.files['logo_img']
     ts = str(time.time())
-    ts_filename = ts+logo_img.filename
+    ts_filename = ts + logo_img.filename
 
     logo_img.save('./static/upload/censor/' + ts_filename)
-    img_path = './static/upload/censor/' +  ts_filename
+    img_path = './static/upload/censor/' + ts_filename
     # 判断图像是否不是jpg格式
     if os.path.splitext(ts_filename)[-1] != '.jpg':
         # 如果非jpg格式，将图像转为Jpg格式
@@ -535,7 +547,7 @@ def check_sale_img():
     img_result = get_img_result(img_path=img_path)
 
     if 'conclusion' not in img_result:
-        return jsonify({'code':500,'message':'API错误！'})
+        return jsonify({'code': 500, 'message': 'API错误！'})
     else:
         conclusion = img_result['conclusion']
         if conclusion == '不合规' or conclusion == '疑似':
@@ -543,16 +555,15 @@ def check_sale_img():
             return jsonify({'code': 400, 'message': F"{img_result['data'][0]['msg']}"})
 
         else:
-            move_file(img_path,'static/upload/products/')
-            return jsonify({'code':200,'message':img_result,'filename':'/static/upload/products/'+ts_filename.replace('png','jpg')})
+            move_file(img_path, 'static/upload/products/')
+            return jsonify({'code': 200, 'message': img_result,
+                            'filename': '/static/upload/products/' + ts_filename.replace('png', 'jpg')})
 
 
 # 添加
-@users.route('/AddMySale',methods=['POST'])
+@users.route('/AddMySale', methods=['POST'])
 @login_required
 def add_my_sale():
-
-
     seller_id = session['user_id']
     if not seller_id:
         return jsonify({'code': 403, 'message': '请先登录！'})
@@ -564,14 +575,16 @@ def add_my_sale():
     price = data.get('price')
     stock = data.get('stock')
     product_type = data.get('product_type')
-    product_status =data.get('product_status')
+    product_status = data.get('product_status')
     img_src = data.get('img_src')
 
+    if len(name) > 15:
+        return jsonify({'code': 403, 'message': '产品名称长度不能大于15'})
 
     # 产品列表，修改后前端也要修改
     product_type_list = ['虚拟产品']
     if product_type not in product_type_list:
-        return jsonify({'code':403,'message':'添加的数据类型不被允许'})
+        return jsonify({'code': 403, 'message': '添加的数据类型不被允许'})
 
     if len(simple_description) > 25:
         return jsonify({'code': 403, 'message': '产品简介过长(25个字以内)'})
@@ -582,13 +595,13 @@ def add_my_sale():
     if float(price) < 1.0:
         return jsonify({'code': 403, 'message': '价格有误！'})
 
-
     # 创建 XcOSProduct 实例
-    product = XcOSProduct(name=name,seller_id=seller_id, simple_description=simple_description, description=description,
-                          price=price, stock=stock, product_type=product_type, status=product_status,img_src=img_src)
+    product = XcOSProduct(name=name, seller_id=seller_id, simple_description=simple_description,
+                          description=description,
+                          price=price, stock=stock, product_type=product_type, status=product_status, img_src=img_src)
 
     # 将实例添加到数据库
     db.session.add(product)
     db.session.commit()
 
-    return jsonify({'code':200,'message':'over','data':data})
+    return jsonify({'code': 200, 'message': 'over', 'data': data})
