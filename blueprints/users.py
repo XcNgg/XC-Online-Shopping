@@ -461,7 +461,7 @@ def my_sale():
 def get_my_sale():
     products_list = []
     user_id = session['user_id']
-    products_result = XcOSProduct.query.filter_by(seller_id=user_id).all()
+    products_result = XcOSProduct.query.filter_by(seller_id=user_id).order_by(XcOSProduct.updated_at.desc()).all()
     for product in products_result:
         # product 所有返回值
         product_dict = {

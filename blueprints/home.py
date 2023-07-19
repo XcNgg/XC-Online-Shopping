@@ -21,7 +21,6 @@ def index():
         .limit(8)
         .all()
     )
-    for p in top_products:
-        print(p.name)
+
 
     return render_template('index.html', info=info,top_products=top_products)
