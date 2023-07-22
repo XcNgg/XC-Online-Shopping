@@ -4,11 +4,14 @@
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+
+
 {% endblock %}
 
 {% block script %}
     <script type="text/javascript" src={{ url_for('static',filename='js/index.js') }}></script>
 {% endblock %}
+
 
 {% block content %}
     <!-- Product Details -->
@@ -97,6 +100,7 @@
     </div>
     <!-- 美化占位 -->
     <div class="form-group mb-3"></div>
+    <hr>
 
     <div class="container">
         <!-- 热销标题 -->
