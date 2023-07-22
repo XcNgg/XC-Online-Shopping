@@ -82,7 +82,7 @@ function getMySale() {
                     }
 
                     row.append('<td>' + product.updated_at + '</td>');
-                    row.append('<td><a href="#">编辑</a></td>');
+                    row.append('<td><a href="/users/saleInfo?id='+ product.id +'">编辑</a></td>');
                     row.append('<td><a href="#" class="delete-button" data-name="' + product.name + '" data-id="' + product.id + '">删除</a></td>');
                     tableBody.append(row);
                 }

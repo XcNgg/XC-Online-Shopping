@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}添加出售 - {{ super() }}{% endblock %}
+{% block title %}出售信息 - {{ super() }}{% endblock %}
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/saleInfo.css') }}">
 {% endblock %}
 
 {% block script %}
-    <script type="text/javascript" src={{ url_for('static',filename='js/products/saleInfo.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static',filename='js/users/saleInfo.js') }}></script>
 {% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-8 mx-auto">
+            {% if not products %}
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">我要出售商品</h4>
+                    <h4 class="card-title">出售新商品</h4>
                     <hr>
                     <div class="form-group">
                         <label for="name">产品名称</label>
@@ -29,13 +30,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="description">产品描述</label>
-                        <textarea class="form-control" id="description" rows="5" placeholder="输入产品描述"></textarea>
+                        <label for="description">付费内容</label>
+                        <textarea class="form-control" id="description" rows="5" placeholder="输入付费后才能查看的内容，例如网盘链接等"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="price">产品价格</label>
-                        <input type="number" class="form-control" id="price" placeholder="输入产品价格" value="10.00" min="0.00">
+                        <input type="number" class="form-control" id="price" placeholder="输入产品价格" value="1.00" min="1.00">
                     </div>
 
                     <div class="form-group">
@@ -63,7 +64,7 @@
                         <label for="product_status">产品状态</label>
                         <select class="form-control" id="product_status">
                             <option value="0">备货中</option>
-                            <option value="1">已上架</option>
+                            <option value="1" selected>已上架</option>
                         </select>
                     </div>
 
@@ -75,6 +76,75 @@
                 </div>
             </div>
 
+<!-- else -->
+            {% else %}
+             <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">编辑商品 - {{ products.name }}</h4>
+                    <hr>
+                    <div class="form-group" style="display:none">
+                        <label id="product-id">{{ products.id }}</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">产品名称</label>
+                        <input type="text" class="form-control" id="name" placeholder="输入产品名称(15字以内)" maxlength="15" value="{{ products.name }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="simple_description">产品简述</label>
+                        <textarea class="form-control" id="simple_description" rows="3" placeholder="输入产品简述(25字以内)" maxlength="25">{{ products.simple_description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">付费内容</label>
+                        <textarea class="form-control" id="description" rows="5" placeholder="输入付费后才能查看的内容，例如网盘链接等">{{ products.description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">产品价格</label>
+                        <input type="number" class="form-control" id="price" placeholder="输入产品价格" value="{{ products.price }}" min="1.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="logo_img">产品Logo图片</label>
+                        <div class="square-image-container">
+                            <img id="preview_image" class="square-image" src="{{ products.img_src }}" alt="预览图像">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock">库存</label>
+                        <input type="number" class="form-control" id="stock" placeholder="输入产品库存(大于等于0)" value="{{ products.stock }}" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_type">产品类型</label>
+                        <select class="form-control" id="product_type">
+                            <option value="虚拟产品">虚拟产品</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product_status">产品状态</label>
+                        <select class="form-control" id="product_status">
+                            {% if products.status == 1 %}
+                                <option value="0">备货中</option>
+                                <option value="1" selected>已上架</option>
+                            {% else %}
+                                <option value="0" selected>备货中</option>
+                                <option value="1" >已上架</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <button id='EditSaleBtn' type="button"  class="btn btn-outline-primary">修改产品</button>
+                    <a href="{{ url_for('users.my_sale') }}"  class="btn btn-outline-dark">返回总览</a>
+
+                      <div id="success_alert" class="alert alert-success custom-alert  mt-3" role="alert" style="display: none">success</div>
+                        <div id="error_alert" class="alert alert-danger  mt-3" role="alert" style="display: none">error</div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

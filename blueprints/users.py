@@ -95,7 +95,6 @@ def logout():
 """
 
 
-# todo login的界面 需要重构 js需要建立 参考 / EmailCaptcha
 # 登录界面
 @users.route('/login', methods=['GET'])
 def login():
@@ -527,7 +526,19 @@ def delete_my_sale():
 @users.route('/saleInfo')
 @login_required
 def sale_info():
-    return render_template('users/saleInfo.html')
+    id = request.args.get('id')
+    if not id:
+        return render_template('users/saleInfo.html')
+
+    seller_id = session['user_id']
+    products = XcOSProduct.query.filter_by(id=id,seller_id=seller_id).first()
+
+    if not products:
+        return render_template('users/saleInfo.html')
+
+    else:
+        return render_template('users/saleInfo.html',products=products)
+
 
 
 @users.route('/CheckSaleImg', methods=['POST'])
@@ -595,6 +606,7 @@ def add_my_sale():
     if float(price) < 1.0:
         return jsonify({'code': 403, 'message': '价格有误！'})
 
+
     # 创建 XcOSProduct 实例
     product = XcOSProduct(name=name, seller_id=seller_id, simple_description=simple_description,
                           description=description,
@@ -603,5 +615,69 @@ def add_my_sale():
     # 将实例添加到数据库
     db.session.add(product)
     db.session.commit()
+    # 刷新对象以获取最新的属性值
+    db.session.refresh(product)
 
-    return jsonify({'code': 200, 'message': 'over', 'data': data})
+
+    return jsonify({'code': 200, 'message': '添加产品成功！', 'id':product.id })
+
+
+@users.route('/EditMySale', methods=['POST'])
+@login_required
+def edit_my_sale():
+    seller_id = session['user_id']
+    if not seller_id:
+        return jsonify({'code': 403, 'message': '请先登录！'})
+
+
+    data = request.form
+    id = data.get('id')
+    name = data.get('name')
+    simple_description = data.get('simple_description')
+    description = data.get('description')
+    price = data.get('price')
+    stock = data.get('stock')
+    product_type = data.get('product_type')
+    product_status = data.get('product_status')
+
+
+    if len(name) > 15:
+        return jsonify({'code': 403, 'message': '产品名称长度不能大于15'})
+
+    # 产品列表，修改后前端也要修改
+    product_type_list = ['虚拟产品']
+    if product_type not in product_type_list:
+        return jsonify({'code': 403, 'message': '添加的数据类型不被允许'})
+
+    if len(simple_description) > 25:
+        return jsonify({'code': 403, 'message': '产品简介过长(25个字以内)'})
+
+    if int(stock) < 0:
+        return jsonify({'code': 403, 'message': '库存有误！'})
+
+    if float(price) < 1.0:
+        return jsonify({'code': 403, 'message': '价格有误！'})
+
+    if int(product_status) not in [0,1]:
+        return jsonify({'code': 403, 'message': '产品状态有误'})
+
+    if int(product_status) == 1 and int(stock) <= 0:
+        return jsonify({'code': 403, 'message': '产品上架,库存必须大于0'})
+
+    edit_product = XcOSProduct.query.filter_by(id=id,seller_id=seller_id).first()
+
+    if not edit_product:
+        return jsonify({'code': 403, 'message': '当前用户未售卖改该产品！'})
+
+    edit_product.name = name
+    edit_product.seller_id = seller_id
+    edit_product.simple_description=simple_description
+    edit_product.description=description
+    edit_product.price=price
+    edit_product.stock=stock
+    edit_product.product_type=product_type
+    edit_product.status=product_status
+
+    db.session.commit()
+
+    return jsonify({'code': 200, 'message': '修改产品成功！'})

@@ -64,6 +64,14 @@ function validateInputs() {
         return false;
     }
 
+    if ($("#product_status").val() === "1"){
+        if (stockInput.val().trim() === '' || parseInt(stockInput.val()) <= 0) {
+        showError('产品上架,库存必须大于0');
+        return false;
+        }
+    }
+
+
     return true;
 }
 
@@ -83,7 +91,7 @@ function showSuccess(successMessage) {
     errorAlert.hide();
 }
 
-function submitForm() {
+function submitAddForm() {
     var errorAlert = $('#error_alert');
     var successAlert = $('#success_alert');
     var name = $('#name').val();
@@ -134,7 +142,7 @@ function submitForm() {
                             if (response.code === 200) {
                                 showSuccess('添加产品成功');
                                 $('#AddSaleBtn').prop("disabled", true);
-                                var now_url = window.location.href;
+                                var now_url = window.location.href+"?id="+response.id;
                                 setTimeout(function () {
                                     window.location.replace(now_url);
                                 }, 800); // 0.8秒后跳转
@@ -175,7 +183,7 @@ function submitForm() {
                 if (response.code === 200) {
                      showSuccess('添加产品成功');
                                 $('#AddSaleBtn').prop("disabled", true);
-                                var now_url = window.location.href;
+                                var now_url = window.location.href+"?id="+response.id;
                                 setTimeout(function () {
                                     window.location.replace(now_url);
                                 }, 800); // 0.8秒后跳转
@@ -193,6 +201,55 @@ function submitForm() {
 }
 
 
+function submitEditForm() {
+    var errorAlert = $('#error_alert');
+    var successAlert = $('#success_alert');
+    var id = $('#product-id').text();
+    var name = $('#name').val();
+    var simpleDescription = $('#simple_description').val();
+    var description = $('#description').val();
+    var price = $('#price').val();
+    var stock = $('#stock').val();
+    var product_status = $('#product_status').val();
+    var productType = $('#product_type').val();
+
+    successAlert.hide();
+    errorAlert.hide();
+    var formData = new FormData();
+    formData.append('id',id);
+    formData.append('name', name);
+    formData.append('simple_description', simpleDescription);
+    formData.append('description', description);
+    formData.append('price', price);
+    formData.append('stock', stock);
+    formData.append('product_type', productType);
+    formData.append('product_status', product_status);
+    $.ajax({
+        url: '/users/EditMySale',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if (response.code === 200) {
+                 showSuccess('修改商品成功');
+                    $('#EditSaleBtn').prop("disabled", true);
+                    var now_url = window.location.href;
+                    setTimeout(function () {
+                        window.location.replace(now_url);
+                    }, 800); // 0.8秒后跳转
+                    // 添加产品成功后的操作
+            } else {
+                showError(response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            showError('请求失败，请重试');
+        }
+    });
+
+}
+
 $(document).ready(function () {
     // 上传完图像，自动展示
     $('#logo_img').on('change', function () {
@@ -203,7 +260,14 @@ $(document).ready(function () {
     $('#AddSaleBtn').click(function () {
         if (validateInputs()) {
             // 验证并上传图像
-            submitForm();
+            submitAddForm();
+        }
+    });
+
+     $('#EditSaleBtn').click(function () {
+        if (validateInputs()) {
+            // 验证并上传图像
+            submitEditForm();
         }
     });
 });
