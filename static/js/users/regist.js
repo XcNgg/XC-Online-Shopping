@@ -163,7 +163,7 @@ $(document).ready(function () {
             success: function (res) {
                 var code = res['code'];
                 if (code === 200) {
-                    toggleDiv('注册成功！即将跳转登录界面... ', 1);
+                    toggleDiv('注册成功！即将跳转... ', 1);
                     setTimeout(function () {
                         window.location.href = '/users/login'; // 登录成功后跳转到首页
                     }, 500); // 0.5秒后跳转

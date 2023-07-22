@@ -64,7 +64,7 @@ function validateInputs() {
         return false;
     }
 
-    if ($("#product_status").val() === "1"){
+    if ( $("#product_status").val() === "1" ){
         if (stockInput.val().trim() === '' || parseInt(stockInput.val()) <= 0) {
         showError('产品上架,库存必须大于0');
         return false;
@@ -87,7 +87,9 @@ function showError(errorMessage) {
 function showSuccess(successMessage) {
     var errorAlert = $('#error_alert');
     var successAlert = $('#success_alert');
-    successAlert.text(successMessage).show();
+    var message = $('#success-message');
+    successAlert.show();
+    message.text(successMessage);
     errorAlert.hide();
 }
 
@@ -101,11 +103,11 @@ function submitAddForm() {
     var stock = $('#stock').val();
     var product_status = $('#product_status').val();
     var productType = $('#product_type').val();
-
     successAlert.hide();
     errorAlert.hide();
     // 判断图像如果不是默认的图像则进行审核
     if ($('#preview_image').attr('src') !== '/static/img/products/product.png') {
+        showSuccess('正在审核图像...');
         var file = $('#logo_img')[0].files[0];
         var imgData = new FormData();
         imgData.append('logo_img', file);
@@ -171,7 +173,6 @@ function submitAddForm() {
         formData.append('stock', stock);
         formData.append('product_type', productType);
         formData.append('product_status', product_status);
-
         formData.append('img_src', '/static/img/products/product.png');
         $.ajax({
             url: '/users/AddMySale',
@@ -182,12 +183,12 @@ function submitAddForm() {
             success: function (response) {
                 if (response.code === 200) {
                      showSuccess('添加产品成功');
-                                $('#AddSaleBtn').prop("disabled", true);
-                                var now_url = window.location.href+"?id="+response.id;
-                                setTimeout(function () {
-                                    window.location.replace(now_url);
-                                }, 800); // 0.8秒后跳转
-                                // 添加产品成功后的操作
+                    $('#AddSaleBtn').prop("disabled", true);
+                    var now_url = window.location.href+"?id="+response.id;
+                    setTimeout(function () {
+                        window.location.replace(now_url);
+                    }, 800); // 0.8秒后跳转
+                    // 添加产品成功后的操作
                 } else {
                     showError(response.message);
                 }

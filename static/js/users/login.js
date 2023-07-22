@@ -15,6 +15,7 @@ function checkEmail() {
 
 // 登录验证接口
 function checkLogin() {
+    $('#success_alert').show();
     var formData = {
         email: $('input[name=email]').val(),
         password: $('input[name=password]').val(),
@@ -30,11 +31,13 @@ function checkLogin() {
             if (response.code === 200) {
                 // 登录成功
                 $("#error_alert").hide();
-                $('#success_alert').text('登录成功!即将跳转到首页...').show(); // 显示成功提示框
+                $('#success_alert').show();
+                $('#success-message').text('登录成功!即将跳转到首页...'); // 显示成功提示框
                 setTimeout(function () {
                     window.location.href = '/'; // 登录成功后跳转到首页
                 }, 500); // 0.5秒后跳转
             } else {
+                $("#success_alert").hide();
                 // 登录失败
                 $('#error_alert').text(response.message).show(); // 显示错误提示信息
                 // 重置验证码

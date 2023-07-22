@@ -521,8 +521,6 @@ def delete_my_sale():
 新增出售界面
 ----------------------------------------------------------------------------------------
 """
-
-
 @users.route('/saleInfo')
 @login_required
 def sale_info():
@@ -534,7 +532,7 @@ def sale_info():
     products = XcOSProduct.query.filter_by(id=id,seller_id=seller_id).first()
 
     if not products:
-        return render_template('users/saleInfo.html')
+        return redirect(url_for('users.sale_info'))
 
     else:
         return render_template('users/saleInfo.html',products=products)
