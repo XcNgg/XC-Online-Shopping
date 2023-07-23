@@ -1,9 +1,18 @@
   $(document).ready(function () {
         // 页面加载完成后，获取数据并渲染产品卡片
         fetchDataAndRender();
-    });
+        $('#loading-spinner-message').hide();
+
+
+});
+
+
+$('.more-img').click(function() {
+    $('#loading-spinner-message').show();
+});
 
     function fetchDataAndRender(page=1,keyword='',type='虚拟产品') {
+        $('#loading-spinner-message').show();
         // 发送请求获取数据
         var apiUrl = `/products/getproduct?keyword=${keyword}&page=${page}&type=${type}`;
         $.get(apiUrl, function (response) {
@@ -11,7 +20,9 @@
                 var productsData = response.data;
                 // 渲染产品卡片
                 renderProductCards(productsData);
+                $('#loading-spinner-message').hide();
             } else {
+                $('#loading-spinner-message').hide();
                 console.log('Error fetching product data.');
             }
         });
@@ -76,7 +87,7 @@
                                 <a href="/products/productinfo?id=${product.id}"
                                    style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">
                                     more
-                                    <img src="/static/img/products/more.png"
+                                    <img class="more-img" src="/static/img/products/more.png"
                                          alt="了解更多"
                                          style="display: inline-block; vertical-align: middle;" width="18"
                                          height="15">
@@ -87,7 +98,7 @@
             `;
             productContainer.append(productCardHtml);
         }
-            console.log(productCardHtml);
-            console.log(productContainer);
+            // console.log(productCardHtml);
+            // console.log(productContainer);
 
     }

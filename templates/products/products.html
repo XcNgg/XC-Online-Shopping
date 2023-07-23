@@ -4,19 +4,19 @@
 
 {% block css %}
     <style>
-/* CSS类名为image-hover-zoom */
-img {
-  /* 设置图像的过渡效果，使放大动画更平滑 */
-  transition: transform 0.3s ease;
-}
+        /* CSS类名为image-hover-zoom */
+        img {
+            /* 设置图像的过渡效果，使放大动画更平滑 */
+            transition: transform 0.3s ease;
+        }
 
-/* 当鼠标悬停在图像上时，应用图像放大的效果 */
-img:hover {
-  /* 使用transform属性进行图像放大，这里的scale值表示放大倍数 */
-  /* 1表示原始大小，1.2表示放大到原始大小的1.2倍 */
-  transform: scale(1.6);
-}
-</style>
+        /* 当鼠标悬停在图像上时，应用图像放大的效果 */
+        img:hover {
+            /* 使用transform属性进行图像放大，这里的scale值表示放大倍数 */
+            /* 1表示原始大小，1.2表示放大到原始大小的1.2倍 */
+            transform: scale(1.6);
+        }
+    </style>
 {% endblock %}
 
 {% block script %}
@@ -42,10 +42,11 @@ img:hover {
                         <div class="col-md-12">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-outline-secondary active">
-                                    <input type="radio" name="options" id="option1" onclick="fetchDataAndRender(1,'','虚拟产品')" checked>虚拟产品
+                                    <input type="radio" name="options" id="option1"
+                                           onclick="fetchDataAndRender(1,'','虚拟产品')" checked>虚拟产品
                                 </label>
                                 <label class="btn btn-outline-secondary">
-                                    <input type="radio" name="options" id="option2" > 暂无其他
+                                    <input type="radio" name="options" id="option2"> 暂无其他
                                 </label>
                                 {#                                <label class="btn btn-outline-secondary">#}
                                 {#                                    <input type="radio" name="options" id="option3">#}
@@ -56,42 +57,40 @@ img:hover {
                 </div>
             </div>
             <hr>
+            <div class="d-flex align-items-center mb-2" id='loading-spinner' >
+                <strong id='loading-spinner-message' style="display: none;">Loading...</strong>
+            </div>
 
             <div class="col-md-12">
                 <!-- 产品详细栏目-->
-
-                <div class="row mb-1"  id="product-list">
-                    <div class="d-flex align-items-center">
-                    <strong>Loading &nbsp;</strong>
-                    <div class="spinner-grow spinner-grow-sm " role="status"></div>
-                        &nbsp;
-                    <div class="spinner-grow spinner-grow-sm " role="status"></div>
-                    &nbsp;
-                        <div class="spinner-grow spinner-grow-sm " role="status"></div>
+                <div class="row mb-1" id="product-list">
+                 <div class="d-flex align-items-center mb-2" id='loading-spinner' style="display: none;">
+                        <strong id='loading-spinner-message'>Loading...</strong>
+                        <div  class="spinner-border ml-auto" role="status"></div>
+                </div>
                 </div>
             </div>
-            </div>
+
         </div>
 
 
         <div class="row mb-3"></div>
 
 
-<div class="container text-center">
-    <nav aria-label="Page navigation">
-        {% for page_group in pages|batch(10) %}
-        <div class="d-inline-flex">
-            <ul class="pagination">
-                {% for p in page_group %}
-                <li class="page-item"><a class="page-link" onclick="fetchDataAndRender({{ p }})" style="cursor: pointer;" >{{ p }}</a></li>
+        <div class="container text-center">
+            <nav aria-label="Page navigation">
+                {% for page_group in pages|batch(10) %}
+                    <div class="d-inline-flex">
+                        <ul class="pagination">
+                            {% for p in page_group %}
+                                <li class="page-item"><a class="page-link" onclick="fetchDataAndRender({{ p }})"
+                                                         style="cursor: pointer;">{{ p }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 {% endfor %}
-            </ul>
+            </nav>
         </div>
-        {% endfor %}
-    </nav>
-</div>
-
-
 
 
     </div>

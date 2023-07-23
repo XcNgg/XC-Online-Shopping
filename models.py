@@ -149,16 +149,21 @@ class XcOsOrderDetail(db.Model):
     # 订单详情ID (Order detail ID)
     product_id = db.Column(db.Integer, db.ForeignKey('XcOS_product.id'), nullable=False)
     # 产品ID，外键关联到'XcOS_product'表中的'id'字段 (Product ID, foreign key reference to 'id' field in 'XcOS_product' table)
-    quantity = db.Column(db.Integer, nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('XcOS_product.seller_id'), nullable=False)
+    # 卖家ID
+    buyer_id = db.Column(db.Integer, db.ForeignKey('XcOS_user.id'), nullable=False)
+    # 买家id
+    # quantity = db.Column(db.Integer, nullable=False)
     # 购买数量 (Purchase quantity)
     price = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 产品价格 (Product price)
-    total_amount = db.Column(db.DECIMAL(10, 2), nullable=False)
+    # total_amount = db.Column(db.DECIMAL(10, 2), nullable=False)
     # 订单总金额 (Total amount of the order)
-    address_id = db.Column(db.Integer, db.ForeignKey('XcOS_address.id'), nullable=False)
+    # address_id = db.Column(db.Integer, db.ForeignKey('XcOS_address.id'), nullable=False)
     # 收货地址ID，外键关联到'XcOS_address'表中的'id'字段 (Address ID, foreign key reference to 'id' field in 'XcOS_address' table)
-    status = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(50), nullable=False,default=0)
     # 订单状态 (Order status)
+    # 0 正在发货  1 已经发货
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),

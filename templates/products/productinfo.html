@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}产品详情 - {{ super() }}{% endblock %}
+{% block css %}
+    <style>
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+        }
+
+        .product-image {
+            max-height: 200px;
+            object-fit: contain;
+        }
+
+        .product-description {
+            white-space: pre-wrap;
+        }
+
+        /* CSS类名为image-hover-zoom */
+        img {
+            /* 设置图像的过渡效果，使放大动画更平滑 */
+            transition: transform 0.3s ease;
+        }
+
+        /* 当鼠标悬停在图像上时，应用图像放大的效果 */
+        img:hover {
+            /* 使用transform属性进行图像放大，这里的scale值表示放大倍数 */
+            /* 1表示原始大小，1.2表示放大到原始大小的1.2倍 */
+            transform: scale(1.1);
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/products/productsinfo.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                {% if products %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ products.name }} 详细信息</h5>
+
+                            <table class="table table-hover">
+                                <tr style="display: none">
+                                    <th>id</th>
+                                    <td id="product-id">{{ products.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>名称</th>
+                                    <td>{{ products.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>简述</th>
+                                    <td>{{ products.simple_description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>付费内容</th>
+                                    <td>*******</td>
+                                </tr>
+                                <tr>
+                                    <th>价格</th>
+                                    <td>￥{{ products.price }}</td>
+                                </tr>
+                                <tr>
+                                    <th>图片</th>
+                                    <td><img class='' src="{{ products.img_src }}" alt="Logo" width="400px;"
+                                             height="400px;"></td>
+                                </tr>
+                                <tr>
+                                    <th>销量</th>
+                                    <td>{{ products.sales }}</td>
+                                </tr>
+                                <tr>
+                                    <th>库存</th>
+                                    <td>{{ products.stock }}</td>
+                                </tr>
+                                <tr>
+                                    <th>类型</th>
+                                    <td>{{ products.product_type }}</td>
+                                </tr>
+                                <tr>
+                                    <th>购买数量</th>
+                                    <td>
+                                        <input id="buy-number" type="number" class="form-control text-center" min="1"
+                                               value="1">
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr>
+                            <button type="button" class="btn btn-outline-success" id="sumbit-order">确认下单</button>
+                            <a href="/products" class="btn btn-outline-secondary">返回总览</a>
+                            <div id="success_alert" class="alert alert-success custom-alert  mt-3" role="alert" style="display: none">
+                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span id="success-message">Loading...</span>
+                            </div>
+                            <div id="error_alert" class="alert alert-danger  mt-3" role="alert" style="display: none">error</div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+
+                {% endif %}
+    </div>
+
+
+
+{% endblock %}

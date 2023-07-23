@@ -5,7 +5,7 @@ from extension import db
 import random
 import string
 import time
-from models import XcOsEmailCaptcha, XcOSUser, XcOSSignIn,XcOSProduct
+from models import XcOsEmailCaptcha, XcOSUser, XcOSSignIn,XcOSProduct,XcOsOrderDetail
 from extension import mail
 # flask 底层的生成加密函数
 from werkzeug.security import generate_password_hash
@@ -19,6 +19,7 @@ from image_captcha import generate_image
 import os
 from sqlalchemy import or_
 import re
+
 
 products = Blueprint('products', __name__, url_prefix='/products')
 
@@ -80,7 +81,69 @@ def get_product():
     )
 
 
-@products.route('/productinfo', methods=['get'])
+@products.route('/productinfo', methods=['GET'])
+@login_required
 def product_info():
     id = request.args.get('id')
-    return {'code':200,'data':id}
+    product_model = XcOSProduct.query.filter_by(id=id).first()
+    return render_template('products/productinfo.html',products=product_model)
+
+
+@products.route('/AddOrders',methods=['POST'])
+@login_required
+def add_orders():
+    user_id = session['user_id']
+    if not user_id:
+        return jsonify({'code':302,'message':'请先登录!'})
+
+    numbers = int(request.form.get('buyNumber'))
+    product_id = int(request.form.get('productid'))
+
+
+    # 买家 数据库
+    buyer_user = XcOSUser.query.filter_by(id=user_id).first()
+    buyer_user_balance = buyer_user.balance
+    # 产品数据库
+    product = XcOSProduct.query.filter_by(id=product_id).first()
+    product_price = product.price
+
+    if user_id == product.seller_id:
+        return jsonify({'code':403,'message':f'不能购买自己出售的商品'})
+
+
+    # 买家余额计算
+    buyer_user_result_balance = buyer_user_balance - product_price * Decimal(numbers)
+
+    if buyer_user_result_balance < Decimal(0):
+        return jsonify({'code':403,'message':f'余额不足！总价￥:{ product_price * Decimal(numbers)} | 余额：￥{buyer_user_balance}'})
+    # 库存计算
+    if product.stock- numbers < 0:
+        return jsonify({'code': 403, 'message': f'库存不足！当前库存：{product.stock}'})
+
+    # 用户余额变更
+    buyer_user.balance = buyer_user_result_balance
+    seller_user = XcOSUser.query.filter_by(id=product.seller_id).first()
+    seller_user.balance = seller_user.balance + product_price * Decimal(numbers)
+
+    # 产品的库存和销量变更
+    product.stock = product.stock - numbers
+    product.sales = product.sales + numbers
+
+    if product.stock == 0:
+        product.status =0
+
+    db.session.commit()
+
+    for n in range(1,numbers+1):
+        new_orders = XcOsOrderDetail(
+            product_id =product_id,
+            seller_id=product.seller_id,
+            buyer_id = user_id,
+            price = product.price,
+            status=0,
+        )
+        db.session.add(new_orders)
+        db.session.commit()
+
+    return jsonify({'code':200,'message':f'下单成功！当前余额：￥{ buyer_user_result_balance}'})
+

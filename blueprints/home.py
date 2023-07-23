@@ -15,7 +15,7 @@ def index():
     # 查询并按销量降序排序，取前8个数据，同时满足 status=1 和 approval_status=1
     top_products = (
         XcOSProduct.query
-        .filter_by(status=1, approval_status=1)
+        # .filter_by(status=1, approval_status=1)
         .order_by(XcOSProduct.sales.desc())
         .limit(8)
     )
