@@ -19,9 +19,9 @@ config.py
 MYSQLCONFIG = {
     "HOSTNAME": "117.50.181.130",
     "PORT": 3306,
-    "USERNAME": "online_shopping",
-    "PASSWORD": "W6LDPLy8rdBxXmMz",
-    "DATABASE": "online_shopping"
+    "USERNAME": "OnlineShopping",
+    "PASSWORD": "LXPNMNSAHndBDftk",
+    "DATABASE": "onlineshopping"
 }
 
 # 设置DB_URI

@@ -164,6 +164,10 @@ class XcOsOrderDetail(db.Model):
     status = db.Column(db.String(50), nullable=False,default=0)
     # 订单状态 (Order status)
     # 0 正在发货  1 已经发货
+    buyer_balance = db.Column(db.DECIMAL(10, 2), nullable=False)
+    # 买家用户余额 (User balance)
+    seller_balance = db.Column(db.DECIMAL(10, 2), nullable=False)
+    # 卖家用户余额 (User balance)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
     # 创建时间 (Creation timestamp)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(),

@@ -679,3 +679,86 @@ def edit_my_sale():
     db.session.commit()
 
     return jsonify({'code': 200, 'message': '修改产品成功！'})
+
+"""
+----------------------------------------------------------------------------------------
+我的订单管理界面
+----------------------------------------------------------------------------------------
+"""
+@users.route('/MyOrders', methods=['GET'])
+@login_required
+def my_orders():
+    return  render_template('users/myOrders.html')
+
+
+@users.route('/GetMyOrders', methods=['GET'])
+@login_required
+def get_my_orders():
+    user_id = int(session['user_id'])
+    people = int(request.args.get('people',1))
+    # 我是买家
+    if people == 0:
+        my_orders_list = []
+        my_orders = XcOsOrderDetail.query.filter_by(seller_id=user_id).order_by( XcOsOrderDetail.updated_at.desc()).all()
+        for orders in my_orders:
+            formatted_time = orders.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            products_result = XcOSProduct.query.filter_by(id=orders.product_id).first()
+            info = {
+                'orders_id':orders.id,
+                'product_name':products_result.name,
+                'img_src':products_result.img_src,
+                'price':products_result.price,
+                'created_at':formatted_time,
+                'seller_balance':orders.seller_balance,
+                'status': orders.status,
+            }
+            my_orders_list.append(info)
+        return jsonify({'code': 200, 'message': f'出售订单总计【{len(my_orders_list)}】笔', 'data': my_orders_list})
+    # 我是卖家
+    elif people ==1:
+        my_orders_list = []
+        my_orders = XcOsOrderDetail.query.filter_by(buyer_id=user_id).order_by(XcOsOrderDetail.updated_at.desc()).all()
+        for orders in my_orders:
+            formatted_time = orders.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            products_result = XcOSProduct.query.filter_by(id=orders.product_id).first()
+            info = {
+                'orders_id': orders.id,
+                'product_name': products_result.name,
+                'img_src': products_result.img_src,
+                'price': products_result.price,
+                'created_at': formatted_time,
+                'buyer_balance': orders.buyer_balance,
+                'status': orders.status,
+            }
+            my_orders_list.append(info)
+        return jsonify({'code': 200, 'message': f'消费订单总计【{len(my_orders_list)}】笔', 'data': my_orders_list})
+
+
+
+
+    # for product in products_result:
+    #     # product 所有返回值
+    #     product_dict = {
+    #         'id': product.id,
+    #         'seller_id': product.seller_id,
+    #         'name': product.name,
+    #         # 'simple_description': product.simple_description,
+    #         # 'description': product.description,
+    #         'price': str(product.price),
+    #         'img_src': product.img_src,
+    #         'sales': product.sales,
+    #         'stock': product.stock,
+    #         'product_type': product.product_type,
+    #         'status': product.status,
+    #         'approval_status': product.approval_status,
+    #         'approval_info': product.approval_info,
+    #         # 'created_at': str(product.created_at),
+    #         'updated_at': str(product.updated_at)
+    #     }
+    #
+    #     products_list.append(product_dict)
+    #     # print(product_dict)
+    # if not products_list:
+    #     return jsonify({'code': 200, 'message': "您还没有出售中的产品哦", 'data': []})
+    # else:
+    #     return jsonify({'code': 200, 'message': f'当前在售【{len(products_list)}】件商品', 'data': products_list})

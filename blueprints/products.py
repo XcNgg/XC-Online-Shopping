@@ -17,7 +17,7 @@ from datetime import date, datetime
 from sqlalchemy import func
 from image_captcha import generate_image
 import os
-from sqlalchemy import or_
+from sqlalchemy import or_,and_
 import re
 
 
@@ -31,7 +31,7 @@ products = Blueprint('products', __name__, url_prefix='/products')
 # 产品界面
 @products.route('/', methods=['get'])
 def products_home():
-    data_length = XcOSProduct.query.count()
+    data_length = XcOSProduct.query.filter_by(approval_status=1).count()
     pages = data_length // 12
     if data_length % 12 != 0:
         pages += 1
@@ -47,9 +47,11 @@ def get_product():
     items_per_page = 12
 
     products_list = []
-    # 使用 or_ 运算符组合多个过滤条件
-    filter_conditions = or_(XcOSProduct.name.like(f'{keyword}%'),
-                            XcOSProduct.product_type == product_type)
+    # 使用 and_ 运算符组合多个过滤条件
+    filter_conditions = and_(XcOSProduct.name.like(f'{keyword}%'),
+                            XcOSProduct.product_type == product_type,
+                            XcOSProduct.approval_status == 1
+                            )
 
     products_model = XcOSProduct.query.filter(filter_conditions).order_by(XcOSProduct.sales.desc()).paginate(page=page, per_page=items_per_page)
 
@@ -140,7 +142,9 @@ def add_orders():
             seller_id=product.seller_id,
             buyer_id = user_id,
             price = product.price,
-            status=0,
+            status=1,
+            buyer_balance = buyer_user.balance,
+            seller_balance=buyer_user.balance,
         )
         db.session.add(new_orders)
         db.session.commit()

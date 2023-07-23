@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}我的订单 - {{ super() }}{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src={{ url_for('static',filename='js/users/myOrders.js') }}></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-10">
+                                <h4 class="card-title">我的订单</h4>
+                            </div>
+                            <div class="col-md-12">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline-secondary active">
+                                    <input type="radio" name="options" id="option1"
+                                           onclick="getMyOrders(1)" checked>我购买的
+                                </label>
+                                <label class="btn btn-outline-secondary">
+                                    <input type="radio" name="options" id="option2" onclick="getMyOrders(0)">我出售的
+                                </label>
+                            </div>
+                        </div>
+
+                        </div>
+                         <div id='success_alert' class="alert alert-success custom-alert mt-3" role="alert"
+                         style="display: none">
+                        </div>
+                          <div id="error_alert" class="alert alert-danger" role="alert" style="display: none"></div>
+                        <hr>
+                        <p id="message-info" class="card-text">加载中...</p>
+                        <table id="product-tables" class="table table-hover" style="display: none;">
+                            <thead>
+                            <tr>
+                                <th scope="col">订单序号</th>
+                                <th scope="col">产品名称</th>
+                                <th scope="col">IMG</th>
+                                <th scope="col">订单状态</th>
+                                <th scope="col">创建时间</th>
+                                <th scope="col">余额变化</th>
+                                <th scope="col">余额</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            <tr>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <nav aria-label="Page navigation">
+                            <ul id="pagination" class="pagination d-flex justify-content-center"></ul>
+                        </nav>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
