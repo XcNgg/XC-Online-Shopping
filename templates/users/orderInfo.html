@@ -3,7 +3,6 @@
 {% block title %}产品详情 - {{ super() }}{% endblock %}
 {% block css %}
     <style>
-
         body {
             background-color: #f8f9fa;
         }
@@ -44,14 +43,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
+
+        {% if products %}
+        <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                {% if products %}
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ products.name }} 详细信息</h5>
-
                             <table class="table table-hover">
                                 <tr style="display: none">
                                     <th>id</th>
@@ -66,41 +65,34 @@
                                     <td>{{ products.simple_description }}</td>
                                 </tr>
                                 <tr>
-                                    <th>付费内容</th>
-                                    <td>*******</td>
+                                    <th style="color:#bd2b33; font-weight: bold;">付费内容</th>
+                                    <td style="color:#bd2b33; font-weight: bold;">{{ products.description }}</td>
                                 </tr>
                                 <tr>
-                                    <th>价格</th>
+                                    <th>支付</th>
                                     <td>￥{{ products.price }}</td>
                                 </tr>
                                 <tr>
                                     <th>图片</th>
-                                    <td><img class='' src="{{ products.img_src }}" alt="Logo" width="400px;"
-                                             height="400px;"></td>
-                                </tr>
-                                <tr>
-                                    <th>销量</th>
-                                    <td>{{ products.sales }}</td>
-                                </tr>
-                                <tr>
-                                    <th>库存</th>
-                                    <td>{{ products.stock }}</td>
+                                    <td>
+                                        <img class='' src="{{ products.img_src }}" alt="Logo" width="400px;"
+                                             height="400px;">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>类型</th>
                                     <td>{{ products.product_type }}</td>
                                 </tr>
                                 <tr>
-                                    <th>购买数量</th>
+                                    <th>数量</th>
                                     <td>
-                                        <input id="buy-number" type="number" class="form-control text-center" min="1"
-                                               value="1" style="width: 90px;">
+                                        1
                                     </td>
                                 </tr>
                             </table>
                             <hr>
-                            <button type="button" class="btn btn-outline-success" id="sumbit-order">确认下单</button>
-                            <a href="/products" class="btn btn-outline-secondary">返回总览</a>
+                             <a href="/products/productinfo?id={{ products.id }}" class="btn btn-outline-primary">再来一单</a>
+                            <a href="/users/MyOrders" class="btn btn-outline-secondary">返回总览</a>
                             <div id="success_alert" class="alert alert-success custom-alert  mt-3" role="alert" style="display: none">
                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                               <span id="success-message">Loading...</span>
@@ -108,12 +100,30 @@
                             <div id="error_alert" class="alert alert-danger  mt-3" role="alert" style="display: none">error</div>
                         </div>
                     </div>
+                </div>
             </div>
+
         </div>
 
 
-                {% endif %}
-    </div>
+        {% elif error %}
+         <div class="container mt-5">
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                        <div class="card">
+                            <div class="card-body">
+                            <div id="error_alert" class="alert alert-danger  mt-3" role="alert">{{ error }}</div>
+                            <a href="/users/MyOrders" class="btn btn-outline-secondary">返回总览</a>
+                            </div>
+
+                        </div>
+                        </div>
+                </div>
+            </div>
+
+        {% endif %}
+
 
 
 

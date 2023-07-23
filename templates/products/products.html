@@ -29,15 +29,25 @@
         <div class="container">
             <div class="card" style="width: 100%">
                 <div class="card-body">
-                    <div class="row mb-1">
-                        <div class="col-md-12">
-                            <h4 class="card-title">
-                                <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"
-                                     width="20">
-                                产品分类
-                            </h4>
+                <div class="row mb-1">
+                    <div class="col-4 col-md-4">
+                        <h4 class="card-title">
+                            <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类" width="20">
+                            产品分类
+                        </h4>
+                    </div>
+                    <div class="col-8 col-md-8">
+                        <div class="input-group">
+                            <input id="product-search" class="form-control" type="search"  placeholder="请输入产品的关键词"
+                                   aria-label="Search">
+                            <div class="input-group-append">
+                                <button id='search-btn' class="btn btn-outline-dark" type="button" onclick="javascript:fetchDataAndRender(page=1,keyword=$('#product-search').val(),type='虚拟产品');">
+                                    Search
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">

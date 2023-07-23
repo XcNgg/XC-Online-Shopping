@@ -48,10 +48,14 @@ def get_product():
 
     products_list = []
     # 使用 and_ 运算符组合多个过滤条件
-    filter_conditions = and_(XcOSProduct.name.like(f'{keyword}%'),
-                            XcOSProduct.product_type == product_type,
-                            XcOSProduct.approval_status == 1
-                            )
+    filter_conditions = and_(
+        or_(
+            XcOSProduct.name.like(f'%{keyword}%'),
+            XcOSProduct.simple_description.like(f'%{keyword}%'),
+        ),
+            XcOSProduct.product_type == product_type,
+            XcOSProduct.approval_status == 1
+    )
 
     products_model = XcOSProduct.query.filter(filter_conditions).order_by(XcOSProduct.sales.desc()).paginate(page=page, per_page=items_per_page)
 
@@ -144,7 +148,7 @@ def add_orders():
             price = product.price,
             status=1,
             buyer_balance = buyer_user.balance,
-            seller_balance=buyer_user.balance,
+            seller_balance=seller_user.balance,
         )
         db.session.add(new_orders)
         db.session.commit()

@@ -58,11 +58,12 @@
         <ul class="navbar-nav ml-auto" style="margin-left: auto;">
             <li class="nav-item">
                 <form class="form-inline">
-                    <input id="KeyWordSearch" class="form-control mr-sm-2" type="search" style="width: 450px;"
-                           placeholder="" aria-label="Search">
-                    <button  class="btn btn-outline-dark my-2 my-sm-0 mr-sm-4" type="submit">
-                        Search
-                    </button>
+                    <img id='search-img' style="cursor: pointer;" src="{{ url_for('static', filename='img/base/search.png') }}" alt="search" width="25" height="25" onclick="javascript:window.location.href = '/products';">
+
+                    <span id="KeyWordSearch" class="ml-3" style="width: 450px;"></span>
+{#                    <button  class="btn btn-outline-dark my-2 my-sm-0 mr-sm-4" type="button" >#}
+{#                        Search#}
+{#                    </button>#}
                 </form>
             </li>
 
@@ -100,10 +101,10 @@
                                         我的订单
                                     </a>
 
-                                    <a class="dropdown-item" href="#">
-                                     <img src="{{ url_for('static', filename='img/base/cart.png') }}" alt="" width="15" height="15">
-                                        购物车
-                                    </a>
+{#                                    <a class="dropdown-item" href="#">#}
+{#                                     <img src="{{ url_for('static', filename='img/base/cart.png') }}" alt="" width="15" height="15">#}
+{#                                        购物车#}
+{#                                    </a>#}
 
                                     <a class="dropdown-item" href="{{ url_for('users.edit_password') }}">
                                         <img src="{{ url_for('static', filename='img/base/editPasswd.png') }}" alt="" width="15" height="15">

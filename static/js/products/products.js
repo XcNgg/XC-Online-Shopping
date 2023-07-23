@@ -47,7 +47,7 @@ $('.more-img').click(function() {
                                 </div>
 
                                 <div class="col-8" style="height:125px;">
-                                    <h5 class="card-title">${product.name}</h5>
+                                    <h5 class="card-title"> <a href="/products/productinfo?id=${product.id}">${product.name}</a></h5>
                                     <p>${product.simple_description}</p>
                                 </div>
                             </div>
@@ -102,3 +102,4 @@ $('.more-img').click(function() {
             // console.log(productContainer);
 
     }
+

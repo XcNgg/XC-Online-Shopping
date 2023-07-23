@@ -57,10 +57,9 @@ function rotatePlaceholder() {
         timer = setInterval(function () {
             var randomNumber = Math.floor(Math.random() * 56) + 1; // 随机生成 1-56
             var currentProductIndex = Math.floor(Math.random() * products.length); // 随机生成 0 - products.length
-
             var placeholderText = '当前有' + randomNumber + '%的人在搜索[' + products[currentProductIndex] + ']';
             searchInput.fadeOut(400, function () {
-                $(this).attr('placeholder', placeholderText).fadeIn(400);
+                $(this).text( placeholderText).fadeIn(400);
             });
         }, 3000);
     }
@@ -68,7 +67,6 @@ function rotatePlaceholder() {
     startTimer();
 
 }
-
 
 
 $(document).ready(function () {

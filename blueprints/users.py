@@ -20,6 +20,7 @@ import re
 from baiduImgCensor import get_img_result, convert_to_jpg
 from extension import move_file
 from math import ceil
+from sqlalchemy import or_,and_
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
@@ -709,7 +710,7 @@ def get_my_orders():
                 'img_src':products_result.img_src,
                 'price':products_result.price,
                 'created_at':formatted_time,
-                'seller_balance':orders.seller_balance,
+                'seller_balance': orders.seller_balance,
                 'status': orders.status,
             }
             my_orders_list.append(info)
@@ -727,8 +728,8 @@ def get_my_orders():
                 'img_src': products_result.img_src,
                 'price': products_result.price,
                 'created_at': formatted_time,
-                'buyer_balance': orders.buyer_balance,
                 'status': orders.status,
+                'buyer_balance': orders.buyer_balance,
             }
             my_orders_list.append(info)
         return jsonify({'code': 200, 'message': f'消费订单总计【{len(my_orders_list)}】笔', 'data': my_orders_list})
@@ -736,29 +737,51 @@ def get_my_orders():
 
 
 
-    # for product in products_result:
-    #     # product 所有返回值
-    #     product_dict = {
-    #         'id': product.id,
-    #         'seller_id': product.seller_id,
-    #         'name': product.name,
-    #         # 'simple_description': product.simple_description,
-    #         # 'description': product.description,
-    #         'price': str(product.price),
-    #         'img_src': product.img_src,
-    #         'sales': product.sales,
-    #         'stock': product.stock,
-    #         'product_type': product.product_type,
-    #         'status': product.status,
-    #         'approval_status': product.approval_status,
-    #         'approval_info': product.approval_info,
-    #         # 'created_at': str(product.created_at),
-    #         'updated_at': str(product.updated_at)
-    #     }
-    #
-    #     products_list.append(product_dict)
-    #     # print(product_dict)
-    # if not products_list:
-    #     return jsonify({'code': 200, 'message': "您还没有出售中的产品哦", 'data': []})
-    # else:
-    #     return jsonify({'code': 200, 'message': f'当前在售【{len(products_list)}】件商品', 'data': products_list})
+"""
+----------------------------------------------------------------------------------------
+我购买的订单详情页面
+----------------------------------------------------------------------------------------
+"""
+@users.route('/BuyOrderInfo', methods=['GET'])
+@login_required
+def buy_order_info():
+    order_id = int(request.args.get('id'))
+    user_id = int(session['user_id'])
+    filter_conditions = and_(
+        # or_(
+        #     XcOsOrderDetail.seller_id == user_id,
+        XcOsOrderDetail.buyer_id == user_id,
+        # ),
+        XcOsOrderDetail.id == order_id
+    )
+    order_model = XcOsOrderDetail.query.filter(filter_conditions).first()
+    if order_model:
+        products = XcOSProduct.query.filter_by(id=order_model.product_id).first()
+        return  render_template('users/orderInfo.html',products=products)
+    else:
+        return render_template('users/orderInfo.html',error='该订单不存在！')
+
+
+"""
+----------------------------------------------------------------------------------------
+我卖出的订单详情页面
+----------------------------------------------------------------------------------------
+"""
+@users.route('/SaleOrderInfo', methods=['GET'])
+@login_required
+def sale_order_info():
+    order_id = int(request.args.get('id'))
+    user_id = int(session['user_id'])
+    filter_conditions = and_(
+        # or_(
+            XcOsOrderDetail.seller_id == user_id,
+        # XcOsOrderDetail.buyer_id == user_id,
+        # ),
+        XcOsOrderDetail.id == order_id
+    )
+    order_model = XcOsOrderDetail.query.filter(filter_conditions).first()
+    if order_model:
+        products = XcOSProduct.query.filter_by(id=order_model.product_id).first()
+        return  render_template('users/orderInfo.html',products=products)
+    else:
+        return render_template('users/orderInfo.html',error='该订单不存在！')

@@ -65,7 +65,7 @@ function getMyOrders(people = 1) {
                         row.append('<td>' + order.product_name + '</td>');
                         row.append('<td><img src="' + order.img_src + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
 
-                        if (order.status === 1) {
+                        if (order.status === '1') {
                             row.append('<td><a class="btn btn-success" title="卖家已发货成功" href="#">发货成功</a></td>');
                         } else {
                             row.append('<td><a class="btn btn-secondary" title="卖家正在拼命发货" href="#">准备发货</a></td>');
@@ -74,7 +74,7 @@ function getMyOrders(people = 1) {
                         row.append('<td>' + order.created_at + '</td>');
                         row.append('<td>-' + order.price + '</td>');
                         row.append('<td>' + order.buyer_balance + '</td>');
-                        row.append('<td><a href="/users/orderinfo?id=' + order.orders_id + '">详情</a></td>');
+                        row.append('<td><a href="/users/BuyOrderInfo?id=' + order.orders_id + '">详情</a></td>');
                         // row.append('<td><a href="#" class="delete-button" data-name="' + product.name + '" data-id="' + product.id + '">删除</a></td>');
                         tableBody.append(row);
                     }
@@ -112,7 +112,7 @@ function getMyOrders(people = 1) {
                         row.append('<th scope="row">' + (i + 1) + '</th>');
                         row.append('<td>' + order.product_name + '</td>');
                         row.append('<td><img src="' + order.img_src + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
-                        if (order.status === 1) {
+                        if (order.status === '1') {
                             row.append('<td><a class="btn btn-success" title="卖家已发货成功" href="#">发货成功</a></td>');
                         } else {
                             row.append('<td><a class="btn btn-secondary" title="卖家正在拼命发货" href="#">准备发货</a></td>');
@@ -120,8 +120,8 @@ function getMyOrders(people = 1) {
 
                         row.append('<td>' + order.created_at + '</td>');
                         row.append('<td>+' + order.price + '</td>');
-                        row.append('<td>' + order.seller_balance + '</td>');
-                        row.append('<td><a href="/users/orderinfo?id=' + order.orders_id + '">详情</a></td>');
+                        row.append('<td>' + order.seller_balance  + '</td>');
+                        row.append('<td><a href="/users/SaleOrderInfo?id=' + order.orders_id + '">详情</a></td>');
                         // row.append('<td><a href="#" class="delete-button" data-name="' + product.name + '" data-id="' + product.id + '">删除</a></td>');
                         tableBody.append(row);
                     }
@@ -197,6 +197,8 @@ function loadCurrentPageData() {
     $('#product-tables tbody tr').hide();
     $('#product-tables tbody tr').slice(start, end).show();
 }
+
+
 
 $(document).ready(function () {
     getMyOrders(); // 页面加载时调用函数
