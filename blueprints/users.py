@@ -75,10 +75,10 @@ def signin():
             db.session.commit()
 
             return jsonify(
-                {'code': 200, 'message': "签到成功！", 'amount': f'今日随机签到积分：{integral}'}), 200
+                {'code': 200, 'message': "签到成功！", 'amount': f'今日随机签到积分：{integral}'})
 
         else:
-            return jsonify({'code': 400, 'message': "今天已经签到了！"}), 200
+            return jsonify({'code': 400, 'message': "今天已经签到了！"})
 
 
 # 注销清除session

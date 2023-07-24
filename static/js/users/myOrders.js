@@ -66,7 +66,7 @@ function getMyOrders(people = 1) {
                         row.append('<td><img src="' + order.img_src + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
 
                         if (order.status === '1') {
-                            row.append('<td><a class="btn btn-success" title="卖家已发货成功" href="#">发货成功</a></td>');
+                            row.append('<td><a class="btn btn-success" title="卖家已发货成功" href="#">自动发货</a></td>');
                         } else {
                             row.append('<td><a class="btn btn-secondary" title="卖家正在拼命发货" href="#">准备发货</a></td>');
                         }
@@ -113,7 +113,7 @@ function getMyOrders(people = 1) {
                         row.append('<td>' + order.product_name + '</td>');
                         row.append('<td><img src="' + order.img_src + '" alt="logo" style="display: inline-block; vertical-align: top;" width="20" height="20"></td>');
                         if (order.status === '1') {
-                            row.append('<td><a class="btn btn-success" title="卖家已发货成功" href="#">发货成功</a></td>');
+                            row.append('<td><a class="btn btn-success" title="卖家已发货成功" href="#">自动发货</a></td>');
                         } else {
                             row.append('<td><a class="btn btn-secondary" title="卖家正在拼命发货" href="#">准备发货</a></td>');
                         }

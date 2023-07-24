@@ -37,13 +37,12 @@ $(document).ready(function () {
       success: function (response) {
           if(response.code === 200){
             // 在成功完成订单检查后处理来自服务器的响应
-            // 在此处添加代码以显示成功消息，重定向到确认页面等等
+            // 在此处添加代码以显示成功消息
             error_alert.hide();
             success_alert.show();
             success_message.text(response.message);
-            var now_url = window.location.href;
             setTimeout(function () {
-                window.location.replace(now_url);
+                window.location.replace(`/users/BuyOrderInfo?id=${response.order_id}`);
             }, 1000); // 0.8秒后跳转
 
           }else if (response.code===302){

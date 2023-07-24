@@ -116,7 +116,6 @@ def add_orders():
     if user_id == product.seller_id:
         return jsonify({'code':403,'message':f'不能购买自己出售的商品'})
 
-
     # 买家余额计算
     buyer_user_result_balance = buyer_user_balance - product_price * Decimal(numbers)
 
@@ -126,21 +125,23 @@ def add_orders():
     if product.stock- numbers < 0:
         return jsonify({'code': 403, 'message': f'库存不足！当前库存：{product.stock}'})
 
-    # 用户余额变更
-    buyer_user.balance = buyer_user_result_balance
-    seller_user = XcOSUser.query.filter_by(id=product.seller_id).first()
-    seller_user.balance = seller_user.balance + product_price * Decimal(numbers)
-
     # 产品的库存和销量变更
     product.stock = product.stock - numbers
     product.sales = product.sales + numbers
 
+    # 如果库存为0，则自动为备货中
     if product.stock == 0:
         product.status =0
 
     db.session.commit()
 
+    order_id = 0
     for n in range(1,numbers+1):
+        # 用户余额变更
+        buyer_user.balance = buyer_user.balance - product_price
+        seller_user = XcOSUser.query.filter_by(id=product.seller_id).first()
+        seller_user.balance = seller_user.balance + product_price
+        # 余额变化
         new_orders = XcOsOrderDetail(
             product_id =product_id,
             seller_id=product.seller_id,
@@ -148,10 +149,12 @@ def add_orders():
             price = product.price,
             status=1,
             buyer_balance = buyer_user.balance,
-            seller_balance=seller_user.balance,
+            seller_balance= seller_user.balance,
         )
         db.session.add(new_orders)
         db.session.commit()
+        db.session.refresh(new_orders)
+        order_id = new_orders.id
 
-    return jsonify({'code':200,'message':f'下单成功！当前余额：￥{ buyer_user_result_balance}'})
+    return jsonify({'code':200,'message':f'下单成功！当前余额：￥{ buyer_user_result_balance}','order_id':order_id})
 
