@@ -5,14 +5,10 @@
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 
-
 {% endblock %}
-
 {% block script %}
     <script type="text/javascript" src={{ url_for('static',filename='js/index.js') }}></script>
 {% endblock %}
-
-
 {% block content %}
     <!-- Product Details -->
     <div class="row" style="margin-top: 20px;">
@@ -80,10 +76,11 @@
 
 
                 <div class="card-body text-dark">
-                    {% if notices_list %}
-                        {% for notice in notices_list %}
-                            <h5 class="card-title">{{ notice.title }}</h5>
-                            <p class="card-text">{{ notice.content }}</p>
+                    {% if notice_list %}
+                        {% for notice in notice_list %}
+                            <h6 class="card-title">{{ notice.title }}</h6>
+                            <p class="card-text">{{ notice.content }}  - {{ notice.updated_at }}</p>
+                            <hr>
                         {% endfor %}
                     {% else %}
                         <h5 class="card-title">好好吃饭，热爱生活</h5>
@@ -91,7 +88,7 @@
                         <p class="card-text">不要纠结为什么没有</p>
                         <p class="card-text">管理员很懒</p>
                     {% endif %}
-                    <h5 class="card-title">每日金句</h5>
+                    <h6 class="card-title">每日金句</h6>
                     <p id="daily-golden-sentence-content" class="card-text">加载中...</p>
                     <p id="daily-golden-sentence-source" class="card-text"></p>
                 </div>
@@ -151,54 +148,6 @@
                 </div>
               </div>
             </div>
-
-{#            <div class="col-md-3 mb-1">#}
-{#                <div class="card sell-well">#}
-{#                    <div class="card-body">#}
-{#                        <div class="row">#}
-{#                            <div class="col-3" style="height: 148px;">#}
-{#                                <img src="{{  product.img_src }}"#}
-{#                                     class="card-img-top"#}
-{#                                     alt="Product 1" style="max-width: 100%; display: block; margin: 0 auto;">#}
-{#                            </div>#}
-{#                            <div class="col-9">#}
-{#                                <h5 class="card-title">{{ product.name }}</h5>#}
-{#                                <p>{{ product.simple_description}}</p>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="row">#}
-{#                            <div class="col-6 mb-1">#}
-{#                                <img src="{{ url_for('static', filename='img/products/RMB.png') }}" alt="RMB"#}
-{#                                     style="display: inline-block; vertical-align: middle;" width="18" height="15">#}
-{#                                <span id="product-RMB">{{  product.price }}</span>#}
-{#                            </div>#}
-{#                            <div class="col-6 mb-1">#}
-{#                                <img src="{{ url_for('static', filename='img/products/type.png') }}" alt="分类"#}
-{#                                     style="display: inline-block; vertical-align: middle;" width="18" height="15">#}
-{#                                <span id="product-type">{{  product.product_type }}</span>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="row">#}
-{#                            <div class="col-6">#}
-{#                                <img src="{{ url_for('static', filename='img/products/sales-volume.png') }}" alt="销量"#}
-{#                                     style="display: inline-block; vertical-align: middle;" width="18" height="15">#}
-{#                                <span id="product-sales-volume">{{  product.sales }}</span>#}
-{#                            </div>#}
-{#                            <div class="col-6">#}
-{#                                <img src="{{ url_for('static', filename='img/products/inventory.png') }}" alt="库存"#}
-{#                                     style="display: inline-block; vertical-align: middle;" width="18" height="15">#}
-{#                                <span id="product-inventory">{{  product.stock }}</span>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <a href="#" style="color:#8a8a8a;text-align: right; float: right; text-decoration: none;">#}
-{#                            more#}
-{#                            <img src="{{ url_for('static', filename='img/base/more.png') }}" alt="了解更多"#}
-{#                                 style="display: inline-block; vertical-align: middle;" width="18" height="15">#}
-{#                        </a>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-
             {% endfor %}
 
 

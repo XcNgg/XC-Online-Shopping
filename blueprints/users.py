@@ -21,6 +21,7 @@ from baiduImgCensor import get_img_result, convert_to_jpg
 from extension import move_file
 from math import ceil
 from sqlalchemy import or_,and_
+from models import XcOsOrderDetail
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
@@ -166,14 +167,14 @@ def reset_password():
             random_password = ''.join(random.choice(characters) for _ in range(password_length))
             # print(random_password)
             message_dict = {
-                "title": "小草Shopping-深耕电商服务20年 重置密码",  # 邮件标题
+                "title": "小草Shopping-深耕电商服务 重置密码",  # 邮件标题
                 "username": user_model.username,  # 接收者
                 "service": "重置密码",  # 发送的服务
                 "code": random_password,  # 验证码
             }
             message = Message(
                 recipients=[(request.form.get('email')), ],  # 收件人
-                subject='【小草Shopping-深耕电商服务20年】 重置密码',  # 邮件主题
+                subject='【小草Shopping-深耕电商服务】 重置密码',  # 邮件主题
                 html=render_template('emailBase.html', **message_dict),  # 邮件内容
             )
             mail.send(message)
@@ -278,14 +279,14 @@ def email_captcha():
         else:
             try:
                 message_dict = {
-                    "title": "小草Shopping-深耕电商服务20年 感谢您的注册！",  # 邮件标题
+                    "title": "小草Shopping-深耕电商服务 感谢您的注册！",  # 邮件标题
                     "username": form_username,  # 接收者
                     "service": "用户注册",  # 发送的服务
                     "code": captcha,  # 验证码
                 }
                 message = Message(
                     recipients=[form_email],  # 收件人
-                    subject='【小草Shopping-深耕电商服务20年】 验证码',  # 邮件主题
+                    subject='【小草Shopping-深耕电商服务】 验证码',  # 邮件主题
                     html=render_template('emailBase.html', **message_dict),  # 邮件内容
                 )
                 # 发送邮件
@@ -309,14 +310,14 @@ def email_captcha():
     else:  # 如果第一行没有结果，即该用户是第一次发送验证码
         try:
             message_dict = {
-                "title": "小草Shopping-深耕电商服务20年 感谢您的注册！",  # 邮件标题
+                "title": "小草Shopping-深耕电商服务 感谢您的注册！",  # 邮件标题
                 "username": form_username,  # 接收者
                 "service": "用户注册",  # 发送的服务
                 "code": captcha,  # 验证码
             }
             message = Message(
                 recipients=[form_email],  # 收件人
-                subject='【小草Shopping-深耕电商服务20年】 验证码',  # 邮件主题
+                subject='【小草Shopping-深耕电商服务】 验证码',  # 邮件主题
                 html=render_template('emailBase.html', **message_dict),  # 邮件内容
             )
             # 发送邮件
@@ -490,6 +491,8 @@ def get_my_sale():
         return jsonify({'code': 200, 'message': f'当前在售【{len(products_list)}】件商品', 'data': products_list})
 
 
+from sqlalchemy import exc
+
 @users.route('/DeleteMySale', methods=['POST'])
 @login_required
 def delete_my_sale():
@@ -506,12 +509,17 @@ def delete_my_sale():
 
         delete_product = XcOSProduct.query.filter_by(id=id, name=name, seller_id=user_id).first()
         if delete_product:
-            print(delete_product.name)
+            # 删除关联的订单详情记录
+            XcOsOrderDetail.query.filter_by(seller_id=user_id).delete()
+
             db.session.delete(delete_product)
             db.session.commit()
             return jsonify({'code': 200, 'message': '删除成功！'})
         else:
             return jsonify({'code': 403, 'message': '未找到要删除的数据！'})
+    except exc.IntegrityError as e:
+        db.session.rollback()
+        return jsonify({'code': 500, 'message': '删除失败，存在关联数据！'})
     except Exception as e:
         db.session.rollback()
         return jsonify({'code': 500, 'message': e.__str__()})
@@ -567,7 +575,7 @@ def check_sale_img():
         else:
             move_file(img_path, 'static/upload/products/')
             return jsonify({'code': 200, 'message': img_result,
-                            'filename': '/static/upload/products/' + ts_filename.replace('png', 'jpg')})
+                            'filename': '/static/upload/products/' + ts_filename.replace('png', 'jpg').replace('jpeg','jpg') })
 
 
 # 添加

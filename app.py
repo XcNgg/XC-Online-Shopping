@@ -24,7 +24,6 @@ app.register_blueprint(products_bp)
 migrate = Migrate(app, db)
 
 
-
 @app.before_request
 def before_requests():
     user_id = session.get('user_id')

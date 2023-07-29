@@ -1,13 +1,7 @@
 from aip import AipImageCensor # pip install baidu-aip
 from PIL import Image
 import os
-
-# 百度接口配置,需要官网申请
-# 百度接口配置
-APP_ID = "28015953"
-API_KEY = "YXyh7vONslNSbkXmIEL2FG2l"
-SECRET_KEY ="YK40cgDdhqF70I0f7iNua8AguCMpqzA8"
-
+from config import APP_ID,API_KEY,SECRET_KEY
 
 CLIENT = AipImageCensor(APP_ID,API_KEY,SECRET_KEY)
 
