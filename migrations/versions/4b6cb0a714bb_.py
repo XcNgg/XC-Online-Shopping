@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: cad2e4ae3ed4
+Revision ID: 4b6cb0a714bb
 Revises: 
-Create Date: 2023-07-23 15:34:10.693771
+Create Date: 2023-07-29 10:46:43.482994
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cad2e4ae3ed4'
+revision = '4b6cb0a714bb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -82,8 +82,6 @@ def upgrade():
     sa.Column('stock', sa.Integer(), nullable=True),
     sa.Column('product_type', sa.String(length=50), nullable=False),
     sa.Column('status', sa.Integer(), nullable=True),
-    sa.Column('buyer_balance', sa.DECIMAL(precision=10, scale=2), nullable=False),
-    sa.Column('seller_balance', sa.DECIMAL(precision=10, scale=2), nullable=False),
     sa.Column('approval_status', sa.Integer(), nullable=True),
     sa.Column('approval_info', sa.String(length=255), nullable=True),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
@@ -117,6 +115,8 @@ def upgrade():
     sa.Column('buyer_id', sa.Integer(), nullable=False),
     sa.Column('price', sa.DECIMAL(precision=10, scale=2), nullable=False),
     sa.Column('status', sa.String(length=50), nullable=False),
+    sa.Column('buyer_balance', sa.DECIMAL(precision=10, scale=2), nullable=False),
+    sa.Column('seller_balance', sa.DECIMAL(precision=10, scale=2), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.ForeignKeyConstraint(['buyer_id'], ['XcOS_user.id'], ),

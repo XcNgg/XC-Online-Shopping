@@ -17,11 +17,11 @@ config.py
 
 # todo MySQL配置 需要修改
 MYSQLCONFIG = {
-    "HOSTNAME": "117.50.181.130",
+    "HOSTNAME": "127.0.0.1",
     "PORT": 3306,
     "USERNAME": "OnlineShopping",
-    "PASSWORD": "LXPNMNSAHndBDftk",
-    "DATABASE": "onlineshopping"
+    "PASSWORD": "OnlineShopping",
+    "DATABASE": "OnlineShopping"
 }
 
 # 设置DB_URI

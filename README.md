@@ -1,5 +1,14 @@
 # XC-小草在线虚拟商城系统
-> Python3.x | Flask | MySQL | BootStrap 4.6 | JQuery 3.6
+> Python3.x | Flask | MySQL5.7 | BootStrap 4.6 | JQuery 3.6
+>
+> Blog: [https://blog.xcup.top/index.php/archives/563/](https://blog.xcup.top/index.php/archives/563/)
+>
+> Github:[https://github.com/XcNgg/XC-Online-Shopping/tree/main](https://github.com/XcNgg/XC-Online-Shopping/tree/main)
+>
+---
+![](README-IMG/软著申请.png)
+
+项目后续会开源
 
 ## 快速运行
 
